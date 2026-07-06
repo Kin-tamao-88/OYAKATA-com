@@ -1,33 +1,18 @@
+import logoMark from "../assets/images/logo-mark.png";
+
 const Y = "#f5a623";
 const BK = "#1a1a1a";
 
 export default function Header() {
   return (
     <header className="flex items-center justify-between px-10 py-3 border-b border-gray-200 bg-white">
-      {/* ロゴ */}
-      <div className="flex items-center gap-2.5">
-        <svg width="44" height="48" viewBox="0 0 48 52" aria-label="親方ドットコム">
-          <polygon points="24,2 44,13 44,39 24,50 4,39 4,13" fill={BK} />
-          <text
-            x="24" y="31" textAnchor="middle"
-            fontFamily="'Noto Sans JP',sans-serif"
-            fontSize="18" fontWeight="900" fill={Y}
-          >
-            親
-          </text>
-        </svg>
-        <div>
-          <div className="text-xl font-black text-[#1a1a1a] leading-tight">親方ドットコム</div>
-          <div className="text-[11px] text-[#666] leading-tight">工事業者専門の集客支援サービス</div>
-        </div>
-      </div>
-
-      {/* 電話番号 */}
-      <div className="text-center">
-        <span className="block text-[11px] text-[#888] mb-0.5">📞 受付時間 平日9:00-18:00</span>
-        <div className="text-[28px] font-black text-[#1a1a1a] tracking-wider leading-none">
-          0120-123-456
-        </div>
+      {/* ロゴ：画像にビネット余白があるためoverflowクロップでズームイン */}
+      <div className="h-[64px] w-[380px] overflow-hidden shrink-0">
+        <img
+          src={logoMark}
+          alt="親方ドットコム"
+          className="h-[320px] w-auto -mt-[132px] -ml-[88px]"
+        />
       </div>
 
       {/* CTAボタン */}
