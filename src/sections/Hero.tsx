@@ -132,8 +132,7 @@ export default function Hero() {
 
           {/* 実績バッジ */}
           <div
-            className="flex items-center gap-4 mt-5 pt-4"
-            style={{ borderTop: "1px solid rgba(0,0,0,0.12)" }}
+            className="flex items-center gap-4 mt-5"
           >
             <img src={badge1} alt="受注単価 平均40%UP" style={{ width: "150px", height: "auto" }} />
             <img src={badge2} alt="問い合わせ数 平均3倍" style={{ width: "150px", height: "auto" }} />
