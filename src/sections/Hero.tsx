@@ -1,4 +1,4 @@
-import heroBg from "../assets/images/hero/hero-right-background.png";
+import heroBg from "../assets/images/hero/hero-right-background2.png";
 import paintDark from "../assets/images/ui/hero-paint-dark2.png";
 import brushHeroText from "../assets/images/ui/brush-hero-text.png";
 import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.png";
@@ -12,14 +12,32 @@ export default function Hero() {
       {/* ══ Hero ══════════════════════════════════════════════════════ */}
       <section className="relative bg-white" style={{ minHeight: "600px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto" }}>
 
-        {/* 右：職人＋現場背景（overflow-hiddenをこのラッパーに限定 → section横方向は開放） */}
+        {/* 右カラム：人物写真（中央フェード＋左右エッジフェード） */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-          <img
-            src={heroBg}
-            alt=""
-            aria-hidden="true"
-            style={{ position: "absolute", left: "-320px", top: 0, height: "175%", width: "auto", maxWidth: "none" }}
-          />
+          <div style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "62%",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%, black 80%, transparent 100%)",
+            maskImage: "linear-gradient(to right, transparent 0%, black 28%, black 80%, transparent 100%)",
+          }}>
+            <img
+              src={heroBg}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: 0,
+                transform: "translateX(-50%)",
+                height: "130%",
+                width: "auto",
+                maxWidth: "none",
+              }}
+            />
+          </div>
         </div>
 
         {/* ── コンテンツカラム ── */}
@@ -56,26 +74,29 @@ export default function Hero() {
               style={{
                 backgroundColor: "#1a1a1a",
                 color: "#D4A820",
-                fontSize: "13px",
+                fontSize: "16px",
                 fontWeight: 700,
-                paddingLeft: "22px",
-                paddingRight: "18px",
-                paddingTop: "5px",
-                paddingBottom: "5px",
+                paddingLeft: "28px",
+                paddingRight: "22px",
+                paddingTop: "8px",
+                paddingBottom: "8px",
                 marginBottom: "14px",
-                clipPath: "polygon(12px 0%, 100% 0%, 100% 100%, 0% 100%)",
+                marginLeft: "-20px",
+                clipPath: "polygon(14px 0%, 100% 0%, 100% 100%, 0% 100%)",
                 zIndex: 1,
+                transform: "rotate(-6deg)",
+                transformOrigin: "left center",
               }}
             >
               <span
                 aria-hidden="true"
                 style={{
-                  position: "absolute", left: 0, top: 0, bottom: 0, width: "12px",
+                  position: "absolute", left: 0, top: 0, bottom: 0, width: "14px",
                   backgroundColor: "#D4A820",
                   clipPath: "polygon(0 0, 100% 0, 55% 100%, 0 100%)",
                 }}
               />
-              工事業者の味方
+              すべての工事業者様のために
             </div>
 
             {/* H1：1行目（HTMLテキスト） */}

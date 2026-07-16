@@ -1,4 +1,4 @@
-import logoMark from "../assets/images/logos/logo-mark-trimmed.png";
+import logoMark from "../assets/images/logos/logo-mark2.png";
 
 export default function Header() {
   return (
@@ -10,11 +10,13 @@ export default function Header() {
 
         {/* ロゴ */}
         <div className="flex items-center flex-shrink-0" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
-          <img
-            src={logoMark}
-            alt="親方ドットコム ｜ 工事業者専門の集客支援サービス"
-            style={{ height: "64px", width: "auto", maxWidth: "none" }}
-          />
+          <div style={{ overflow: "hidden", height: "88px", width: "320px", display: "flex", alignItems: "center", justifyContent: "center", marginTop: "9px" }}>
+            <img
+              src={logoMark}
+              alt="親方ドットコム ｜ 工事業者専門の集客支援サービス"
+              style={{ height: "280px", width: "auto", maxWidth: "none" }}
+            />
+          </div>
         </div>
 
         {/* スペーサー */}
