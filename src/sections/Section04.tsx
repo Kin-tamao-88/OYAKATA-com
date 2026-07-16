@@ -1,142 +1,181 @@
-export default function Section04() {
-  const problems = [
-    {
-      num: "01",
-      title: "利益が残らない",
-      body: "下請け案件は単価が低く、人件費や材料費を引くと利益がほとんど残らない。",
-      icon: (
-        <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-          <rect x="2" y="18" width="7" height="14" fill="white" />
-          <rect x="12" y="12" width="7" height="20" fill="white" />
-          <rect x="22" y="6" width="7" height="26" fill="white" />
-          <path d="M4 30 L34 36" stroke="#D4A820" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M29 34 L34 36 L32 40" stroke="#D4A820" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
-    {
-      num: "02",
-      title: "仕事が不安定",
-      body: "元請けからの依頼が止まると、仕事が一気に減ってしまう。",
-      icon: (
-        <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-          <path d="M8 26 Q8 10 18 9 Q28 10 28 26" stroke="white" strokeWidth="1.8" fill="none" />
-          <line x1="5" y1="26" x2="31" y2="26" stroke="white" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="27" cy="28" r="8" stroke="#D4A820" strokeWidth="1.8" fill="none" />
-          <path d="M27 24 L27 29 L30 29" stroke="#D4A820" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
-    {
-      num: "03",
-      title: "営業する時間がない",
-      body: "現場が忙しく、見積りや事務作業に追われ、新しい元請けを探す時間が取れない。",
-      icon: (
-        <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-          <path d="M4 18 Q10 8 18 8 Q24 8 28 14" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-          <path d="M8 22 Q12 28 18 28 Q24 28 28 22" stroke="white" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-          <line x1="6" y1="6" x2="30" y2="30" stroke="#D4A820" strokeWidth="2.2" strokeLinecap="round" />
-        </svg>
-      ),
-    },
-    {
-      num: "04",
-      title: "紹介・つながりに依存してしまう",
-      body: "新しい出会いが生まれず、いつまでも同じ下請け案件の繰り返し。",
-      icon: (
-        <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-          <circle cx="12" cy="10" r="5" stroke="white" strokeWidth="1.8" />
-          <path d="M2 28 C2 20 6 17 12 17 C18 17 22 20 22 28" stroke="white" strokeWidth="1.8" fill="none" />
-          <circle cx="26" cy="10" r="5" stroke="white" strokeWidth="1.8" strokeDasharray="3 2" />
-          <path d="M29 22 L35 28 M35 22 L29 28" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      ),
-    },
-  ];
+import brushYellow from "../assets/images/ui/brush-yellow.webp";
+import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 
+function IconMonitor() {
   return (
-    <section className="bg-[#f7f7f7] py-14 lg:py-[80px]">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <rect x="2" y="3" width="18" height="13" rx="1.5" stroke="#888" strokeWidth="1.5" />
+      <line x1="7" y1="19" x2="15" y2="19" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="11" y1="16" x2="11" y2="19" stroke="#888" strokeWidth="1.5" />
+    </svg>
+  );
+}
+function IconMegaphone() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M4 8 H8 L16 4 L16 18 L8 14 H4 Z" stroke="#888" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+      <path d="M8 14 L8 19" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconSearch() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <circle cx="9.5" cy="9.5" r="6.5" stroke="#888" strokeWidth="1.5" />
+      <line x1="14" y1="14" x2="20" y2="20" stroke="#888" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconChat() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M3 4 H19 Q20 4 20 5 L20 14 Q20 15 19 15 H7 L3 19 L3 5 Q3 4 3 4 Z" stroke="#888" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function IconChart() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <rect x="2" y="12" width="4" height="8" fill="#888" />
+      <rect x="9" y="8" width="4" height="12" fill="#888" />
+      <rect x="16" y="4" width="4" height="16" fill="#888" />
+    </svg>
+  );
+}
+import iconProfit from "../assets/images/OC03/icon-profit.webp";
+import iconAdvertising from "../assets/images/OC03/icon-advertising.webp";
+import iconTime from "../assets/images/OC03/icon-time.webp";
+import iconConnections from "../assets/images/OC03/icon-connections.webp";
+import iconGrowth from "../assets/images/OC03/icon-growth.webp";
+
+const leftItems = [
+  { text: "ホームページを作るだけ", sub: "作って終わりで、見てもらえない。", icon: <IconMonitor /> },
+  { text: "広告を出すだけ", sub: "一時的に集客できても、費用がかさむだけ。", icon: <IconMegaphone /> },
+  { text: "SEO 対策だけ", sub: "結果が出るまで時間がかかり、安定しない。", icon: <IconSearch /> },
+  { text: "SNS を頑張るだけ", sub: "手間ばかり増え、問い合わせにつながらない。", icon: <IconChat /> },
+  { text: "改善や分析をしない", sub: "うまくいかない理由が分からず、成果が伸びない。", icon: <IconChart /> },
+];
+
+const rightItems = [
+  { text: "市場・競合を徹底分析", sub: "地域や業種の特性を分析し、勝てる戦略を設計。", icon: iconProfit },
+  { text: "集客導線を設計・構築", sub: "HP・広告・SNSなど最適な導線を設計・構築。", icon: iconAdvertising },
+  { text: "広告運用とLP改善を一括サポート", sub: "成果を最大化する広告運用とLP改善を実施。", icon: iconTime },
+  { text: "問い合わせ獲得を最大化", sub: "確度の高い問い合わせを増やし、受注につなげる。", icon: iconConnections },
+  { text: "データ分析で改善を継続", sub: "分析・改善を繰り返し、成果を安定的に伸ばす。", icon: iconGrowth },
+];
+
+export default function Section05() {
+  return (
+    <section className="bg-white py-14 lg:py-[80px]">
       <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px]">
 
-        {/* ── Section Header (centered) ── */}
-        <div className="text-center mb-8 lg:mb-10">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <span className="text-[#D4A820] font-black text-[13px]">04</span>
-            <div className="w-6 h-[2px] bg-[#D4A820]" />
-            <span className="text-[#555] font-medium text-[12px] tracking-widest">WHAT'S THE PROBLEM?</span>
+        {/* ── Section Header ── */}
+        <div className="text-center mb-10 lg:mb-12">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
+            <div>
+              <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">04</span>
+              <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+            </div>
+            <div className="w-px h-10 bg-[#1a1a1a]" />
+            <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">他社サービスとの違い</span>
           </div>
-          <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[32px] lg:text-[52px]">
-            下請けだけでは、<br />
-            <span style={{ borderBottom: "6px solid #D4A820", paddingBottom: "2px" }}>会社は大きくならない。</span>
+          <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[28px] lg:text-[50px]">
+            集客のやり方で、<br className="lg:hidden" />
+            <span style={{ borderBottom: "6px solid #D4A820", paddingBottom: "2px" }}>結果は大きく変わります。</span>
           </h2>
-          <p className="text-[#555] text-[15px]">多くの工事業者が、同じ悩みに直面しています。</p>
+          <p className="text-[#555] text-[14px] lg:text-[16px]">よくある集客会社と親方ドットコムの違いをご覧ください。</p>
         </div>
 
-        {/* ── SP: Photo on top / PC: 2-column ── */}
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-12 mt-8 lg:mt-12">
+        {/* ── Comparison: SP=stacked / PC=side by side ── */}
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-0">
 
-          {/* SP: image first for visual impact; PC: right side */}
-          <div className="relative w-full lg:hidden" style={{ minHeight: "240px" }}>
-            <img
-              src="/images/problem-paintroller.jpg"
-              alt="ペイントローラーで壁を塗る職人"
-              className="w-full h-full object-cover"
-              style={{ minHeight: "240px" }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-              <p className="font-black leading-[1.3] text-center px-6 text-[28px]">
-                <span className="text-white">このままでは、</span><br />
-                <span className="text-[#D4A820]">将来の不安は<br />消えません。</span>
-              </p>
+          {/* Left: bad panel */}
+          <div className="flex-1 bg-[#1a1a1a] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
+            <div className="border border-[#555] text-center py-2 mb-5">
+              <span className="text-white font-bold text-[14px] lg:text-[15px]">よくある集客会社</span>
             </div>
-          </div>
-
-          {/* Left: Problem list */}
-          <div className="flex-1 flex flex-col justify-center">
-            {problems.map((p, i) => (
-              <div key={i} className="flex items-start gap-4 py-5 lg:py-7" style={{ borderBottom: i < problems.length - 1 ? "1px solid #ddd" : "none" }}>
-                <div className="w-[52px] h-[52px] rounded-full bg-[#1a1a1a] flex items-center justify-center shrink-0">
-                  {p.icon}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[#D4A820] font-bold text-[12px]">{p.num}</span>
-                    <span className="text-[#1a1a1a] font-black text-[17px] lg:text-[20px]">{p.title}</span>
+            <p className="text-white font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
+              バラバラの施策で、<br />一時的に集客して終わり…
+            </p>
+            <div className="flex flex-col gap-0 flex-1">
+              {leftItems.map((item, i) => (
+                <div key={i} className="flex items-center gap-3 py-3">
+                  <div className="shrink-0">{item.icon}</div>
+                  <div>
+                    <p className="text-white font-bold text-[14px] lg:text-[15px]">{item.text}</p>
+                    <p className="text-[#aaa] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
                   </div>
-                  <p className="text-[#1a1a1a] text-[14px] lg:text-[15px] leading-[1.8]">{p.body}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#444] flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 2 L8 14 M2 8 L14 8" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" transform="rotate(45 8 8)" />
+              </svg>
+              <span className="text-[#aaa] text-[12px]">点の施策では、安定した集客は実現できません。</span>
+            </div>
           </div>
 
-          {/* Right: Photo (PC only) */}
-          <div className="hidden lg:block lg:w-[46%] lg:shrink-0 relative">
-            <img
-              src="/images/problem-paintroller.jpg"
-              alt="ペイントローラーで壁を塗る職人"
-              className="w-full h-full object-cover"
-              style={{ minHeight: "500px" }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <p className="font-black leading-[1.3] text-center px-8" style={{ fontSize: "36px" }}>
-                <span className="text-white">このままでは、</span><br />
-                <span className="text-[#D4A820]">将来の不安は<br />消えません。</span>
+          {/* Center arrow: horizontal on PC, vertical on SP */}
+          <div className="flex items-center justify-center py-2 lg:py-0 lg:px-0 lg:shrink-0" style={{ width: "auto" }}>
+            {/* SP: downward arrow */}
+            <div className="flex flex-col items-center lg:hidden">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <path d="M16 4 L16 24 M8 16 L16 24 L24 16" stroke="#D4A820" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <p className="text-[#1a1a1a] font-black text-[13px] text-center mt-1">集客は「仕組み」で変わる！</p>
+            </div>
+            {/* PC: right arrow */}
+            <div className="hidden lg:flex flex-col items-center" style={{ width: "120px" }}>
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                <polygon points="0,10 60,40 0,70" fill="#D4A820" />
+              </svg>
+              <p className="text-[#1a1a1a] font-black text-[13px] text-center leading-tight mt-2" style={{ width: "80px" }}>
+                集客は<br />「仕組み」で<br />変わる！
               </p>
+            </div>
+          </div>
+
+          {/* Right: good panel */}
+          <div className="flex-1 border-2 border-[#D4A820] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
+            <div className="bg-[#D4A820] text-center py-2 mb-5">
+              <span className="text-[#1a1a1a] font-black text-[14px] lg:text-[15px]">親方ドットコム</span>
+            </div>
+            <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
+              仕組みで集客を生み出し、<br />安定した売上につなげます。
+            </p>
+            <div className="flex flex-col gap-0 flex-1">
+              {rightItems.map((item, i) => (
+                <div key={i} className="flex items-center gap-3 py-3">
+                  <img src={item.icon} alt="" aria-hidden="true" className="w-[48px] h-[48px] object-contain shrink-0" />
+                  <div>
+                    <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
+                    <p className="text-[#555] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 pt-4 border-t border-[#D4A820] flex items-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <circle cx="9" cy="9" r="8" fill="#D4A820" />
+                <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="text-[#1a1a1a] font-bold text-[12px] lg:text-[13px]">仕組みで回るから、安定して売上と利益が伸びる！</span>
             </div>
           </div>
 
         </div>
 
-        {/* ── Conclusion ── */}
-        <div className="text-center mt-10 lg:mt-12">
-          <div className="flex justify-center mb-3">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M10 2 L10 16 M4 10 L10 16 L16 10" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+        {/* ── Bottom statement ── */}
+        <div className="relative mt-10 overflow-hidden">
+          <img src={brushYellow} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
+          <div className="relative bg-[#1a1a1a] px-6 py-6 lg:px-10 lg:py-7 text-center">
+            <p className="text-white font-black text-[16px] lg:text-[20px]">
+              親方ドットコムは、<span className="text-[#D4A820]">元請け案件が自然と集まる仕組みづくり</span>を支援します。
+            </p>
+            <p className="text-[#aaa] text-[13px] lg:text-[14px] mt-2">次は、親方ドットコムの具体的なサポート内容をご紹介します。</p>
           </div>
-          <p className="text-[#1a1a1a] font-black text-[16px] lg:text-[18px]">
-            変わるためには、<span className="text-[#D4A820]">元請け案件を増やせる仕組み</span>が必要です。
-          </p>
         </div>
 
       </div>

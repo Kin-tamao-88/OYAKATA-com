@@ -1,10 +1,10 @@
-import heroBg from "../assets/images/hero/hero-right-background2.png";
-import paintDark from "../assets/images/ui/hero-paint-dark2.png";
-import brushHeroText from "../assets/images/ui/brush-hero-text.png";
-import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.png";
-import badge1 from "../assets/images/ui/badge-1-unit-price.png";
-import badge2 from "../assets/images/ui/badge-2-inquiry.png";
-import badge3 from "../assets/images/ui/badge-3-speed.png";
+import heroBg from "../assets/images/hero/hero-right-background2.webp";
+import paintDark from "../assets/images/ui/hero-paint-dark2.webp";
+import brushHeroText from "../assets/images/ui/brush-hero-text.webp";
+import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.webp";
+import badge1 from "../assets/images/ui/badge-1-unit-price.webp";
+import badge2 from "../assets/images/ui/badge-2-inquiry.webp";
+import badge3 from "../assets/images/ui/badge-3-speed.webp";
 
 export default function Hero() {
   return (

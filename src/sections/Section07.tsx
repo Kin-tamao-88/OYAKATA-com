@@ -1,175 +1,164 @@
-import brushYellow from "../assets/images/ui/brush-yellow.png";
-import logoMark from "../assets/images/logos/logo-mark-trimmed.png";
+import brushYellow from "../assets/images/ui/brush-yellow.webp";
+import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 
-const reasons = [
+const cases = [
   {
     num: "01",
-    title: "工事業界専門の\nマーケティング",
-    body: "一般企業向けではなく、工事業界に特化した戦略で、元請け受注につながる集客を実現します。",
-    checks: [
-      "業界特有の商習慣・集客動向を理解",
-      "工務店・リフォーム会社に特化した戦略設計",
-      "元請け受注に直結する施策のみを提案",
-    ],
-    imageSrc: "/images/reasons-01.jpg",
-    imageAlt: "建設現場を見る工事業者",
-    imageLeft: false,
+    type: "外壁塗装会社",
+    location: "埼玉県さいたま市",
+    imageSrc: "/images/results-case01.jpg",
+    imageAlt: "外壁塗装会社の事例",
+    inquiryBefore: "月 6",
+    inquiryAfter: "月 18",
+    salesBefore: "320万円",
+    salesAfter: "680万円",
+    comment: "元請け受注が安定して入るようになり、以前のような",
+    commentUnderline: "仕事探しの不安がなくなりました。",
   },
   {
     num: "02",
-    title: "2000社を超える\n実績データを活用",
-    body: "蓄積された改善データをもとに、最短ルートで成果につながる施策をご提案します。",
-    checks: [
-      "2000社を超える支援実績から得た改善データ",
-      "成果が出た施策を再現性高くご提供",
-      "ムダを省き、投資対効果を最大化",
-    ],
-    imageSrc: "/images/reasons-02.jpg",
-    imageAlt: "データ分析する様子",
-    imageLeft: true,
-  },
-  {
-    num: "03",
-    title: "集客から改善まで\n一貫して伴走",
-    body: "広告運用だけで終わらず、分析・改善まで一貫してサポートし、元請け受注の増加を実現します。",
-    checks: [
-      "専任担当が課題発見から改善まで伴走",
-      "定期的な改善提案で成果を最大化",
-      "目標達成まで一緒に走り続けます",
-    ],
-    imageSrc: "/images/reasons-03.jpg",
-    imageAlt: "打ち合わせ・相談する様子",
-    imageLeft: false,
+    type: "内装リフォーム会社",
+    location: "神奈川県横浜市",
+    imageSrc: "/images/results-case02.jpg",
+    imageAlt: "内装リフォーム会社の事例",
+    inquiryBefore: "月 10",
+    inquiryAfter: "月 24",
+    salesBefore: "420万円",
+    salesAfter: "920万円",
+    comment: "継続的に元請けの案件が入るようになり、",
+    commentUnderline: "売上が安定して、会社の体力がつきました。",
   },
 ];
 
-export default function Section07() {
+export default function Section08() {
   return (
-    <section className="bg-white">
+    <>
+      <section className="bg-white pt-14 pb-12 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
+        <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 left-0 pointer-events-none opacity-20 hidden lg:block" style={{ width: "260px", filter: "brightness(0)" }} />
+        <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 right-0 pointer-events-none opacity-70" style={{ width: "220px" }} />
 
-      {/* ── Section Header ── */}
-      <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] pt-14 lg:pt-[80px] pb-10 lg:pb-14 text-center">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <span className="text-[#D4A820] font-black text-[13px]">07</span>
-          <div className="w-6 h-[2px] bg-[#D4A820]" />
-          <span className="text-[#555] text-[13px]">親方ドットコムが選ばれる理由</span>
-        </div>
-        <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[30px] lg:text-[52px]">
-          選ばれ続けるには、<span className="text-[#D4A820]">理由</span>があります。
-        </h2>
-        <p className="text-[#555] text-[14px] lg:text-[16px]">
-          工事業界に特化した知見と実績で、<span className="font-bold text-[#1a1a1a]">元請け受注の増加</span>をサポートします。
-        </p>
-      </div>
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative">
 
-      {/* ── Reason blocks ── */}
-      {reasons.map((r, i) => (
-        <div
-          key={i}
-          className="relative overflow-hidden"
-          style={{ backgroundColor: i % 2 === 1 ? "#f7f7f7" : "#fff" }}
-        >
-          {i === 0 && (
-            <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 right-0 pointer-events-none opacity-15 hidden lg:block" style={{ width: "280px" }} />
-          )}
-          {i === 1 && (
-            <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 left-0 pointer-events-none opacity-15 hidden lg:block" style={{ width: "280px", transform: "scaleX(-1)" }} />
-          )}
-
-          <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative">
-
-            {/* SP: stack (image top, text bottom) */}
-            <div className="flex flex-col lg:hidden py-10">
-              <div className="bg-[#1a1a1a] inline-flex items-center px-3 py-1 mb-5 self-start"
-                style={{ clipPath: "polygon(0 0, 100% 0, 96% 100%, 0 100%)" }}>
-                <span className="text-white font-black text-[12px] mr-2">理由</span>
-                <span className="text-[#D4A820] font-black text-[12px]">{r.num}</span>
+          {/* ── Header ── */}
+          <div className="text-center mb-10 lg:mb-12">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
+              <div>
+                <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">07</span>
+                <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
               </div>
-              <h3 className="text-[#1a1a1a] font-black leading-[1.3] mb-4 text-[26px]">
-                {r.title.split("\n").map((line, j) => (
-                  <span key={j}>{line}{j < r.title.split("\n").length - 1 && <br />}</span>
-                ))}
-              </h3>
-              <div className="w-12 h-[3px] bg-[#D4A820] mb-4" />
-              <p className="text-[#1a1a1a] text-[15px] leading-[2] mb-5">{r.body}</p>
-              <ul className="flex flex-col gap-3 mb-6">
-                {r.checks.map((c, j) => (
-                  <li key={j} className="flex items-start gap-2">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" className="shrink-0 mt-0.5">
-                      <circle cx="9" cy="9" r="8" fill="#D4A820" />
-                      <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span className="text-[#1a1a1a] text-[14px] leading-[1.7]">{c}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="overflow-hidden" style={{ height: "220px" }}>
-                <img src={r.imageSrc} alt={r.imageAlt} className="w-full h-full object-cover" />
-              </div>
+              <div className="w-px h-10 bg-[#1a1a1a]" />
+              <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">導入実績・成果</span>
             </div>
-
-            {/* PC: side by side */}
-            <div className={`hidden lg:flex items-stretch ${r.imageLeft ? "flex-row-reverse" : ""}`}>
-              <div className="w-[50%] shrink-0 overflow-hidden" style={{ minHeight: "440px" }}>
-                <img src={r.imageSrc} alt={r.imageAlt} className="w-full h-full object-cover" />
-              </div>
-              <div className={`flex-1 flex flex-col justify-center py-14 ${r.imageLeft ? "pr-14" : "pl-14"}`}>
-                <div className="bg-[#1a1a1a] inline-flex items-center px-4 py-1 mb-6 self-start"
-                  style={{ clipPath: "polygon(0 0, 100% 0, 96% 100%, 0 100%)" }}>
-                  <span className="text-white font-black text-[13px] mr-2">理由</span>
-                  <span className="text-[#D4A820] font-black text-[13px]">{r.num}</span>
-                </div>
-                <h3 className="text-[#1a1a1a] font-black leading-[1.3] mb-5 text-[36px]">
-                  {r.title.split("\n").map((line, j) => (
-                    <span key={j}>{line}{j < r.title.split("\n").length - 1 && <br />}</span>
-                  ))}
-                </h3>
-                <div className="w-16 h-[3px] bg-[#D4A820] mb-5" />
-                <p className="text-[#1a1a1a] text-[15px] leading-[2] mb-6">{r.body}</p>
-                <ul className="flex flex-col gap-3">
-                  {r.checks.map((c, j) => (
-                    <li key={j} className="flex items-start gap-3">
-                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" className="shrink-0 mt-0.5">
-                        <circle cx="9" cy="9" r="8" fill="#D4A820" />
-                        <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className="text-[#1a1a1a] text-[14px] leading-[1.7]">{c}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      ))}
-
-      {/* ── Bottom bar ── */}
-      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
-        <div className="flex flex-col gap-4 px-5 py-6 lg:flex-row lg:items-center lg:px-[68px] lg:py-7 lg:gap-8">
-          <div className="flex items-center gap-3 flex-1">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-              <circle cx="11" cy="11" r="10" fill="#D4A820" />
-              <path d="M5.5 11 L9 14.5 L16.5 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <p className="text-white font-bold text-[14px]">
-              すべては、<span className="text-[#D4A820]">元請け受注の増加</span>という成果のために。
+            <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[26px] lg:text-[46px]">
+              <span style={{ borderBottom: "6px solid #D4A820", paddingBottom: "2px" }}>元請け受注が安定</span>すると、<br />
+              経営はここまで変わります。
+            </h2>
+            <p className="text-[#555] text-[13px] lg:text-[15px]">
+              問い合わせが増えるだけではなく、<span className="text-[#D4A820] font-bold">継続的な元請け受注と売上アップ</span>を実現した事例をご紹介します。
             </p>
           </div>
-          <div className="hidden lg:flex items-center gap-2 border-l border-r border-[#444] px-8">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <circle cx="10" cy="7" r="4" stroke="#D4A820" strokeWidth="1.5" />
-              <path d="M2 18 C2 13 5 11 10 11 C15 11 18 13 18 18" stroke="#D4A820" strokeWidth="1.5" fill="none" />
-            </svg>
-            <p className="text-[#aaa] text-[12px] text-center leading-tight">工事業界に特化した<br />マーケティングパートナー</p>
+
+          {/* ── Cases: SP stacked / PC side-by-side ── */}
+          <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+            {cases.map((c, i) => (
+              <div key={i} className="flex-1 border border-[#e0e0e0]">
+
+                {/* SP: photo on top full width */}
+                <div className="lg:hidden overflow-hidden" style={{ height: "200px" }}>
+                  <img src={c.imageSrc} alt={c.imageAlt} className="w-full h-full object-cover object-top" />
+                </div>
+
+                {/* PC: photo on left */}
+                <div className="flex">
+                  <div className="hidden lg:block w-[38%] shrink-0 overflow-hidden" style={{ minHeight: "320px" }}>
+                    <img src={c.imageSrc} alt={c.imageAlt} className="w-full h-full object-cover" />
+                  </div>
+
+                  <div className="flex-1 p-5 lg:p-7">
+                    <div className="flex items-center gap-3 mb-1">
+                      <div className="bg-[#1a1a1a] px-2 py-0.5">
+                        <span className="text-white font-black text-[10px]">事例{c.num}</span>
+                      </div>
+                      <span className="text-[#1a1a1a] font-black text-[16px] lg:text-[18px]">{c.type}</span>
+                    </div>
+                    <p className="text-[#666] text-[12px] lg:text-[13px] mb-5">{c.location}</p>
+
+                    {/* Inquiry */}
+                    <div className="border border-[#e0e0e0] p-3 lg:p-4 mb-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <circle cx="8" cy="6" r="3" stroke="#1a1a1a" strokeWidth="1.3" />
+                          <path d="M2 14 C2 10 4 9 8 9 C12 9 14 10 14 14" stroke="#1a1a1a" strokeWidth="1.3" fill="none" />
+                        </svg>
+                        <span className="text-[#1a1a1a] font-bold text-[12px]">問い合わせ数</span>
+                      </div>
+                      <div className="flex items-end gap-2">
+                        <div>
+                          <p className="text-[#888] text-[10px]">導入前</p>
+                          <p className="text-[#1a1a1a] font-black text-[22px] lg:text-[26px]">{c.inquiryBefore}<span className="text-[12px] ml-1">件</span></p>
+                        </div>
+                        <span className="text-[#1a1a1a] font-bold text-[18px] mb-1">→</span>
+                        <div>
+                          <p className="text-[#e33] text-[10px] font-bold">導入後</p>
+                          <p className="text-[#e33] font-black text-[30px] lg:text-[36px]">{c.inquiryAfter}<span className="text-[13px] ml-1">件</span></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sales */}
+                    <div className="border border-[#e0e0e0] p-3 lg:p-4 mb-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <circle cx="8" cy="8" r="6" stroke="#1a1a1a" strokeWidth="1.3" />
+                          <path d="M4 8 L7 11 L12 5" stroke="#1a1a1a" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[#1a1a1a] font-bold text-[12px]">月商</span>
+                      </div>
+                      <div className="flex items-end gap-2">
+                        <div>
+                          <p className="text-[#888] text-[10px]">導入前</p>
+                          <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px]">{c.salesBefore}</p>
+                        </div>
+                        <span className="text-[#1a1a1a] font-bold text-[18px] mb-1">→</span>
+                        <div>
+                          <p className="text-[#e33] text-[10px] font-bold">導入後</p>
+                          <p className="text-[#e33] font-black text-[26px] lg:text-[32px]">{c.salesAfter}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[#1a1a1a] text-[13px] leading-[1.8]">
+                      {c.comment}
+                      <span style={{ borderBottom: "2px solid #D4A820" }}>{c.commentUnderline}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex items-center gap-2">
-            <img src={logoMark} alt="親" className="w-7 h-7" />
-            <span className="text-white font-black text-[15px]">親方ドットコム</span>
-          </div>
+
+        </div>
+      </section>
+
+      {/* ── Bottom CTA bar ── */}
+      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
+        <div className="flex flex-col gap-5 px-5 py-7 lg:flex-row lg:items-center lg:px-[68px] lg:py-8 lg:gap-8">
+          <p className="text-white font-bold text-[17px] lg:text-[20px] flex-1 leading-[1.7]">
+            2000社を超える支援実績から、<br />
+            業種や地域に合わせた<span className="text-[#D4A820]">最適な施策</span>をご提案します。
+          </p>
+          <a href="#contact" className="flex flex-col items-center bg-[#D4A820] px-8 py-4 no-underline self-start lg:self-auto">
+            <span className="text-[#1a1a1a] text-[11px] font-bold mb-1">毎月5社まで</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[#1a1a1a] font-black text-[16px] whitespace-nowrap">まずは無料相談する</span>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M4 9 H14 M9 4 L14 9 L9 14" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </a>
         </div>
       </div>
-
-    </section>
+    </>
   );
 }

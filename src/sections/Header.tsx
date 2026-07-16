@@ -1,4 +1,4 @@
-import logoMark from "../assets/images/logos/logo-mark2.png";
+import logoMark from "../assets/images/logos/logo-mark2.webp";
 
 export default function Header() {
   return (

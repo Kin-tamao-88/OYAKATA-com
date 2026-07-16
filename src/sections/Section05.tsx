@@ -1,197 +1,188 @@
-import React from "react";
-import brushYellow from "../assets/images/ui/brush-yellow.png";
+import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.webp";
+import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 
-const leftItems = [
-  { icon: "monitor", text: "ホームページを作るだけ", sub: "作って終わりで、見てもらえない。" },
-  { icon: "megaphone", text: "広告を出すだけ", sub: "一時的に集客できても、費用がかさむだけ。" },
-  { icon: "search", text: "SEO 対策だけ", sub: "結果が出るまで時間がかかり、安定しない。" },
-  { icon: "chat", text: "SNS を頑張るだけ", sub: "手間ばかり増え、問い合わせにつながらない。" },
-  { icon: "chart", text: "改善や分析をしない", sub: "うまくいかない理由が分からず、成果が伸びない。" },
+const steps = [
+  {
+    num: "01",
+    title: "分析する",
+    body: "市場・競合・地域を分析し、勝てる戦略の土台をつくります。",
+    icon: (
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="17" cy="17" r="11" stroke="#1a1a1a" strokeWidth="2" />
+        <line x1="26" y1="26" x2="36" y2="36" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M11 20 L15 15 L19 20 L23 12" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    highlight: false,
+  },
+  {
+    num: "02",
+    title: "仕組みをつくる",
+    body: "LP・広告・導線を設計し、問い合わせを最大化する仕組みを構築します。",
+    icon: (
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="16" stroke="#1a1a1a" strokeWidth="2" />
+        <circle cx="20" cy="20" r="9" stroke="#1a1a1a" strokeWidth="1.5" />
+        <circle cx="20" cy="20" r="3" fill="#D4A820" />
+        <path d="M27 13 L34 7 M30 7 H34 V11" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    highlight: false,
+  },
+  {
+    num: "03",
+    title: "最短1ヶ月で結果を出す",
+    body: null,
+    bodyJsx: (
+      <span>
+        <span className="text-[#D4A820] font-bold">2000社を超える実績データ</span>を活用し、
+        <span className="text-[#D4A820] font-bold">最短1ヶ月</span>で元請け受注の増加を実現します。
+      </span>
+    ),
+    icon: (
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <line x1="4" y1="36" x2="36" y2="36" stroke="#1a1a1a" strokeWidth="1.5" />
+        <line x1="4" y1="10" x2="4" y2="37" stroke="#1a1a1a" strokeWidth="1.5" />
+        <path d="M4 30 L12 24 L20 27 L28 16 L36 8" stroke="#D4A820" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M30 4 L36 8 L32 13" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    highlight: true,
+  },
 ];
 
-const rightItems = [
-  { text: "市場・競合を徹底分析", sub: "地域や業種の特性を分析し、勝てる戦略を設計。" },
-  { text: "集客導線を設計・構築", sub: "HP・広告・SNSなど最適な導線を設計・構築。" },
-  { text: "広告運用とLP改善を一括サポート", sub: "成果を最大化する広告運用とLP改善を実施。" },
-  { text: "問い合わせ獲得を最大化", sub: "確度の高い問い合わせを増やし、受注につなげる。" },
-  { text: "データ分析で改善を継続", sub: "分析・改善を繰り返し、成果を安定的に伸ばす。" },
-];
-
-function IconMonitor() {
+export default function Section06() {
   return (
-    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <rect x="2" y="3" width="18" height="13" rx="1.5" stroke="#888" strokeWidth="1.5" />
-      <line x1="7" y1="19" x2="15" y2="19" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="11" y1="16" x2="11" y2="19" stroke="#888" strokeWidth="1.5" />
-    </svg>
-  );
-}
-function IconMegaphone() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M4 8 H8 L16 4 L16 18 L8 14 H4 Z" stroke="#888" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
-      <path d="M8 14 L8 19" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-function IconSearch() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <circle cx="9.5" cy="9.5" r="6.5" stroke="#888" strokeWidth="1.5" />
-      <line x1="14" y1="14" x2="20" y2="20" stroke="#888" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-function IconChat() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M3 4 H19 Q20 4 20 5 L20 14 Q20 15 19 15 H7 L3 19 L3 5 Q3 4 3 4 Z" stroke="#888" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function IconChart() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <rect x="2" y="12" width="4" height="8" fill="#888" />
-      <rect x="9" y="8" width="4" height="12" fill="#888" />
-      <rect x="16" y="4" width="4" height="16" fill="#888" />
-    </svg>
-  );
-}
+    <>
+      <section className="bg-white py-14 lg:py-[80px] relative overflow-hidden">
+        {/* Decorative brush */}
+        <img
+          src={brushHeroYellow}
+          alt=""
+          aria-hidden="true"
+          className="absolute top-0 right-0 pointer-events-none opacity-20"
+          style={{ width: "320px", transform: "rotate(180deg) translateY(-40%)" }}
+        />
 
-const iconMap: Record<string, React.ReactElement> = {
-  monitor: <IconMonitor />,
-  megaphone: <IconMegaphone />,
-  search: <IconSearch />,
-  chat: <IconChat />,
-  chart: <IconChart />,
-};
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative">
+          <div className="flex flex-col gap-12 lg:flex-row lg:gap-16 lg:items-start">
 
-export default function Section05() {
-  return (
-    <section className="bg-white py-14 lg:py-[80px]">
-      <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px]">
-
-        {/* ── Section Header ── */}
-        <div className="text-center mb-10 lg:mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="text-[#D4A820] font-black text-[13px]">05</span>
-            <div className="w-px h-5 bg-[#ccc]" />
-            <span className="text-[#555] font-medium text-[13px]">他社サービスとの違い</span>
-          </div>
-          <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[28px] lg:text-[50px]">
-            集客のやり方で、<br className="lg:hidden" />
-            <span style={{ borderBottom: "6px solid #D4A820", paddingBottom: "2px" }}>結果は大きく変わります。</span>
-          </h2>
-          <p className="text-[#555] text-[14px] lg:text-[16px]">よくある集客会社と親方ドットコムの違いをご覧ください。</p>
-        </div>
-
-        {/* ── Comparison: SP=stacked / PC=side by side ── */}
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-0">
-
-          {/* Left: bad panel */}
-          <div className="flex-1 bg-[#1a1a1a] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
-            <div className="border border-[#555] text-center py-2 mb-5">
-              <span className="text-white font-bold text-[14px] lg:text-[15px]">よくある集客会社</span>
-            </div>
-            <p className="text-white font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
-              バラバラの施策で、<br />一時的に集客して終わり…
-            </p>
-            <div className="flex flex-col gap-4 flex-1">
-              {leftItems.map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="shrink-0 mt-0.5">{iconMap[item.icon]}</div>
-                  <div>
-                    <p className="text-white font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                    <p className="text-[#aaa] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
-                  </div>
+            {/* ── Left ── */}
+            <div className="flex-1">
+              <div className="flex items-center gap-4 mb-7">
+                <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
+                <div>
+                  <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">05</span>
+                  <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
                 </div>
-              ))}
-            </div>
-            <div className="mt-6 pt-4 border-t border-[#444] flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M8 2 L8 14 M2 8 L14 8" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" transform="rotate(45 8 8)" />
-              </svg>
-              <span className="text-[#aaa] text-[12px]">点の施策では、安定した集客は実現できません。</span>
-            </div>
-          </div>
+                <div className="w-px h-10 bg-[#1a1a1a]" />
+                <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムの仕組み</span>
+              </div>
 
-          {/* Center arrow: horizontal on PC, vertical on SP */}
-          <div className="flex items-center justify-center py-2 lg:py-0 lg:px-0 lg:shrink-0" style={{ width: "auto" }}>
-            {/* SP: downward arrow */}
-            <div className="flex flex-col items-center lg:hidden">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                <path d="M16 4 L16 24 M8 16 L16 24 L24 16" stroke="#D4A820" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <p className="text-[#1a1a1a] font-black text-[13px] text-center mt-1">集客は「仕組み」で変わる！</p>
-            </div>
-            {/* PC: right arrow */}
-            <div className="hidden lg:flex flex-col items-center" style={{ width: "120px" }}>
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-                <polygon points="0,10 60,40 0,70" fill="#D4A820" />
-              </svg>
-              <p className="text-[#1a1a1a] font-black text-[13px] text-center leading-tight mt-2" style={{ width: "80px" }}>
-                集客は<br />「仕組み」で<br />変わる！
+              <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[28px] lg:text-[46px]">
+                WEB集客による受注は、<br />
+                偶然ではなく
+                <span className="text-[#D4A820]" style={{ borderBottom: "5px solid #D4A820", paddingBottom: "2px" }}>戦略</span>
+                で増やします。
+              </h2>
+
+              <p className="text-[#1a1a1a] text-[16px] leading-[2] mb-8">
+                親方ドットコムは、<br />
+                <span className="font-bold" style={{ borderBottom: "3px solid #D4A820" }}>元請け受注が増える</span>仕組みを<br />
+                一緒につくるパートナーです。
               </p>
-            </div>
-          </div>
 
-          {/* Right: good panel */}
-          <div className="flex-1 border-2 border-[#D4A820] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
-            <div className="bg-[#D4A820] text-center py-2 mb-5">
-              <span className="text-[#1a1a1a] font-black text-[14px] lg:text-[15px]">親方ドットコム</span>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="flex-1 h-px bg-[#D4A820]" />
+                <p className="text-[#1a1a1a] font-black text-[16px] lg:text-[18px] whitespace-nowrap">
+                  シンプルな <span className="text-[#D4A820] text-[24px] lg:text-[28px]">3</span> STEP
+                </p>
+                <div className="flex-1 h-px bg-[#D4A820]" />
+              </div>
+
+              <div className="border border-[#D4A820] flex items-center gap-4 px-5 py-4">
+                <div
+                  className="w-11 h-11 bg-[#D4A820] flex items-center justify-center shrink-0"
+                  style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                    <ellipse cx="11" cy="6" rx="7" ry="3" stroke="#1a1a1a" strokeWidth="1.5" />
+                    <path d="M4 6 L4 16 Q4 19 11 19 Q18 19 18 16 L18 6" stroke="#1a1a1a" strokeWidth="1.5" fill="none" />
+                    <path d="M4 11 Q4 14 11 14 Q18 14 18 11" stroke="#1a1a1a" strokeWidth="1.5" fill="none" />
+                  </svg>
+                </div>
+                <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px] leading-[1.8]">
+                  <span className="text-[#D4A820]">2000社</span>を超える実績データがあるから、<br />
+                  無駄なく、<span className="text-[#D4A820]">最短で成果</span>につながります。
+                </p>
+              </div>
             </div>
-            <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
-              仕組みで集客を生み出し、<br />安定した売上につなげます。
-            </p>
-            <div className="flex flex-col gap-0 flex-1">
-              {rightItems.map((item, i) => (
+
+            {/* ── Right: 3 Steps ── */}
+            <div className="w-full lg:w-[44%] lg:shrink-0 lg:pt-[100px]">
+              {steps.map((step, i) => (
                 <div key={i}>
-                  <div className="flex items-start gap-3 py-3">
-                    <div className="shrink-0 w-7 h-7 rounded-full border-2 border-[#D4A820] flex items-center justify-center">
-                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <circle cx="7" cy="7" r="6" fill="#D4A820" />
-                        <path d="M3.5 7 L6 9.5 L10.5 4.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                  <div className="flex items-start gap-5">
+                    {/* アイコン円 + 数字バッジ重ね */}
+                    <div className="relative shrink-0">
+                      <div className={`w-[84px] h-[84px] rounded-full border-2 flex items-center justify-center ${step.highlight ? "bg-[#fff9e6] border-[#D4A820]" : "bg-white border-[#e0e0e0]"}`}>
+                        {step.icon}
+                      </div>
+                      <div className="absolute -top-1 -left-1 w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center">
+                        <span className="text-white font-black text-[11px]">{step.num}</span>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                      <p className="text-[#555] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                    {/* テキスト */}
+                    <div className="flex-1 pt-3">
+                      <h3 className="text-[#1a1a1a] font-black text-[18px] lg:text-[20px] mb-1">{step.title}</h3>
+                      <div className="w-12 h-[3px] bg-[#D4A820] mb-2" />
+                      <p className="text-[#1a1a1a] text-[14px] leading-[1.9]">
+                        {step.bodyJsx ?? step.body}
+                      </p>
                     </div>
                   </div>
-                  {i < rightItems.length - 1 && (
-                    <div className="flex justify-center py-0.5">
-                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M7 2 L7 12 M3 8 L7 12 L11 8" stroke="#D4A820" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  {/* 塗り三角矢印 */}
+                  {i < steps.length - 1 && (
+                    <div className="flex justify-start pl-7 py-2">
+                      <svg width="30" height="18" viewBox="0 0 30 18" fill="none" aria-hidden="true">
+                        <polygon points="0,0 30,0 15,18" fill="#D4A820" />
                       </svg>
                     </div>
                   )}
                 </div>
               ))}
             </div>
-            <div className="mt-5 pt-4 border-t border-[#D4A820] flex items-center gap-2">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <circle cx="9" cy="9" r="8" fill="#D4A820" />
-                <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bottom CTA Bar ── */}
+      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
+        <div className="flex flex-col gap-4 px-5 py-6 lg:flex-row lg:items-center lg:px-[68px] lg:py-7 lg:gap-6">
+          <div className="shrink-0 border-2 border-[#D4A820] px-3 py-2 text-center self-start">
+            <span className="text-[#D4A820] font-black text-[11px] block leading-tight">重要</span>
+            <span className="text-[#D4A820] font-black text-[11px] block leading-tight">POINT</span>
+          </div>
+          <p className="text-white text-[14px] lg:text-[15px] leading-[1.8] flex-1">
+            集客は、広告を出して終わりではありません。<br />
+            戦略的な仕組みとスピード改善で、<span className="text-[#D4A820] font-bold">元請け受注を継続的に増やします。</span>
+          </p>
+          <a
+            href="#contact"
+            className="shrink-0 flex flex-col items-center bg-[#D4A820] px-7 py-4 no-underline self-stretch lg:self-auto justify-center"
+          >
+            <span className="text-[#1a1a1a] text-[11px] font-bold mb-1">相談・提案すべて無料</span>
+            <div className="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
-              <span className="text-[#1a1a1a] font-bold text-[12px] lg:text-[13px]">仕組みで回るから、安定して売上と利益が伸びる！</span>
+              <span className="text-[#1a1a1a] font-black text-[15px] whitespace-nowrap">無料相談はこちら ›</span>
             </div>
-          </div>
-
+          </a>
         </div>
-
-        {/* ── Bottom statement ── */}
-        <div className="relative mt-10 overflow-hidden">
-          <img src={brushYellow} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
-          <div className="relative bg-[#1a1a1a] px-6 py-6 lg:px-10 lg:py-7 text-center">
-            <p className="text-white font-black text-[16px] lg:text-[20px]">
-              親方ドットコムは、<span className="text-[#D4A820]">元請け案件が自然と集まる仕組みづくり</span>を支援します。
-            </p>
-            <p className="text-[#aaa] text-[13px] lg:text-[14px] mt-2">次は、親方ドットコムの具体的なサポート内容をご紹介します。</p>
-          </div>
-        </div>
-
       </div>
-    </section>
+    </>
   );
 }
