@@ -4,7 +4,8 @@ const steps = [
   {
     num: "01",
     title: "分析する",
-    body: "市場・競合・地域を分析し、勝てる戦略の土台をつくります。",
+    body: null,
+    bodyJsx: <>市場・競合・地域を分析し、<br className="lg:hidden" />勝てる戦略の土台をつくります。</>,
     icon: (
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
         <circle cx="17" cy="17" r="11" stroke="#1a1a1a" strokeWidth="2" />
@@ -17,7 +18,8 @@ const steps = [
   {
     num: "02",
     title: "仕組みをつくる",
-    body: "LP・広告・導線を設計し、問い合わせを最大化する仕組みを構築します。",
+    body: null,
+    bodyJsx: <>LP・広告・導線を設計し、<br />問い合わせを最大化する<br className="lg:hidden" />仕組みを構築します。</>,
     icon: (
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
         <circle cx="20" cy="20" r="16" stroke="#1a1a1a" strokeWidth="2" />
@@ -34,8 +36,7 @@ const steps = [
     body: null,
     bodyJsx: (
       <span>
-        <span className="text-[#D4A820] font-bold">2000社を超える実績データ</span>を活用し、
-        <span className="text-[#D4A820] font-bold">最短1ヶ月</span>で元請け受注の増加を実現します。
+        <span className="text-[#D4A820] font-bold">2000社を超える実績データ</span>を<br className="lg:hidden" />活用し<span className="text-[#D4A820] font-bold">最短1ヶ月</span>で元請け<br className="lg:hidden" />受注の増加を実現します。
       </span>
     ),
     icon: (
@@ -67,22 +68,14 @@ export default function Section06() {
                   <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
                 </div>
                 <div className="w-px h-10 bg-[#1a1a1a]" />
-                <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムの仕組み</span>
+                <span className="text-[#1a1a1a] font-bold text-[16px]">親方ドットコムの仕組み</span>
               </div>
-              <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+              <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
               <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[24px] lg:text-[46px]">
-                WEB集客による受注は、<br />
-                偶然ではなく
-                <span className="text-[#D4A820]" style={{ borderBottom: "5px solid #D4A820", paddingBottom: "2px" }}>戦略</span>
-                で増やします。
+                受注は偶然ではなく、<span className="block pl-[2em]"><span className="text-[#D4A820]" style={{ borderBottom: "5px solid #D4A820", paddingBottom: "2px" }}>戦略</span>的に増やします。</span>
               </h2>
 
-              <p className="text-[#1a1a1a] text-[16px] leading-[2] mb-8">
-                親方ドットコムは、<br />
-                <span className="font-bold" style={{ borderBottom: "3px solid #D4A820" }}>元請け受注が増える</span>仕組みを<br />
-                一緒につくるパートナーです。
-              </p>
 
               <div className="flex items-center gap-4 mb-8">
                 <div className="flex-1 h-px bg-[#D4A820]" />
@@ -103,7 +96,11 @@ export default function Section06() {
                     <path d="M4 11 Q4 14 11 14 Q18 14 18 11" stroke="#1a1a1a" strokeWidth="1.5" fill="none" />
                   </svg>
                 </div>
-                <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px] leading-[1.8]">
+                <p className="lg:hidden text-[#1a1a1a] font-bold text-[14px] leading-[1.8]">
+                  <span className="text-[#D4A820]">2000社</span>を超えるデータを活用して、<br />
+                  最短で成果に繋げます。
+                </p>
+                <p className="hidden lg:block text-[#1a1a1a] font-bold text-[15px] leading-[1.8]">
                   <span className="text-[#D4A820]">2000社</span>を超える実績データがあるから、<br />
                   無駄なく、<span className="text-[#D4A820]">最短で成果</span>につながります。
                 </p>
@@ -116,7 +113,7 @@ export default function Section06() {
                 <div key={i}>
                   <div className="flex items-start gap-5">
                     {/* アイコン円 + 数字バッジ重ね */}
-                    <div className="relative shrink-0">
+                    <div className="relative shrink-0 mt-3 lg:mt-0">
                       <div className={`w-[84px] h-[84px] rounded-full border-2 flex items-center justify-center ${step.highlight ? "bg-[#fff9e6] border-[#D4A820]" : "bg-white border-[#e0e0e0]"}`}>
                         {step.icon}
                       </div>
@@ -150,31 +147,52 @@ export default function Section06() {
       </section>
 
       {/* ── Bottom CTA Bar ── */}
-      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
-        <div className="flex flex-col gap-4 px-5 py-6 lg:flex-row lg:items-center lg:px-[68px] lg:py-7 lg:gap-6">
-          <div className="shrink-0 border-2 border-[#D4A820] px-3 py-2 text-center self-start">
-            <span className="text-[#D4A820] font-black text-[11px] block leading-tight">重要</span>
-            <span className="text-[#D4A820] font-black text-[11px] block leading-tight">POINT</span>
-          </div>
-          <p className="text-white text-[14px] lg:text-[15px] leading-[1.8] flex-1">
-            集客は、広告を出して終わりではありません。<br />
-            戦略的な仕組みとスピード改善で、<span className="text-[#D4A820] font-bold">元請け受注を継続的に増やします。</span>
-          </p>
-          <a
-            href="#contact"
-            className="shrink-0 flex flex-col items-center bg-[#D4A820] px-7 py-4 no-underline self-stretch lg:self-auto justify-center"
-          >
-            <span className="text-[#1a1a1a] text-[11px] font-bold mb-1">相談・提案すべて無料</span>
-            <div className="flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-              <span className="text-[#1a1a1a] font-black text-[15px] whitespace-nowrap">無料相談はこちら ›</span>
-            </div>
-          </a>
-        </div>
+      {/* SP CTA帯 */}
+      <div className="lg:hidden bg-[#111111] px-4 pt-4 pb-4">
+        <p className="text-white font-black text-[15px] leading-[1.35] mb-2.5 text-center">
+          下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
+        </p>
+        <a
+          href="#contact"
+          aria-label="無料相談はこちら"
+          className="flex items-center justify-center gap-2.5 bg-[#D4A820] no-underline rounded-lg py-3 w-full"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <span className="font-black text-[#1a1a1a] text-[16px]">無料相談はこちら ›</span>
+        </a>
       </div>
+      {/* PC CTA帯 */}
+      <a
+        href="#contact"
+        aria-label="無料相談はこちら"
+        className="hidden lg:flex items-stretch bg-[#111111] no-underline"
+        style={{ minHeight: "108px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none" }}
+      >
+        <div className="flex items-center flex-1" style={{ paddingLeft: "68px", paddingRight: "40px" }}>
+          <p className="text-white font-black leading-tight m-0" style={{ fontSize: "26px" }}>
+            下請けだけの経営から、
+            <span style={{ color: "#D4A820", borderBottom: "2px solid #D4A820", paddingBottom: "1px" }}>脱却</span>
+            しませんか？
+          </p>
+        </div>
+        <div
+          className="flex flex-col items-center justify-center flex-shrink-0"
+          style={{ backgroundColor: "#D4A820", paddingLeft: "52px", paddingRight: "52px", gap: "5px" }}
+        >
+          <span className="font-bold text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.65, letterSpacing: "0.04em" }}>相談・提案すべて無料</span>
+          <div className="flex items-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "17px", whiteSpace: "nowrap" }}>無料相談はこちら ›</span>
+          </div>
+          <span className="text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.55 }}>1分で簡単入力</span>
+        </div>
+      </a>
     </>
   );
 }

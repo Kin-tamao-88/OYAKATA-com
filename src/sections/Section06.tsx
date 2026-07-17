@@ -1,4 +1,4 @@
-import logoMark from "../assets/images/logos/logo-mark-trimmed.webp";
+import paintDark from "../assets/images/ui/hero-paint-dark.png";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import imgMarketing from "../assets/images/OC06/reason-industry-marketing.webp";
 import imgData from "../assets/images/OC06/reason-data-analysis.webp";
@@ -52,7 +52,7 @@ export default function Section07() {
       <section className="bg-white">
 
         {/* ── Section Header ── */}
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] pt-14 lg:pt-[80px] pb-10 lg:pb-14 text-center relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] pt-14 lg:pt-[80px] pb-6 lg:pb-8 text-center relative overflow-hidden">
           <div className="flex items-center justify-center gap-4 mb-4">
             <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
             <div>
@@ -62,13 +62,10 @@ export default function Section07() {
             <div className="w-px h-10 bg-[#1a1a1a]" />
             <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムが選ばれる理由</span>
           </div>
-          <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+          <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
           <h2 className="text-[#1a1a1a] font-black leading-[1.15] mb-5 text-[27px] lg:text-[56px] text-balance">
-            選ばれ続けるには、<span className="text-[#D4A820]">理由</span>があります。
+            選ばれ続けるには、<span className="border-b-[6px] border-[#D4A820] pb-[2px]"><span className="text-[#D4A820]">理由</span>があります。</span>
           </h2>
-          <p className="text-[#555] text-[14px] lg:text-[16px]">
-            工事業界に特化した知見と実績で、<span className="font-bold text-[#1a1a1a]">元請け受注の増加</span>をサポートします。
-          </p>
         </div>
 
         {/* ── Reason blocks ── */}
@@ -114,31 +111,37 @@ export default function Section07() {
 
       {/* ── Bottom Bar ── */}
       <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
-        <div className="flex flex-col gap-5 px-5 py-6 lg:flex-row lg:items-center lg:px-[68px] lg:py-7 lg:gap-10">
-          <div className="flex items-start gap-3 flex-1">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true" className="shrink-0 mt-0.5">
-              <circle cx="11" cy="11" r="10" fill="#D4A820" />
-              <path d="M5.5 11 L9 14.5 L16.5 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <p className="text-white font-bold text-[14px] lg:text-[15px] leading-[1.8]">
-              すべては、<span className="text-[#D4A820]">元請け受注の増加</span>という成果のために。
+        {/* SP */}
+        <div className="lg:hidden relative overflow-hidden -mx-0 px-5 py-5 text-center">
+          <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
+          <p className="relative z-10 text-white font-black text-[16px] leading-[2]">
+            すべては元請けとしての<br /><span className="text-[#D4A820]">受注を得るために。</span>
+          </p>
+        </div>
+        {/* PC */}
+        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#D4A820] min-h-[108px]">
+          <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
+          <div className="flex-1 py-7" />
+          <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+            <p className="text-white font-black text-[18px] leading-[2] text-center">
+              すべては元請けとしての<span className="text-[#D4A820]">受注を得るために。</span>
             </p>
           </div>
-          <div className="hidden lg:flex items-center gap-3 border-l border-[#444] pl-10">
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <circle cx="10" cy="10" r="5" stroke="#D4A820" strokeWidth="1.5" />
-              <path d="M2 28 C2 20 5 18 10 18 C15 18 18 20 18 28" stroke="#D4A820" strokeWidth="1.5" fill="none" />
-              <circle cx="22" cy="10" r="5" stroke="#D4A820" strokeWidth="1.5" strokeDasharray="3 2" />
-              <path d="M18 28 C18 20 21 18 26 18" stroke="#D4A820" strokeWidth="1.5" fill="none" strokeDasharray="3 2" />
-            </svg>
-            <p className="text-white/70 text-[12px] leading-snug">工事業界に特化した<br />マーケティングパートナー</p>
-          </div>
-          <div className="hidden lg:flex items-center gap-2 border-l border-[#444] pl-10">
-            <div className="w-8 h-8 bg-[#D4A820] flex items-center justify-center shrink-0">
-              <span className="text-[#1a1a1a] font-black text-[12px]">親</span>
+          <a
+            href="#contact"
+            aria-label="無料相談はこちら"
+            className="relative z-10 shrink-0 flex flex-col items-center justify-center bg-[#D4A820] px-12 no-underline gap-[5px]"
+          >
+            <span className="text-[#1a1a1a] font-bold text-[11px] opacity-65 tracking-wide">相談・提案すべて無料</span>
+            <div className="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <span className="text-[#1a1a1a] font-black text-[15px] whitespace-nowrap">無料相談はこちら ›</span>
             </div>
-            <img src={logoMark} alt="親方ドットコム" className="h-6 object-contain" />
-          </div>
+            <span className="text-[#1a1a1a] text-[11px] opacity-55">1分で簡単入力</span>
+          </a>
         </div>
       </div>
     </>
