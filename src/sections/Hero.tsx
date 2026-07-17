@@ -18,8 +18,8 @@ export default function Hero() {
             className="absolute inset-y-0 right-0 overflow-hidden pointer-events-none"
             style={{
               width: "46%",
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%, black 100%)",
-              maskImage: "linear-gradient(to right, transparent 0%, black 30%, black 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 55%, black 100%)",
+              maskImage: "linear-gradient(to right, transparent 0%, black 55%, black 100%)",
             }}
           >
             <img
@@ -129,10 +129,10 @@ export default function Hero() {
 
           {/* サブコピー */}
           <div className="relative z-10 px-4 pt-1 pb-3">
-            <p className="font-bold text-[#1a1a1a] text-[12px] leading-snug mb-1">
+            <p className="inline-block font-bold text-white bg-[#1a1a1a] text-[12px] leading-snug mb-1 px-2 py-1">
               集客のプロが、御社の売上を後押しします。
             </p>
-            <p className="text-[#1a1a1a] text-[11px] leading-relaxed">
+            <p className="text-[#1a1a1a] font-bold text-[11px] leading-relaxed">
               工務店・リフォーム・外壁塗装・設備・内装など<br />
               工事業者専門の集客支援サービス
             </p>
@@ -148,29 +148,22 @@ export default function Hero() {
         </section>
 
         {/* SP CTA帯 */}
-        <a
-          href="#contact"
-          aria-label="無料相談はこちら"
-          className="block bg-[#111111] no-underline"
-        >
-          <div className="px-5 py-5">
-            <p className="text-white font-black text-[20px] leading-tight">
-              下請けだけの経営から、<br />
-              <span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
-            </p>
-          </div>
-          <div className="bg-[#D4A820] flex flex-col items-center py-4 gap-1">
-            <span className="text-[#1a1a1a] text-[11px] font-bold opacity-65 tracking-wide">相談・提案すべて無料</span>
-            <div className="flex items-center gap-2">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-              <span className="font-black text-[#1a1a1a] text-[15px] whitespace-nowrap">無料相談はこちら ›</span>
-            </div>
-            <span className="text-[#1a1a1a] text-[11px] opacity-55">1分で簡単入力</span>
-          </div>
-        </a>
+        <div className="bg-[#111111] px-4 pt-4 pb-4">
+          <p className="text-white font-black text-[15px] leading-[1.35] mb-2.5 text-center">
+            下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
+          </p>
+          <a
+            href="#contact"
+            aria-label="無料相談はこちら"
+            className="flex items-center justify-center gap-2.5 bg-[#D4A820] no-underline rounded-lg py-3 w-full"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <span className="font-black text-[#1a1a1a] text-[16px]">無料相談はこちら ›</span>
+          </a>
+        </div>
       </div>
 
       {/* ══ PC Hero ════════════════════════════════════════════════════ */}

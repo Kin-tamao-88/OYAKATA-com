@@ -49,15 +49,16 @@ export default function Section03() {
             <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
           </div>
           <div className="w-px h-10 bg-[#1a1a1a]" />
-          <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">課題</span>
+          <span className="text-[#1a1a1a] font-bold text-[19px] lg:text-[16px]">課題</span>
         </div>
+        <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
         {/* ── Main 2-column ── */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10 mb-12 lg:mb-16">
 
           {/* Left: Heading + body */}
           <div className="flex-1">
-            <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[36px] lg:text-[54px]">
+            <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[30px] lg:text-[54px]">
               下請けばかりの経営、<br />
               <span className="border-b-[6px] border-[#D4A820] pb-[2px]">続けていませんか？</span>
             </h2>

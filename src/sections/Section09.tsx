@@ -135,9 +135,10 @@ export default function Section09() {
             <div className="w-px h-9 bg-[#1a1a1a]" />
             <span className="text-[#1a1a1a] font-bold text-[13px] lg:text-[15px]">ご相談後のサポート体制</span>
           </div>
+          <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
           {/* H2 */}
-          <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[26px] lg:text-[42px]">
+          <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[22px] lg:text-[42px]">
             元請け案件を増やすために、<br />
             何から始めるべきか<span className="text-[#D4A820]">無料でご提案</span>します。
           </h2>

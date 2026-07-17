@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <>
       {/* ══ SP Header ══════════════════════════════════════════════════ */}
-      <div className="lg:hidden bg-white border-b border-gray-200">
+      <div className="lg:hidden bg-white border-b-2 border-[#f5a623]">
         <div className="flex items-center justify-between px-3 h-[56px]">
 
           {/* 左：ロゴ＋区切り＋サブコピー */}
@@ -16,7 +16,7 @@ export default function Header() {
               className="h-[44px] w-auto shrink-0 object-contain"
             />
             <span className="text-[#bbb] text-[18px] font-light leading-none shrink-0">|</span>
-            <span className="text-[#1a1a1a] text-[9px] font-bold leading-tight shrink-0">
+            <span className="text-[#1a1a1a] text-[12px] font-bold leading-tight shrink-0">
               工事業者専門の<br />集客支援サービス
             </span>
           </div>

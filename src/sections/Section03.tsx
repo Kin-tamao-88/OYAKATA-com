@@ -48,7 +48,8 @@ export default function Section04() {
             <div className="w-px h-10 bg-[#1a1a1a]" />
             <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px] tracking-widest">WHAT'S THE PROBLEM?</span>
           </div>
-          <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[32px] lg:text-[52px]">
+          <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+          <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[27px] lg:text-[52px]">
             下請けだけでは、<br />
             <span className="border-b-[6px] border-[#D4A820] pb-[2px]">会社は大きくならない。</span>
           </h2>

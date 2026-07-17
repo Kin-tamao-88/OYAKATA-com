@@ -5,31 +5,49 @@ export default function Section02B() {
   return (
     <>
       {/* ── 上段: ホワイトブロック ── */}
-      <section className="bg-white pt-14 pb-0 lg:pt-[80px] lg:pb-0 overflow-hidden">
+      <section className="bg-white pt-8 pb-0 lg:pt-[80px] lg:pb-0 overflow-hidden">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px]">
 
           {/* Section Header */}
-          <div className="flex items-center gap-4 mb-10 lg:mb-14">
+          <div className="flex items-center gap-4 mb-0 lg:mb-14">
             <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
             <div>
               <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">01</span>
               <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
             </div>
             <div className="w-px h-10 bg-[#1a1a1a]" />
-            <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムとは？</span>
+            <span className="text-[#1a1a1a] font-bold text-[19px] lg:text-[16px]">親方ドットコムとは？</span>
           </div>
+          <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-4 mb-6" />
 
           {/* Main 2-column */}
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:gap-10">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:gap-10">
 
-            {/* Left: Text */}
-            <div className="w-full lg:w-[38%] lg:shrink-0 lg:pb-20">
-              <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[32px] lg:text-[48px]">
+            <div className="w-full lg:w-[38%] lg:shrink-0 lg:pb-20 relative">
+              {/* SP右ブリード背景画像 */}
+              <div
+                className="lg:hidden absolute top-[-50px] right-[-16px] pointer-events-none"
+                style={{
+                  width: "85%",
+                  WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)",
+                  maskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)",
+                  opacity: 0.22,
+                }}
+              >
+                <img
+                  src={dashboardMockup}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+
+              <h2 className="relative z-10 text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[27px] lg:text-[48px]">
                 親方ドットコムは、<br />
                 工事業者専門の<br />
                 <span className="text-[#D4A820]">集客支援サービス</span>です。
               </h2>
-              <p className="text-[#1a1a1a] text-[16px] leading-[2]">
+              <p className="relative z-10 text-[#1a1a1a] text-[13px] lg:text-[16px] leading-[2] pb-8 lg:pb-0">
                 データ分析に基づいた集客戦略の立案から、<br />
                 広告運用・改善までを一貫してサポート。<br />
                 元請け案件の獲得に特化した仕組みづくりで、<br />
@@ -37,8 +55,8 @@ export default function Section02B() {
               </p>
             </div>
 
-            {/* Right: Dashboard mockup – 約17%拡大・右端ブリード */}
-            <div className="w-full lg:flex-1 lg:-mr-[68px]">
+            {/* PC のみ画像カラム */}
+            <div className="hidden lg:block lg:flex-1 lg:-mr-[68px]">
               <img
                 src={dashboardMockup}
                 alt="親方ドットコム ダッシュボード画面"

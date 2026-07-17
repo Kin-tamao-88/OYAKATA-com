@@ -62,7 +62,8 @@ export default function Section07() {
             <div className="w-px h-10 bg-[#1a1a1a]" />
             <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムが選ばれる理由</span>
           </div>
-          <h2 className="text-[#1a1a1a] font-black leading-[1.15] mb-5 text-[32px] lg:text-[56px] text-balance">
+          <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+          <h2 className="text-[#1a1a1a] font-black leading-[1.15] mb-5 text-[27px] lg:text-[56px] text-balance">
             選ばれ続けるには、<span className="text-[#D4A820]">理由</span>があります。
           </h2>
           <p className="text-[#555] text-[14px] lg:text-[16px]">

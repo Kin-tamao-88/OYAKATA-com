@@ -49,7 +49,8 @@ export default function Section08() {
               <div className="w-px h-10 bg-[#1a1a1a]" />
               <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">導入実績・成果</span>
             </div>
-            <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[26px] lg:text-[46px]">
+            <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+            <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[22px] lg:text-[46px]">
               <span style={{ borderBottom: "6px solid #D4A820", paddingBottom: "2px" }}>元請け受注が安定</span>すると、<br />
               経営はここまで変わります。
             </h2>

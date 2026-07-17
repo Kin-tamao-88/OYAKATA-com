@@ -69,8 +69,9 @@ export default function Section06() {
                 <div className="w-px h-10 bg-[#1a1a1a]" />
                 <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムの仕組み</span>
               </div>
+              <div className="lg:hidden h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
-              <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[28px] lg:text-[46px]">
+              <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[24px] lg:text-[46px]">
                 WEB集客による受注は、<br />
                 偶然ではなく
                 <span className="text-[#D4A820]" style={{ borderBottom: "5px solid #D4A820", paddingBottom: "2px" }}>戦略</span>
