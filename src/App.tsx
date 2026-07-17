@@ -8,6 +8,7 @@ import Section05 from "./sections/Section05";
 import Section06 from "./sections/Section06";
 import Section07 from "./sections/Section07";
 import Section08 from "./sections/Section08";
+import Section09 from "./sections/Section09";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
       <Section06 />
       <Section07 />
       <Section08 />
+      <Section09 />
     </>
   );
 }
