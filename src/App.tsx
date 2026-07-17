@@ -13,10 +13,8 @@ export default function App() {
   return (
     <>
       {/* Hero・HeaderはPC固定レイアウト維持 */}
-      <div className="min-w-[960px]">
-        <Header />
-        <Hero />
-      </div>
+      <Header />
+      <Hero />
       {/* Section01以降はSP対応 */}
       <Section01 />
       <Section02 />
