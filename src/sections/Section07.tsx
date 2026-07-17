@@ -1,12 +1,13 @@
-import brushYellow from "../assets/images/ui/brush-yellow.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
+import imgCase01 from "../assets/images/OC07/results-case01-30.png";
+import imgCase02 from "../assets/images/OC07/results-case02-50.png";
 
 const cases = [
   {
     num: "01",
     type: "外壁塗装会社",
     location: "埼玉県さいたま市",
-    imageSrc: "/images/results-case01.jpg",
+    imageSrc: imgCase01,
     imageAlt: "外壁塗装会社の事例",
     inquiryBefore: "月 6",
     inquiryAfter: "月 18",
@@ -19,7 +20,7 @@ const cases = [
     num: "02",
     type: "内装リフォーム会社",
     location: "神奈川県横浜市",
-    imageSrc: "/images/results-case02.jpg",
+    imageSrc: imgCase02,
     imageAlt: "内装リフォーム会社の事例",
     inquiryBefore: "月 10",
     inquiryAfter: "月 24",
@@ -34,8 +35,6 @@ export default function Section08() {
   return (
     <>
       <section className="bg-white pt-14 pb-12 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
-        <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 left-0 pointer-events-none opacity-20 hidden lg:block" style={{ width: "260px", filter: "brightness(0)" }} />
-        <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 right-0 pointer-events-none opacity-70" style={{ width: "220px" }} />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative">
 
@@ -65,13 +64,13 @@ export default function Section08() {
               <div key={i} className="flex-1 border border-[#e0e0e0]">
 
                 {/* SP: photo on top full width */}
-                <div className="lg:hidden overflow-hidden" style={{ height: "200px" }}>
+                <div className="lg:hidden overflow-hidden h-[200px]">
                   <img src={c.imageSrc} alt={c.imageAlt} className="w-full h-full object-cover object-top" />
                 </div>
 
                 {/* PC: photo on left */}
-                <div className="flex">
-                  <div className="hidden lg:block w-[38%] shrink-0 overflow-hidden" style={{ minHeight: "320px" }}>
+                <div className="flex items-stretch">
+                  <div className="hidden lg:block w-[57%] shrink-0 overflow-hidden">
                     <img src={c.imageSrc} alt={c.imageAlt} className="w-full h-full object-cover" />
                   </div>
 

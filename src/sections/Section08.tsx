@@ -1,5 +1,6 @@
-import brushYellow from "../assets/images/ui/brush-yellow.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
+import imgGenba from "../assets/images/OC08/better08-genba.png";
+import imgWakate from "../assets/images/OC08/better08-wakate.png";
 
 const voices = [
   {
@@ -12,7 +13,7 @@ const voices = [
       </svg>
     ),
     subTitle: "毎日の現場に、安心して集中できるように。",
-    imageSrc: "/images/voice-field.jpg",
+    imageSrc: imgGenba,
     imageAlt: "現場社員",
     before: [
       "予定がコロコロ変わり、段取りが立てにくい",
@@ -40,7 +41,7 @@ const voices = [
       </svg>
     ),
     subTitle: "将来に希望が持てる会社で、自分も成長していきたい。",
-    imageSrc: "/images/voice-young.jpg",
+    imageSrc: imgWakate,
     imageAlt: "若手社員",
     before: [
       "仕事が少なく、将来が不安だった",
@@ -64,8 +65,6 @@ export default function Section09() {
   return (
     <>
       <section className="bg-white pt-14 pb-12 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
-        <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 left-0 pointer-events-none opacity-20 hidden lg:block" style={{ width: "240px", filter: "brightness(0)" }} />
-        <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 right-0 pointer-events-none opacity-70" style={{ width: "220px" }} />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative">
 
@@ -110,8 +109,10 @@ export default function Section09() {
                 <p className="text-[#1a1a1a] font-bold text-[13px] mb-5 leading-[1.7]">{v.subTitle}</p>
 
                 {/* Photo */}
-                <div className="overflow-hidden mb-6" style={{ height: "200px" }}>
-                  <img src={v.imageSrc} alt={v.imageAlt} className="w-full h-full object-cover object-top" />
+                <div className="relative mb-6">
+                  <img src={v.imageSrc} alt={v.imageAlt} className="w-[90%] h-auto mx-auto block" />
+                  <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-white to-transparent pointer-events-none" />
+                  <div className="absolute inset-y-0 right-0 w-[12%] bg-gradient-to-l from-white to-transparent pointer-events-none" />
                 </div>
 
                 {/* Before */}

@@ -1,4 +1,3 @@
-import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 
 const steps = [
@@ -55,14 +54,6 @@ export default function Section06() {
   return (
     <>
       <section className="bg-white py-14 lg:py-[80px] relative overflow-hidden">
-        {/* Decorative brush */}
-        <img
-          src={brushHeroYellow}
-          alt=""
-          aria-hidden="true"
-          className="absolute top-0 right-0 pointer-events-none opacity-20"
-          style={{ width: "320px", transform: "rotate(180deg) translateY(-40%)" }}
-        />
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative">
           <div className="flex flex-col gap-12 lg:flex-row lg:gap-16 lg:items-start">

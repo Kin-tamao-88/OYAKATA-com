@@ -1,4 +1,3 @@
-import brushYellow from "../assets/images/ui/brush-yellow.webp";
 import logoMark from "../assets/images/logos/logo-mark-trimmed.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import imgMarketing from "../assets/images/OC06/reason-industry-marketing.webp";
@@ -54,7 +53,6 @@ export default function Section07() {
 
         {/* ── Section Header ── */}
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] pt-14 lg:pt-[80px] pb-10 lg:pb-14 text-center relative overflow-hidden">
-          <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 right-0 pointer-events-none opacity-30 hidden lg:block w-[260px]" />
           <div className="flex items-center justify-center gap-4 mb-4">
             <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
             <div>
@@ -98,7 +96,6 @@ export default function Section07() {
                   <img src={r.img} alt={r.imgAlt} className="w-full h-full object-cover" />
                 </div>
                 <div className={`flex-1 flex flex-col justify-center py-14 ${r.imgLeft ? "pl-14 pr-10" : "pr-14 pl-10"} ${i % 2 !== 0 ? "bg-[#1a1a1a]" : "bg-white"} relative overflow-hidden`}>
-                  {i % 2 === 0 && <img src={brushYellow} alt="" aria-hidden="true" className="absolute top-0 right-0 opacity-20 w-[200px] pointer-events-none" />}
                   <ReasonLabel num={r.num} dark={i % 2 !== 0} />
                   <h3 className={`font-black leading-[1.3] mb-4 text-[34px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#1a1a1a]"}`}>
                     {r.title.split("\n").map((line, j) => <span key={j}>{line}{j === 0 && <br />}</span>)}
@@ -159,7 +156,7 @@ function ReasonLabel({ num, dark }: { num: string; dark: boolean }) {
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-fill opacity-0"
       />
-      <span className={`relative font-bold text-[12px] pr-2 ${dark ? "text-[#D4A820]" : "text-[#D4A820]"}`}>理由</span>
+      <span className={`relative font-bold text-[12px] pr-2 ${dark ? "text-[#D4A820]" : "text-[#D4A820]"}`}>Point</span>
       <span className={`relative font-black text-[28px] leading-none ${dark ? "text-white" : "text-[#1a1a1a]"}`}>{num}</span>
     </div>
   );
