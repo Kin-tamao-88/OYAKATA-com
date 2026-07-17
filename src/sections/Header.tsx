@@ -1,32 +1,32 @@
 import logoMark from "../assets/images/logos/logo-mark2.webp";
-import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 
 export default function Header() {
   return (
     <>
       {/* ══ SP Header ══════════════════════════════════════════════════ */}
       <div className="lg:hidden bg-white border-b-2 border-[#f5a623]">
-        <div className="flex items-center justify-between px-3 h-[56px]">
+        <div className="flex items-center px-3 h-[56px] gap-3">
 
-          {/* 左：ロゴ＋区切り＋サブコピー */}
-          <div className="flex items-center gap-2 min-w-0">
+          {/* 左：ロゴマーク（余白クロップ・PCと同スケール） */}
+          <div className="flex-1 overflow-hidden h-[56px] flex items-center justify-center mt-[9px]">
             <img
-              src={logoHorizontal}
+              src={logoMark}
               alt="親方ドットコム"
-              className="h-[44px] w-auto shrink-0 object-contain"
+              className="h-[180px] w-auto max-w-none"
             />
-            <span className="text-[#bbb] text-[18px] font-light leading-none shrink-0">|</span>
-            <span className="text-[#1a1a1a] text-[12px] font-bold leading-tight shrink-0">
-              工事業者専門の<br />集客支援サービス
-            </span>
           </div>
 
-          {/* 右：ハンバーガー */}
-          <button className="flex flex-col justify-center gap-[5px] p-1 shrink-0 ml-2" aria-label="メニューを開く">
-            <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-            <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-            <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-          </button>
+          {/* 右：サブコピー＋ハンバーガー */}
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="text-[#1a1a1a] text-[11px] font-bold leading-tight text-right">
+              工事業者専門の<br />集客支援サービス
+            </span>
+            <button className="flex flex-col justify-center gap-[5px] p-1 shrink-0" aria-label="メニューを開く">
+              <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+              <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+              <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+            </button>
+          </div>
 
         </div>
       </div>

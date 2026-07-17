@@ -39,11 +39,11 @@ const cards = [
 
 export default function Section03() {
   return (
-    <section className="bg-white pt-14 pb-4 lg:pt-[80px] lg:pb-[40px]">
+    <section className="bg-white pt-8 pb-4 lg:pt-[80px] lg:pb-[40px]">
       <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px]">
 
         {/* ── Section Header ── */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-2">
           <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
           <div>
             <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">02</span>
