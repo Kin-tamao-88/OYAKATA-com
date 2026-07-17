@@ -1,4 +1,4 @@
-import paintDark from "../assets/images/ui/hero-paint-dark.png";
+import paintDark from "../assets/images/ui/hero-paint-dark.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import imgMarketing from "../assets/images/OC06/reason-industry-marketing.webp";
 import imgData from "../assets/images/OC06/reason-data-analysis.webp";

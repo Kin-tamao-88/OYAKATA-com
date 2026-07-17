@@ -1,6 +1,6 @@
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
-import imgCase01 from "../assets/images/OC07/results-case01-30.png";
-import imgCase02 from "../assets/images/OC07/results-case02-50.png";
+import imgCase01 from "../assets/images/OC07/results-case01-30.webp";
+import imgCase02 from "../assets/images/OC07/results-case02-50.webp";
 import brushYellow from "../assets/images/ui/brush-yellow.webp";
 
 const cases = [

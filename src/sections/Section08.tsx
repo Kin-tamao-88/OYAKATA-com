@@ -1,6 +1,6 @@
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
-import imgGenba from "../assets/images/OC08/better08-genba.png";
-import imgWakate from "../assets/images/OC08/better08-wakate.png";
+import imgGenba from "../assets/images/OC08/better08-genba.webp";
+import imgWakate from "../assets/images/OC08/better08-wakate.webp";
 
 const voices = [
   {

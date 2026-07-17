@@ -95,14 +95,14 @@ const trustItems = [
 ];
 
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
-import sectionPhoto from "../assets/images/OC09/oc09-consal.png";
+import sectionPhoto from "../assets/images/OC09/oc09-consal.webp";
 
 export default function Section09() {
   return (
     <section className="bg-white overflow-hidden">
 
       {/* ── 上部：テキスト左 ＋ 写真右 ── */}
-      <div className="relative lg:min-h-[500px]">
+      <div>
 
         {/* SP：写真バナー */}
         <div className="lg:hidden relative h-[200px] overflow-hidden">
@@ -110,47 +110,50 @@ export default function Section09() {
           <div className="absolute inset-x-0 bottom-0 h-[60px] bg-gradient-to-t from-white to-transparent pointer-events-none" />
         </div>
 
-        {/* PC：写真（右端ブリード・絶対配置） */}
-        <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[45%] z-0">
-          <img src={sectionPhoto} alt="" aria-hidden="true" className="w-full h-full object-cover object-center" />
-          <div className="absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-white to-transparent pointer-events-none" />
-        </div>
+        {/* PC：コンテナ内で絶対配置（コンテナ幅に収める） */}
+        <div className="max-w-[1280px] mx-auto relative lg:min-h-[500px]">
 
-        {/* テキストコンテンツ：max-width中央揃えで他セクションと基準線を合わせる */}
-        <div className="max-w-[1280px] mx-auto relative z-10">
-        <div className="px-5 pt-8 pb-10 lg:pl-[68px] lg:pr-8 lg:pt-[70px] lg:pb-[80px] lg:max-w-[57%]">
-
-          {/* セクションヘッダー（他セクション同様ロゴ配置） */}
-          <div className="flex items-center gap-4 mb-8 lg:mb-10">
-            <img
-              src={logoHorizontal}
-              alt=""
-              aria-hidden="true"
-              className="h-[44px] lg:h-[56px] w-auto object-contain mix-blend-multiply shrink-0"
-            />
-            <div>
-              <span className="block text-[#D4A820] font-black leading-none text-[30px] lg:text-[44px]">09</span>
-              <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
-            </div>
-            <div className="w-px h-9 bg-[#1a1a1a]" />
-            <span className="text-[#1a1a1a] font-bold text-[13px] lg:text-[15px]">ご相談後のサポート体制</span>
+          {/* 写真（右・絶対配置） */}
+          <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[50%] z-0">
+            <img src={sectionPhoto} alt="" aria-hidden="true" className="w-full h-full object-cover object-[40%_center]" />
+            <div className="absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-white to-transparent pointer-events-none" />
           </div>
-          <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
-          {/* H2 */}
-          <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[22px] lg:text-[42px]">
-            元請け案件を増やすために、<br />
-            何から始めるべきか<span className="text-[#D4A820]">無料でご提案</span>します。
-          </h2>
+          {/* テキストコンテンツ */}
+          <div className="px-5 pt-8 pb-10 lg:pl-[68px] lg:pr-8 lg:pt-[70px] lg:pb-[80px] lg:max-w-[57%] relative z-10">
 
-          {/* ボディ */}
-          <p className="text-[#1a1a1a] text-[13px] lg:text-[15px] leading-[1.9]">
-            いきなり契約を決める必要はありません。<br />
-            現在の集客状況や地域性を確認し、<br />
-            元請け案件を増やすための改善ポイントをご提案します。
-          </p>
+            {/* セクションヘッダー（他セクション同様ロゴ配置） */}
+            <div className="flex items-center gap-4 mb-8 lg:mb-10">
+              <img
+                src={logoHorizontal}
+                alt=""
+                aria-hidden="true"
+                className="h-[44px] lg:h-[56px] w-auto object-contain mix-blend-multiply shrink-0"
+              />
+              <div>
+                <span className="block text-[#D4A820] font-black leading-none text-[30px] lg:text-[44px]">09</span>
+                <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+              </div>
+              <div className="w-px h-9 bg-[#1a1a1a]" />
+              <span className="text-[#1a1a1a] font-bold text-[13px] lg:text-[15px]">ご相談後のサポート体制</span>
+            </div>
+            <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
-        </div>
+            {/* H2 */}
+            <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[22px] lg:text-[42px]">
+              元請けのお仕事を増やすために、<br />
+              何から始めるべきか<br />
+              <span className="text-[#D4A820]">無料でご提案</span>します。
+            </h2>
+
+            {/* ボディ */}
+            <p className="text-[#1a1a1a] text-[13px] lg:text-[15px] leading-[1.9]">
+              いきなり契約を決める必要はありません。<br />
+              現在の集客状況や地域性を確認し、<br />
+              元請け案件を増やすための改善ポイントをご提案します。
+            </p>
+
+          </div>
         </div>
 
       </div>

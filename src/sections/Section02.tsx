@@ -1,5 +1,5 @@
 import painWorker from "../assets/images/OC02/03-pain-worker.webp";
-import paintDark from "../assets/images/ui/hero-paint-dark.png";
+import paintDark from "../assets/images/ui/hero-paint-dark.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import iconWork from "../assets/images/OC02/issue-work-decrease.webp";
 import iconProfit from "../assets/images/OC02/issue-profit-decrease.webp";
