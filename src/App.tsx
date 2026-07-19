@@ -19,14 +19,14 @@ export default function App() {
       <Hero />
       <div id="s01" className="scroll-mt-[56px]"><Section01 /></div>
       <div id="s02" className="scroll-mt-[56px]"><Section02 /></div>
-      <div id="scroll-cta-trigger" />
+      <div id="scroll-cta-trigger" className="h-px" />
       <div id="s03" className="scroll-mt-[56px]"><Section03 /></div>
       <div id="s04" className="scroll-mt-[56px]"><Section04 /></div>
       <div id="s05" className="scroll-mt-[56px]"><Section05 /></div>
       <div id="s06" className="scroll-mt-[56px]"><Section06 /></div>
       <div id="s07" className="scroll-mt-[56px]"><Section07 /></div>
       <div id="s08" className="scroll-mt-[56px]"><Section08 /></div>
-      <div id="scroll-cta-hide-trigger" />
+      <div id="scroll-cta-hide-trigger" className="h-px" />
       <div id="s09" className="scroll-mt-[56px]"><Section09 /></div>
       <div id="contact" className="scroll-mt-[56px]"><Section10 /></div>
       <ScrollCtaSp />
