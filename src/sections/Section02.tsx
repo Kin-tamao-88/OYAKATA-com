@@ -50,7 +50,7 @@ export default function Section03() {
             <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
           </div>
           <div className="w-px h-10 bg-[#1a1a1a]" />
-          <span className="text-[#1a1a1a] font-bold text-[19px] lg:text-[16px]">課題</span>
+          <span className="text-[#1a1a1a] font-bold text-[19px] lg:text-[22px]">課題</span>
         </div>
         <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
@@ -61,7 +61,7 @@ export default function Section03() {
           <div className="flex-1">
             <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[30px] lg:text-[54px]">
               下請けばかりの経営、<br />
-              <span className="border-b-[6px] border-[#D4A820] pb-[2px]">続けていませんか？</span>
+              <span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">続けていませんか？</span>
             </h2>
             <p className="text-[#1a1a1a] text-[14px] lg:text-[16px] leading-[2]">
               元請けを増やしたいと思いながらも、<br />

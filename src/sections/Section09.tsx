@@ -52,45 +52,34 @@ const consultItems = [
 const trustItems = [
   {
     icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <text x="14" y="21" textAnchor="middle" fill="white" fontSize="18" fontWeight="900" fontFamily="serif">¥</text>
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M14 3 C14 3 6 6.5 6 12.5 L6 18 C6 22 9.5 25.5 14 27 C18.5 25.5 22 22 22 18 L22 12.5 C22 6.5 14 3 14 3 Z" stroke="white" strokeWidth="1.5" fill="none" />
+        <path d="M9.5 14 L13 17.5 L19 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "相談は無料",
-    sub: null,
+    title: "相談無料",
+    detail: "無理な営業は一切しません",
   },
   {
     icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M4 11 C3 7 7 5 11 7 L14 9 L17 7 C21 5 25 7 24 11 C23 15 19 16 15 14 L14 13 L13 14 C9 16 5 15 4 11 Z" stroke="white" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
-      </svg>
-    ),
-    title: "無理な営業は",
-    sub: "一切しません",
-    detail: null,
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <path d="M14 2 C14 2 6 5 6 11 L6 17 C6 21 10 24 14 26 C18 24 22 21 22 17 L22 11 C22 5 14 2 14 2 Z" stroke="white" strokeWidth="1.5" fill="none" />
-        <circle cx="14" cy="11" r="2.5" stroke="white" strokeWidth="1.3" />
-        <path d="M9 20 C9 17 11 16 14 16 C17 16 19 17 19 20" stroke="white" strokeWidth="1.3" fill="none" strokeLinecap="round" />
-      </svg>
-    ),
-    title: "工事業界専門の",
-    sub: "スタッフが対応",
-    detail: null,
-  },
-  {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="3" y="5" width="22" height="15" rx="3" stroke="white" strokeWidth="1.5" />
-        <path d="M3 9 L14 16 L25 9" stroke="white" strokeWidth="1.3" />
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect x="3" y="5" width="22" height="14" rx="2" stroke="white" strokeWidth="1.5" />
+        <line x1="9" y1="23" x2="19" y2="23" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+        <line x1="14" y1="19" x2="14" y2="23" stroke="white" strokeWidth="1.5" />
       </svg>
     ),
     title: "オンライン対応",
-    sub: null,
-    detail: "全国どこからでも\nご相談いただけます",
+    detail: "全国どこからでもご相談いただけます",
+  },
+  {
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M5 5 H23 Q25 5 25 7 V16 Q25 18 23 18 H16 L12 22 V18 H5 Q3 18 3 16 V7 Q3 5 5 5 Z" stroke="white" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+        <text x="14" y="14.5" textAnchor="middle" fill="white" fontSize="6.5" fontWeight="900" fontFamily="sans-serif">24h</text>
+      </svg>
+    ),
+    title: "下記フォーム送信後",
+    detail: <span className="inline-block bg-[#06C755] text-white font-black text-[13px] lg:text-[14px] px-3 py-[3px] mt-0.5">LINEで24時間相談可能</span>,
   },
 ];
 
@@ -141,16 +130,14 @@ export default function Section09() {
 
             {/* H2 */}
             <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[22px] lg:text-[42px]">
-              元請けのお仕事を増やすために、<br />
               何から始めるべきか<br />
-              <span className="text-[#D4A820]">無料でご提案</span>します。
+              <span className="text-[#D4A820] border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">無料でご提案</span>します。
             </h2>
 
             {/* ボディ */}
-            <p className="text-[#1a1a1a] text-[13px] lg:text-[15px] leading-[1.9]">
-              いきなり契約を決める必要はありません。<br />
-              現在の集客状況や地域性を確認し、<br />
-              元請け案件を増やすための改善ポイントをご提案します。
+            <p className="text-[#1a1a1a] text-[13px] lg:text-[16px] leading-[1.9]">
+              現在抱える貴社の課題、集客状況や地域性を確認し、<br />
+              受注を増やすための改善策をご提案します。
             </p>
 
           </div>
@@ -191,32 +178,25 @@ export default function Section09() {
 
       {/* ── 安心してご相談ください ── */}
       <div className="bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] py-12 lg:py-16">
+        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] pt-7 pb-3 lg:py-10">
 
           {/* ヘッダー */}
-          <div className="flex items-center gap-4 mb-10 lg:mb-12">
+          <div className="flex items-center gap-4 mb-6 lg:mb-8">
             <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
-            <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px] whitespace-nowrap">安心してご相談ください</span>
+            <span className="text-[#D4A820] font-bold text-[14px] lg:text-[16px] whitespace-nowrap">安心してご相談ください</span>
             <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
           </div>
 
-          {/* 4アイテム */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+          {/* 3アイテム */}
+          <div className="flex flex-col lg:flex-row divide-y divide-[#e8e8e8] lg:divide-y-0 lg:divide-x lg:divide-[#e8e8e8]">
             {trustItems.map((item, i) => (
-              <div key={i} className="flex items-start gap-3 lg:gap-4">
-                <div className="w-[52px] h-[52px] bg-[#1a1a1a] rounded-full flex items-center justify-center shrink-0">
+              <div key={i} className="flex items-center gap-5 py-5 lg:flex-col lg:items-center lg:text-center lg:px-10 lg:py-3 flex-1">
+                <div className="w-[52px] h-[52px] bg-[#1a1a1a] rounded-full border-2 border-[#D4A820] flex items-center justify-center shrink-0">
                   {item.icon}
                 </div>
                 <div>
-                  <p className="text-[#1a1a1a] font-bold text-[13px] lg:text-[15px] leading-[1.7]">
-                    {item.title}
-                    {item.sub && <><br />{item.sub}</>}
-                  </p>
-                  {item.detail && (
-                    <p className="text-[#666] text-[11px] lg:text-[12px] mt-1 leading-[1.7] whitespace-pre-line">
-                      {item.detail}
-                    </p>
-                  )}
+                  <p className="text-[#1a1a1a] font-black text-[15px] lg:text-[16px] leading-[1.6]">{item.title}</p>
+                  <p className="text-[#1a1a1a] font-black text-[14px] lg:text-[15px] mt-1 leading-[1.6]">{item.detail}</p>
                 </div>
               </div>
             ))}

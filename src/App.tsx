@@ -10,24 +10,26 @@ import Section07 from "./sections/Section07";
 import Section08 from "./sections/Section08";
 import Section09 from "./sections/Section09";
 import Section10 from "./sections/Section10";
+import ScrollCtaSp from "./sections/ScrollCtaSp";
 
 export default function App() {
   return (
     <>
-      {/* Hero・HeaderはPC固定レイアウト維持 */}
       <Header />
       <Hero />
-      {/* Section01以降はSP対応 */}
-      <Section01 />
-      <Section02 />
-      <Section03 />
-      <Section04 />
-      <Section05 />
-      <Section06 />
-      <Section07 />
-      <Section08 />
-      <Section09 />
-      <Section10 />
+      <div id="s01" className="scroll-mt-[56px]"><Section01 /></div>
+      <div id="s02" className="scroll-mt-[56px]"><Section02 /></div>
+      <div id="scroll-cta-trigger" />
+      <div id="s03" className="scroll-mt-[56px]"><Section03 /></div>
+      <div id="s04" className="scroll-mt-[56px]"><Section04 /></div>
+      <div id="s05" className="scroll-mt-[56px]"><Section05 /></div>
+      <div id="s06" className="scroll-mt-[56px]"><Section06 /></div>
+      <div id="s07" className="scroll-mt-[56px]"><Section07 /></div>
+      <div id="s08" className="scroll-mt-[56px]"><Section08 /></div>
+      <div id="scroll-cta-hide-trigger" />
+      <div id="s09" className="scroll-mt-[56px]"><Section09 /></div>
+      <div id="contact" className="scroll-mt-[56px]"><Section10 /></div>
+      <ScrollCtaSp />
     </>
   );
 }

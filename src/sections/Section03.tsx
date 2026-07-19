@@ -46,12 +46,12 @@ export default function Section04() {
               <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
             </div>
             <div className="w-px h-10 bg-[#1a1a1a]" />
-            <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px] tracking-widest">WHAT'S THE PROBLEM?</span>
+            <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[22px] tracking-widest">WHAT'S THE PROBLEM?</span>
           </div>
           <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
           <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[27px] lg:text-[52px]">
             元請けを増やさないと、<br />
-            <span className="border-b-[6px] border-[#D4A820] pb-[2px]">会社は大きくならない。</span>
+            <span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">会社は大きくならない。</span>
           </h2>
           <p className="text-[#555] text-[15px]">多くの工事業者が、同じ悩みに直面しています。</p>
         </div>

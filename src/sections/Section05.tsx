@@ -68,12 +68,12 @@ export default function Section06() {
                   <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
                 </div>
                 <div className="w-px h-10 bg-[#1a1a1a]" />
-                <span className="text-[#1a1a1a] font-bold text-[16px]">親方ドットコムの仕組み</span>
+                <span className="text-[#1a1a1a] font-bold text-[16px] lg:text-[22px]">親方ドットコムの仕組み</span>
               </div>
               <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
 
               <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[24px] lg:text-[46px]">
-                受注は偶然ではなく、<span className="block pl-[2em]"><span className="text-[#D4A820]" style={{ borderBottom: "5px solid #D4A820", paddingBottom: "2px" }}>戦略</span>的に増やします。</span>
+                受注は偶然ではなく、<span className="block pl-[2em]"><span className="text-[#D4A820] border-b-[3px] lg:border-b-[5px] border-[#D4A820] pb-[2px]">戦略</span>的に増やします。</span>
               </h2>
 
 
@@ -178,19 +178,21 @@ export default function Section06() {
             しませんか？
           </p>
         </div>
-        <div
-          className="flex flex-col items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: "#D4A820", paddingLeft: "52px", paddingRight: "52px", gap: "5px" }}
-        >
-          <span className="font-bold text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.65, letterSpacing: "0.04em" }}>相談・提案すべて無料</span>
-          <div className="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "17px", whiteSpace: "nowrap" }}>無料相談はこちら ›</span>
+        <div className="flex flex-col items-center justify-center flex-shrink-0 gap-[10px] px-12">
+          <div className="relative">
+            <div style={{ backgroundColor: "#252525", color: "#fff", fontSize: "11px", fontWeight: 500, padding: "4px 14px", borderRadius: "4px", whiteSpace: "nowrap", lineHeight: 1.4 }}>
+              無料相談はカンタン&thinsp;<span style={{ color: "#D4A820", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
+            </div>
+            <div className="absolute left-1/2" style={{ bottom: "-7px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: "7px solid #252525" }} />
           </div>
-          <span className="text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.55 }}>1分で簡単入力</span>
+          <div className="flex items-center" style={{ gap: "10px", borderRadius: "6px", padding: "11px 22px", whiteSpace: "nowrap", border: "2px solid #D4A820" }}>
+            <svg width="18" height="14" viewBox="0 0 28 22" fill="none" aria-hidden="true">
+              <rect x="1.5" y="1.5" width="25" height="19" rx="2.5" stroke="#fff" strokeWidth="2.2" fill="none" />
+              <polyline points="1.5,4.5 14,13.5 26.5,4.5" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" fill="none" />
+            </svg>
+            <span className="font-black text-white" style={{ fontSize: "15px" }}>無料相談はこちら</span>
+            <span className="font-black text-white" style={{ fontSize: "13px" }}>›</span>
+          </div>
         </div>
       </a>
     </>

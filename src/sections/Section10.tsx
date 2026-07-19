@@ -1,5 +1,3 @@
-import logoMark from "../assets/images/logos/logo-mark-trimmed.webp";
-
 export default function Section10() {
   return (
     <section className="bg-[#f5f5f5] py-16 lg:py-24">
@@ -10,17 +8,8 @@ export default function Section10() {
 
           {/* ── カードヘッダー（黒帯） ── */}
           <div className="bg-[#1a1a1a] px-7 lg:px-12 py-6 lg:py-7 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4 lg:gap-5 min-w-0">
-              {/* ロゴマーク（白ボックス） */}
-              <div className="bg-white rounded px-2 py-1.5 shrink-0">
-                <img
-                  src={logoMark}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-[38px] lg:h-[46px] w-auto object-contain"
-                />
-              </div>
-              <div className="min-w-0">
+            <div className="flex items-center gap-4 lg:gap-5 min-w-0 w-full lg:w-auto">
+              <div className="min-w-0 text-center lg:text-left w-full lg:w-auto">
                 <h2 className="text-white font-black leading-none text-[24px] lg:text-[36px] whitespace-nowrap">
                   無料相談フォーム
                 </h2>
@@ -208,39 +197,7 @@ export default function Section10() {
             </div>
 
             {/* サブテキスト */}
-            <p className="text-center text-[#999] text-[12px] lg:text-[13px] mt-3">1分で簡単入力</p>
-
-            {/* 安心感 3点 */}
-            <div className="mt-8 pt-7 border-t border-[#e8e8e8] flex flex-col lg:flex-row items-center justify-center gap-5 lg:gap-0 lg:divide-x lg:divide-[#e0e0e0]">
-
-              <div className="flex items-center gap-2.5 px-0 lg:px-10">
-                <div className="w-9 h-9 border-2 border-[#D4A820] rounded-full flex items-center justify-center shrink-0 text-[#D4A820] text-[10px] font-black leading-none">
-                  ¥0
-                </div>
-                <span className="text-[#1a1a1a] text-[13px] lg:text-[14px] font-medium">ご相談は無料です</span>
-              </div>
-
-              <div className="flex items-center gap-2.5 px-0 lg:px-10">
-                <div className="w-9 h-9 border-2 border-[#D4A820] rounded-full flex items-center justify-center shrink-0">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                    <path d="M9 1.5 L2.5 4.5 v5c0 4 3 7 6.5 8 3.5-1 6.5-4 6.5-8v-5L9 1.5z" stroke="#D4A820" strokeWidth="1.4" fill="none" />
-                    <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#D4A820" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <span className="text-[#1a1a1a] text-[13px] lg:text-[14px] font-medium">無理な営業は行いません</span>
-              </div>
-
-              <div className="flex items-center gap-2.5 px-0 lg:px-10">
-                <div className="w-9 h-9 border-2 border-[#D4A820] rounded-full flex items-center justify-center shrink-0">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                    <circle cx="9" cy="9" r="6.5" stroke="#D4A820" strokeWidth="1.4" />
-                    <path d="M9 5.5v3.8l2.5 1.7" stroke="#D4A820" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <span className="text-[#1a1a1a] text-[13px] lg:text-[14px] font-medium">1営業日以内にご連絡します</span>
-              </div>
-
-            </div>
+            <p className="text-center text-[#999] text-[12px] lg:text-[13px] mt-3">1営業日以内にご連絡します。</p>
 
           </div>
         </div>

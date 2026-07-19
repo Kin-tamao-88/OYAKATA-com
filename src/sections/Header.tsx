@@ -1,13 +1,28 @@
+import { useState } from "react";
 import logoMark from "../assets/images/logos/logo-mark2.webp";
 
+const navItems = [
+  { label: "親方ドットコムとは？", href: "#s01" },
+  { label: "課題・問題点", href: "#s02" },
+  { label: "他社との違い", href: "#s04" },
+  { label: "親方ドットコムの仕組み", href: "#s05" },
+  { label: "選ばれる理由", href: "#s06" },
+  { label: "導入実績・成果", href: "#s07" },
+  { label: "現場の声", href: "#s08" },
+  { label: "ご相談後のサポート", href: "#s09" },
+  { label: "無料相談フォーム", href: "#contact" },
+];
+
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       {/* ══ SP Header ══════════════════════════════════════════════════ */}
-      <div className="lg:hidden bg-white border-b-2 border-[#f5a623]">
+      <div className="lg:hidden sticky top-0 z-40 bg-white border-b-2 border-[#f5a623]">
         <div className="flex items-center px-3 h-[56px] gap-3">
 
-          {/* 左：ロゴマーク（余白クロップ・PCと同スケール） */}
+          {/* 左：ロゴマーク */}
           <div className="flex-1 overflow-hidden h-[56px] flex items-center justify-center mt-[9px]">
             <img
               src={logoMark}
@@ -21,14 +36,58 @@ export default function Header() {
             <span className="text-[#1a1a1a] text-[11px] font-bold leading-tight text-right">
               工事業者専門の<br />集客支援サービス
             </span>
-            <button className="flex flex-col justify-center gap-[5px] p-1 shrink-0" aria-label="メニューを開く">
-              <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-              <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-              <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex flex-col items-center justify-center gap-[5px] p-1 shrink-0"
+              aria-label={isOpen ? "メニューを閉じる" : "メニューを開く"}
+            >
+              {isOpen ? (
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                  <line x1="3" y1="3" x2="19" y2="19" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" />
+                  <line x1="19" y1="3" x2="3" y2="19" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
+              ) : (
+                <>
+                  <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+                  <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+                  <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+                </>
+              )}
             </button>
           </div>
 
         </div>
+
+        {/* ── SP ドロップダウンメニュー ── */}
+        {isOpen && (
+          <div className="absolute top-full left-0 right-0 bg-[#1a1a1a] border-t-2 border-[#D4A820] z-50">
+            <nav className="px-5 divide-y divide-[#2a2a2a]">
+              {navItems.map((item, i) => (
+                <a
+                  key={i}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-4 py-[14px] no-underline"
+                >
+                  <span className="text-[#D4A820] font-black text-[11px] w-5 shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-white font-bold text-[14px] flex-1">{item.label}</span>
+                  <span className="text-[#D4A820] font-black text-[16px]">›</span>
+                </a>
+              ))}
+            </nav>
+            <div className="px-5 py-5 border-t-2 border-[#D4A820]">
+              <a
+                href="#contact"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center gap-2 bg-[#D4A820] py-4 no-underline"
+              >
+                <span className="font-black text-[#1a1a1a] text-[15px]">無料相談はこちら ›</span>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ══ PC Header ══════════════════════════════════════════════════ */}
@@ -53,19 +112,40 @@ export default function Header() {
           <div className="flex-1" />
 
           {/* CTA：ヘッダー全高パネル */}
-          <div
-            className="flex flex-col items-center justify-center flex-shrink-0 self-stretch"
-            style={{ backgroundColor: "#f5a623", paddingLeft: "48px", paddingRight: "48px", gap: "6px" }}
+          <a
+            href="#contact"
+            className="relative flex flex-col items-center justify-center flex-shrink-0 self-stretch no-underline hover:bg-gray-50 transition-colors"
+            style={{ paddingLeft: "36px", paddingRight: "36px", gap: "8px", textDecoration: "none" }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-            <div className="text-center">
-              <span className="block font-black text-[#1a1a1a]" style={{ fontSize: "16px", lineHeight: 1.3 }}>無料相談はこちら ›</span>
-              <span className="block text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.7, lineHeight: 1.4 }}>1分で簡単入力</span>
+            {/* バッジ */}
+            <div className="relative">
+              <div
+                className="text-[#D4A820]"
+                style={{ backgroundColor: "#252525", fontSize: "11px", fontWeight: 500, padding: "4px 14px", borderRadius: "4px", whiteSpace: "nowrap", lineHeight: 1.4 }}
+              >
+                無料相談はカンタン&thinsp;
+                <span style={{ color: "#D4A820", fontSize: "14px", fontWeight: 900 }}>1分</span>
+                &thinsp;で入力完了
+              </div>
+              <div
+                className="absolute left-1/2"
+                style={{ bottom: "-7px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: "7px solid #252525" }}
+              />
             </div>
-          </div>
+
+            {/* CTAボタン */}
+            <div
+              className="flex items-center bg-[#1a1a1a]"
+              style={{ gap: "10px", borderRadius: "6px", padding: "11px 22px", whiteSpace: "nowrap", border: "2px solid #D4A820" }}
+            >
+              <svg width="18" height="14" viewBox="0 0 28 22" fill="none" aria-hidden="true">
+                <rect x="1.5" y="1.5" width="25" height="19" rx="2.5" stroke="#fff" strokeWidth="2.2" fill="none" />
+                <polyline points="1.5,4.5 14,13.5 26.5,4.5" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" fill="none" />
+              </svg>
+              <span className="font-black text-white" style={{ fontSize: "15px" }}>無料相談はこちら</span>
+              <span className="font-black text-white" style={{ fontSize: "13px" }}>›</span>
+            </div>
+          </a>
 
         </div>
       </div>

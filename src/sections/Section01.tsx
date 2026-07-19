@@ -16,7 +16,7 @@ export default function Section02B() {
               <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
             </div>
             <div className="w-px h-10 bg-[#1a1a1a]" />
-            <span className="text-[#1a1a1a] font-bold text-[19px] lg:text-[16px]">親方ドットコムとは？</span>
+            <span className="text-[#1a1a1a] font-bold text-[19px] lg:text-[22px]">親方ドットコムとは？</span>
           </div>
           <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-4 mb-6" />
 
@@ -43,9 +43,9 @@ export default function Section02B() {
               </div>
 
               <h2 className="relative z-10 text-[#1a1a1a] font-black leading-[1.2] mb-6 text-[27px] lg:text-[48px]">
-                親方ドットコムは、<br />
+                <span className="bg-[#1a1a1a] text-[#f5a623] px-1">親方ドットコム</span>は、<br />
                 工事業者専門の<br />
-                <span className="text-[#D4A820]">集客支援サービス</span>です。
+                <span className="text-[#1a1a1a] border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">集客支援サービス</span>です。
               </h2>
               <p className="relative z-10 text-[#1a1a1a] text-[13px] lg:text-[16px] leading-[2] pb-8 lg:pb-0">
                 データ分析に基づいた集客戦略の立案から、<br />

@@ -1,4 +1,5 @@
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
+import paintDark from "../assets/images/ui/hero-paint-dark.webp";
 import imgCase01 from "../assets/images/OC07/results-case01-30.webp";
 import imgCase02 from "../assets/images/OC07/results-case02-50.webp";
 import brushYellow from "../assets/images/ui/brush-yellow.webp";
@@ -7,6 +8,7 @@ const cases = [
   {
     num: "01",
     type: "外壁塗装会社",
+    company: "株式会社フジタ塗装",
     location: "埼玉県さいたま市",
     imageSrc: imgCase01,
     imageAlt: "外壁塗装会社の事例",
@@ -21,6 +23,7 @@ const cases = [
   {
     num: "02",
     type: "内装リフォーム会社",
+    company: "石川リフォーム工業",
     location: "神奈川県横浜市",
     imageSrc: imgCase02,
     imageAlt: "内装リフォーム会社の事例",
@@ -28,7 +31,7 @@ const cases = [
     inquiryAfter: "月 19",
     salesBefore: "420",
     salesAfter: "1050",
-    period: "4ヶ月",
+    period: "2ヶ月",
     comment: <>継続的に元請けの案件が入るようになり、<br /></>,
     commentUnderline: "売上が安定して、会社の体力がつきました。",
   },
@@ -37,7 +40,7 @@ const cases = [
 export default function Section08() {
   return (
     <>
-      <section className="bg-white pt-14 pb-12 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
+      <section className="bg-white pt-14 pb-4 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative z-10">
 
@@ -50,7 +53,7 @@ export default function Section08() {
                 <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
               </div>
               <div className="w-px h-10 bg-[#1a1a1a]" />
-              <span className="text-[#1a1a1a] font-bold text-[16px]">導入実績・成果</span>
+              <span className="text-[#1a1a1a] font-bold text-[16px] lg:text-[22px]">導入実績・成果</span>
             </div>
             <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
             <div className="relative overflow-hidden mb-4">
@@ -86,11 +89,11 @@ export default function Section08() {
                     {/* Card header (shared) */}
                     <div className="flex items-center gap-3 mb-1">
                       <div className="bg-[#1a1a1a] px-2 py-0.5">
-                        <span className="text-white font-black text-[10px]">事例{c.num}</span>
+                        <span className="text-white font-black text-[10px]">case{c.num}</span>
                       </div>
                       <span className="text-[#1a1a1a] font-black text-[16px] lg:text-[18px]">{c.type}</span>
                     </div>
-                    <p className="text-[#333] font-bold text-[12px] lg:text-[13px] mb-4">{c.location}</p>
+                    <p className="text-[#333] font-bold text-[12px] lg:text-[13px] mb-4">{c.location}　{c.company} 様</p>
 
                     {/* ── SP metrics: big red numbers ── */}
                     <div className="lg:hidden">
@@ -104,12 +107,12 @@ export default function Section08() {
                         </div>
                         <div className="px-4 py-3 flex items-end gap-3">
                           <div>
-                            <p className="text-[#aaa] text-[10px] font-bold mb-0.5">導入前</p>
+                            <p className="text-[#777] text-[12px] font-bold mb-0.5">導入前</p>
                             <p className="text-[#aaa] font-black text-[18px] leading-none">{c.inquiryBefore}<span className="text-[11px] ml-0.5">件</span></p>
                           </div>
-                          <span className="text-[#ccc] font-bold text-[20px] mb-1">→</span>
+                          <span className="text-[#D4A820] font-black text-[20px] mb-1">→</span>
                           <div>
-                            <p className="text-[#e33] text-[10px] font-bold mb-0.5">導入後</p>
+                            <p className="text-[#e33] text-[14px] font-bold mb-0.5">導入後</p>
                             <p className="text-[#e33] font-black text-[42px] leading-none">{c.inquiryAfter}<span className="text-[13px] ml-1">件</span></p>
                           </div>
                         </div>
@@ -125,12 +128,12 @@ export default function Section08() {
                         </div>
                         <div className="px-4 py-3 flex items-end gap-3">
                           <div>
-                            <p className="text-[#aaa] text-[10px] font-bold mb-0.5">導入前</p>
+                            <p className="text-[#777] text-[12px] font-bold mb-0.5">導入前</p>
                             <p className="text-[#aaa] font-black text-[18px] leading-none">{c.salesBefore}<span className="text-[11px] ml-0.5">万円</span></p>
                           </div>
-                          <span className="text-[#ccc] font-bold text-[20px] mb-1">→</span>
+                          <span className="text-[#D4A820] font-black text-[20px] mb-1">→</span>
                           <div>
-                            <p className="text-[#e33] text-[10px] font-bold mb-0.5">導入後</p>
+                            <p className="text-[#e33] text-[14px] font-bold mb-0.5">導入後</p>
                             <p className="text-[#e33] font-black text-[42px] leading-none">{c.salesAfter}<span className="text-[13px] ml-1">万円</span></p>
                           </div>
                         </div>
@@ -153,12 +156,12 @@ export default function Section08() {
                         </div>
                         <div className="flex items-end gap-2">
                           <div>
-                            <p className="text-[#555] text-[11px] font-bold">導入前</p>
+                            <p className="text-[#333] text-[13px] font-bold">導入前</p>
                             <p className="text-[#1a1a1a] font-black text-[22px] lg:text-[26px]">{c.inquiryBefore}<span className="text-[12px] ml-1">件</span></p>
                           </div>
-                          <span className="text-[#1a1a1a] font-bold text-[18px] mb-1">→</span>
+                          <span className="text-[#D4A820] font-black text-[18px] mb-1">→</span>
                           <div>
-                            <p className="text-[#e33] text-[10px] font-bold">導入後</p>
+                            <p className="text-[#e33] text-[15px] font-bold">導入後</p>
                             <p className="text-[#e33] font-black text-[30px] lg:text-[36px]">{c.inquiryAfter}<span className="text-[13px] ml-1">件</span></p>
                           </div>
                         </div>
@@ -174,12 +177,12 @@ export default function Section08() {
                         </div>
                         <div className="flex items-end gap-2">
                           <div>
-                            <p className="text-[#555] text-[11px] font-bold">導入前</p>
+                            <p className="text-[#333] text-[13px] font-bold">導入前</p>
                             <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px]">{c.salesBefore}<span className="text-[12px] ml-0.5">万円</span></p>
                           </div>
-                          <span className="text-[#1a1a1a] font-bold text-[18px] mb-1">→</span>
+                          <span className="text-[#D4A820] font-black text-[18px] mb-1">→</span>
                           <div>
-                            <p className="text-[#e33] text-[10px] font-bold">導入後</p>
+                            <p className="text-[#e33] text-[15px] font-bold">導入後</p>
                             <p className="text-[#e33] font-black text-[30px] lg:text-[40px]">{c.salesAfter}<span className="text-[14px] ml-0.5">万円</span></p>
                           </div>
                         </div>
@@ -201,20 +204,42 @@ export default function Section08() {
         </div>
       </section>
 
-      {/* ── Bottom CTA bar ── */}
+      {/* ── Bottom Bar ── */}
       <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
-        <div className="flex flex-col gap-5 px-5 py-7 lg:flex-row lg:items-center lg:px-[68px] lg:py-8 lg:gap-8">
-          <p className="text-white font-bold text-[17px] lg:text-[20px] flex-1 leading-[1.7]">
-            2000社を超える支援実績から、<br />
-            業種や地域に合わせた<span className="text-[#D4A820]">最適な施策</span>をご提案します。
+        {/* SP */}
+        <div className="lg:hidden relative overflow-hidden -mx-0 px-5 py-5 text-center">
+          <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
+          <p className="relative z-10 text-white font-black text-[14px] leading-[2]">
+            親方ドットコムにご相談いただいた多くの<br />事業者様が<span className="text-[#D4A820]">大幅な業績改善を達成</span>しています！
           </p>
-          <a href="#contact" className="flex flex-col items-center bg-[#D4A820] px-8 py-4 no-underline self-start lg:self-auto">
-            <span className="text-[#1a1a1a] text-[11px] font-bold mb-1">毎月5社まで</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[#1a1a1a] font-black text-[16px] whitespace-nowrap">まずは無料相談する</span>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M4 9 H14 M9 4 L14 9 L9 14" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </div>
+        {/* PC */}
+        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#D4A820] min-h-[108px]">
+          <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
+          <div className="flex-1 py-7" />
+          <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+            <p className="text-white font-black text-[18px] leading-[2] text-center">
+              親方ドットコムにご相談いただいた多くの事業者様が<span className="text-[#D4A820]">大幅な業績改善を達成</span>しています！
+            </p>
+          </div>
+          <a
+            href="#contact"
+            aria-label="無料相談はこちら"
+            className="relative z-10 shrink-0 flex flex-col items-center justify-center no-underline gap-[10px] px-12"
+          >
+            <div className="relative">
+              <div style={{ backgroundColor: "#252525", color: "#fff", fontSize: "11px", fontWeight: 500, padding: "4px 14px", borderRadius: "4px", whiteSpace: "nowrap", lineHeight: 1.4 }}>
+                無料相談はカンタン&thinsp;<span style={{ color: "#D4A820", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
+              </div>
+              <div className="absolute left-1/2" style={{ bottom: "-7px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: "7px solid #252525" }} />
+            </div>
+            <div className="flex items-center" style={{ gap: "10px", borderRadius: "6px", padding: "11px 22px", whiteSpace: "nowrap", border: "2px solid #D4A820" }}>
+              <svg width="18" height="14" viewBox="0 0 28 22" fill="none" aria-hidden="true">
+                <rect x="1.5" y="1.5" width="25" height="19" rx="2.5" stroke="#fff" strokeWidth="2.2" fill="none" />
+                <polyline points="1.5,4.5 14,13.5 26.5,4.5" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" fill="none" />
               </svg>
+              <span className="font-black text-white" style={{ fontSize: "15px" }}>無料相談はこちら</span>
+              <span className="font-black text-white" style={{ fontSize: "13px" }}>›</span>
             </div>
           </a>
         </div>

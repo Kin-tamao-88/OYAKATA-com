@@ -308,30 +308,54 @@ export default function Hero() {
       <a
         href="#contact"
         aria-label="無料相談はこちら"
-        className="hidden lg:flex items-stretch bg-[#111111] no-underline"
-        style={{ minHeight: "108px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none" }}
+        className="hidden lg:flex items-center justify-center gap-[180px] bg-[#111111] no-underline hover:bg-[#1a1a1a] transition-colors"
+        style={{ minHeight: "120px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none", cursor: "pointer" }}
       >
-        <div className="flex items-center flex-1" style={{ paddingLeft: "68px", paddingRight: "40px" }}>
+        {/* 左：テキスト */}
+        <div className="flex flex-col justify-center">
           <p className="text-white font-black leading-tight m-0" style={{ fontSize: "26px" }}>
             下請けだけの経営から、
             <span style={{ color: "#D4A820", borderBottom: "2px solid #D4A820", paddingBottom: "1px" }}>脱却</span>
             しませんか？
           </p>
+          <p className="text-white font-black m-0" style={{ fontSize: "26px", marginTop: "6px" }}>
+            まずはお気軽にご相談ください。
+          </p>
         </div>
 
+        {/* 右：バッジ＋ボタン */}
         <div
-          className="flex flex-col items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: "#D4A820", paddingLeft: "52px", paddingRight: "52px", gap: "5px" }}
+          className="relative flex flex-col items-center justify-center flex-shrink-0"
+          style={{ gap: "10px", paddingTop: "22px", paddingBottom: "22px" }}
         >
-          <span className="font-bold text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.65, letterSpacing: "0.04em" }}>相談・提案すべて無料</span>
-          <div className="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "17px", whiteSpace: "nowrap" }}>無料相談はこちら ›</span>
+          {/* バッジ（スピーチバブル） */}
+          <div className="relative">
+            <div
+              className="text-white"
+              style={{ backgroundColor: "#252525", fontSize: "12px", fontWeight: 500, padding: "6px 16px", borderRadius: "5px", whiteSpace: "nowrap", lineHeight: 1.4 }}
+            >
+              無料相談はカンタン&thinsp;
+              <span style={{ color: "#D4A820", fontSize: "16px", fontWeight: 900 }}>1分</span>
+              &thinsp;で入力完了
+            </div>
+            <div
+              className="absolute left-1/2"
+              style={{ bottom: "-8px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "6px solid transparent", borderRight: "6px solid transparent", borderTop: "9px solid #252525" }}
+            />
           </div>
-          <span className="text-[#1a1a1a]" style={{ fontSize: "11px", opacity: 0.55 }}>1分で簡単入力</span>
+
+          {/* CTAボタン */}
+          <div
+            className="flex items-center bg-[#D4A820]"
+            style={{ gap: "12px", borderRadius: "7px", padding: "15px 28px", whiteSpace: "nowrap" }}
+          >
+            <svg width="22" height="17" viewBox="0 0 28 22" fill="none" aria-hidden="true">
+              <rect x="1.5" y="1.5" width="25" height="19" rx="2.5" stroke="#111" strokeWidth="2.2" fill="none" />
+              <polyline points="1.5,4.5 14,13.5 26.5,4.5" stroke="#111" strokeWidth="2.2" strokeLinejoin="round" fill="none" />
+            </svg>
+            <span className="font-black text-[#111111]" style={{ fontSize: "19px" }}>無料相談はこちら</span>
+            <span className="font-black text-[#111111]" style={{ fontSize: "17px" }}>›</span>
+          </div>
         </div>
       </a>
     </>
