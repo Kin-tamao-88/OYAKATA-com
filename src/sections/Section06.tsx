@@ -64,7 +64,7 @@ export default function Section07() {
           </div>
           <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
           <h2 className="text-[#1a1a1a] font-black leading-[1.15] mb-5 text-[27px] lg:text-[56px] text-balance">
-            選ばれ続けるには、<span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]"><span className="text-[#D4A820]">理由</span>があります。</span>
+            選ばれ続けるには、<br className="lg:hidden" /><span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]"><span className="text-[#D4A820]">理由</span>があります。</span>
           </h2>
         </div>
 

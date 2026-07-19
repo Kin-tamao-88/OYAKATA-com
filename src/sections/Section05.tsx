@@ -123,7 +123,7 @@ export default function Section06() {
                     </div>
                     {/* テキスト */}
                     <div className="flex-1 pt-3">
-                      <h3 className="text-[#1a1a1a] font-black text-[18px] lg:text-[20px] mb-1">{step.title}</h3>
+                      <h3 className="inline-block bg-[#1a1a1a] text-white font-black text-[18px] lg:text-[20px] px-3 py-1 mb-1">{step.title}</h3>
                       <div className="w-12 h-[3px] bg-[#D4A820] mb-2" />
                       <p className="text-[#1a1a1a] text-[14px] leading-[1.9]">
                         {step.bodyJsx ?? step.body}
