@@ -26,7 +26,7 @@ export default function Section02B() {
             <div className="w-full lg:w-[50%] lg:shrink-0 lg:pb-20 relative">
               {/* SP右ブリード背景画像 */}
               <div
-                className="lg:hidden absolute top-[-50px] right-[-16px] pointer-events-none"
+                className="lg:hidden absolute top-[-30px] right-[-11px] pointer-events-none"
                 style={{
                   width: "85%",
                   WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)",
@@ -56,7 +56,7 @@ export default function Section02B() {
             </div>
 
             {/* PC のみ画像カラム */}
-            <div className="hidden lg:block lg:flex-1 lg:-mr-[68px] lg:scale-[1.15] lg:origin-bottom lg:-translate-x-[15px]">
+            <div className="hidden lg:block lg:flex-1 lg:-mr-[68px] lg:scale-[1.15] lg:origin-bottom lg:-translate-x-[60px]">
               <img
                 src={dashboardMockup}
                 alt="親方ドットコム ダッシュボード画面"
