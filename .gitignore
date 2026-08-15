@@ -4,3 +4,8 @@ dist
 .env.local
 .DS_Store
 *.log
+
+# 参考モック・未使用アセット・ローカル設定
+reference/
+public/favicon.png
+.claude/
