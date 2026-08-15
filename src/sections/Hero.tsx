@@ -31,7 +31,7 @@ export default function Hero() {
           </div>
 
           {/* 左：テキストコンテンツ */}
-          <div className="relative z-10 pl-4 pt-6 pb-4">
+          <div className="relative z-10 pl-4 pt-12 pb-8">
 
             {/* 黒ペイント */}
             <img
@@ -128,18 +128,18 @@ export default function Hero() {
           </div>
 
           {/* サブコピー */}
-          <div className="relative z-10 px-4 pt-1 pb-3">
-            <p className="inline-block font-bold text-white bg-[#1a1a1a] text-[12px] leading-snug mb-1 px-2 py-1">
+          <div className="relative z-10 px-4 pt-4 pb-6">
+            <p className="inline-block font-bold text-white bg-[#1a1a1a] text-[13px] leading-snug mb-1 px-2 py-1">
               集客のプロが、御社の売上を後押しします。
             </p>
-            <p className="text-[#1a1a1a] font-bold text-[11px] leading-relaxed">
+            <p className="text-[#1a1a1a] font-bold text-[12px] leading-relaxed">
               工務店・リフォーム・外壁塗装・設備・内装など<br />
               工事業者専門の集客支援サービス
             </p>
           </div>
 
           {/* 実績バッジ */}
-          <div className="relative z-10 grid grid-cols-3 gap-2 px-4 pb-5">
+          <div className="relative z-10 grid grid-cols-3 gap-2 px-4 pb-9">
             <img src={badge1} alt="受注単価 平均40%UP" className="w-full h-auto" />
             <img src={badge2} alt="問い合わせ数 平均3倍" className="w-full h-auto" />
             <img src={badge3} alt="最短1ヶ月で効果実感" className="w-full h-auto" />
@@ -148,7 +148,7 @@ export default function Hero() {
         </section>
 
         {/* SP CTA帯 */}
-        <div className="bg-[#111111] px-4 pt-4 pb-4">
+        <div className="bg-[#111111] px-4 pt-8 pb-8">
           <p className="text-white font-black text-[15px] leading-[1.35] mb-2.5 text-center">
             下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
           </p>
