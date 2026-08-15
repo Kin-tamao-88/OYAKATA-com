@@ -20,10 +20,10 @@ export default function Header() {
     <>
       {/* ══ SP Header ══════════════════════════════════════════════════ */}
       <div className="lg:hidden sticky top-0 z-40 bg-white border-b-2 border-[#f5a623]">
-        <div className="flex items-center px-3 h-[56px] gap-3">
+        <div className="flex items-center px-3 h-[68px] gap-3">
 
           {/* 左：ロゴマーク */}
-          <div className="flex-1 overflow-hidden h-[56px] flex items-center justify-center mt-[9px]">
+          <div className="flex-1 overflow-hidden h-[68px] flex items-center justify-center mt-[9px]">
             <img
               src={logoMark}
               alt="親方ドットコム"

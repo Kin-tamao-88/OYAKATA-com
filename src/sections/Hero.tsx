@@ -31,7 +31,7 @@ export default function Hero() {
           </div>
 
           {/* 左：テキストコンテンツ */}
-          <div className="relative z-10 pl-4 pt-12 pb-8">
+          <div className="relative z-10 pl-4 pt-16 pb-8">
 
             {/* 黒ペイント */}
             <img
@@ -148,7 +148,7 @@ export default function Hero() {
         </section>
 
         {/* SP CTA帯 */}
-        <div className="bg-[#111111] px-4 pt-8 pb-8">
+        <div className="bg-[#111111] px-4 pt-[18px] pb-[18px]">
           <p className="text-white font-black text-[15px] leading-[1.35] mb-2.5 text-center">
             下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
           </p>
