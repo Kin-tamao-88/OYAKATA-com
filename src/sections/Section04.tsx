@@ -99,27 +99,31 @@ export default function Section05() {
             <p className="text-white font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
               バラバラの施策で、<br />一時的に集客して終わり…
             </p>
-            <div className="flex flex-col gap-0 flex-1">
-              {leftItems.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 py-3">
-                  <div className="shrink-0">{item.icon}</div>
-                  <div>
-                    <p className="text-white font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                    <p className="text-[#aaa] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
+            <div className="flex flex-col gap-0 flex-1 items-center">
+              <div className="w-fit">
+                {leftItems.map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 py-3">
+                    <div className="shrink-0">{item.icon}</div>
+                    <div>
+                      <p className="text-white font-bold text-[14px] lg:text-[15px]">{item.text}</p>
+                      <p className="text-[#aaa] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-            <div className="mt-6 pt-4 border-t border-[#444] flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M8 2 L8 14 M2 8 L14 8" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" transform="rotate(45 8 8)" />
+            <div className="mt-6 bg-[#2b2b2b] rounded-md px-4 py-3 flex items-center gap-2">
+              <svg width="20" height="18" viewBox="0 0 20 18" fill="none" aria-hidden="true" className="shrink-0">
+                <path d="M10 2 L18.5 16.5 H1.5 Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+                <line x1="10" y1="7" x2="10" y2="11" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                <circle cx="10" cy="13.5" r="0.9" fill="white" />
               </svg>
-              <span className="text-[#aaa] text-[12px]">点の施策では、<br className="lg:hidden" />安定した集客は実現できません。</span>
+              <span className="text-white font-bold text-[13px] lg:text-[14px]">これらの施策では、<br className="lg:hidden" />安定した集客は実現できません。</span>
             </div>
           </div>
 
           {/* Center arrow: horizontal on PC, vertical on SP */}
-          <div className="flex items-center justify-center py-2 lg:py-0 lg:px-0 lg:shrink-0" style={{ width: "auto" }}>
+          <div className="flex items-center justify-center py-2 lg:py-0 lg:w-[150px] lg:shrink-0">
             {/* SP: downward arrow */}
             <div className="flex flex-col items-center lg:hidden">
               <svg width="36" height="40" viewBox="0 0 36 40" fill="none" aria-hidden="true">
@@ -128,13 +132,10 @@ export default function Section05() {
               </svg>
               <p className="bg-[#1a1a1a] text-[#D4A820] font-black text-[16px] text-center mt-2 px-5 py-2">集客は「仕組み」で変わる！</p>
             </div>
-            {/* PC: right arrow */}
-            <div className="hidden lg:flex flex-col items-center" style={{ width: "120px" }}>
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-                <polygon points="0,10 60,40 0,70" fill="#D4A820" />
-              </svg>
-              <p className="text-[#1a1a1a] font-black text-[13px] text-center leading-tight mt-2" style={{ width: "80px" }}>
-                集客は<br />「仕組み」で<br />変わる！
+            {/* PC: black arrow badge, contained within the gap between panels */}
+            <div className="hidden lg:flex items-center justify-center bg-[#3a3a3a] [clip-path:polygon(0_0,72%_0,100%_50%,72%_100%,0_100%)] w-[140px] h-[90px] pl-5 pr-9">
+              <p className="text-[#D4A820] font-black text-[16px] leading-tight whitespace-nowrap">
+                集客は<br />仕組みで<br />変わる！
               </p>
             </div>
           </div>
@@ -147,16 +148,18 @@ export default function Section05() {
             <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
               仕組みで集客を生み出し、<br />安定した売上につなげます。
             </p>
-            <div className="flex flex-col gap-0 flex-1">
-              {rightItems.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 py-3">
-                  <img src={item.icon} alt="" aria-hidden="true" className="w-[48px] h-[48px] object-contain shrink-0" />
-                  <div>
-                    <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                    <p className="text-[#333] text-[14px] lg:text-[13px] mt-0.5">{item.sub}</p>
+            <div className="flex flex-col gap-0 flex-1 items-center">
+              <div className="w-fit">
+                {rightItems.map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 py-3">
+                    <img src={item.icon} alt="" aria-hidden="true" className="w-[48px] h-[48px] object-contain shrink-0" />
+                    <div>
+                      <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
+                      <p className="text-[#333] text-[14px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             <div className="mt-5 pt-4 border-t border-[#D4A820] flex items-center gap-2">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
