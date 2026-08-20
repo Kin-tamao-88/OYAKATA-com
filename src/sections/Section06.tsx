@@ -70,7 +70,7 @@ export default function Section07() {
 
         {/* ── Reason blocks ── */}
         {reasons.map((r, i) => (
-          <div key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#1a1a1a]"}>
+          <div key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#1a1a1a] lg:bg-white"}>
             <div className="max-w-[1280px] mx-auto">
 
               {/* SP */}
