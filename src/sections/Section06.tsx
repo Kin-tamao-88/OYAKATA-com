@@ -128,8 +128,10 @@ export default function Section07() {
             </p>
           </div>
           <a
-            href="#contact"
-            aria-label="無料相談はこちら"
+            href="https://lin.ee/yFZ5vjU"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LINEで無料相談"
             className="relative z-10 shrink-0 flex flex-col items-center justify-center no-underline gap-[10px] px-12"
           >
             <div className="relative">

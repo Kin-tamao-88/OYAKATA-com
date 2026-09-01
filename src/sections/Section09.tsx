@@ -57,7 +57,7 @@ const trustItems = [
         <path d="M9.5 14 L13 17.5 L19 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "相談無料",
+    title: "ご相談無料",
     detail: "無理な営業は一切しません",
   },
   {
@@ -195,7 +195,7 @@ export default function Section09() {
                   {item.icon}
                 </div>
                 <div>
-                  <p className="text-[#1a1a1a] font-black text-[15px] lg:text-[16px] leading-[1.6]">{item.title}</p>
+                  <p className={`${i === 2 ? "text-[#1a1a1a]" : "text-[#e33]"} font-black text-[15px] lg:text-[16px] leading-[1.6]`}>{item.title}</p>
                   <p className="text-[#1a1a1a] font-black text-[14px] lg:text-[15px] mt-1 leading-[1.6]">{item.detail}</p>
                 </div>
               </div>

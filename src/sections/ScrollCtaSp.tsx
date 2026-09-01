@@ -44,7 +44,9 @@ export default function ScrollCtaSp() {
       }`}
     >
       <a
-        href="#contact"
+        href="https://lin.ee/yFZ5vjU"
+        target="_blank"
+        rel="noopener noreferrer"
         className="relative block bg-[#111] rounded-xl overflow-hidden no-underline"
         style={{ textDecoration: "none" }}
       >

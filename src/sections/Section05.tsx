@@ -166,8 +166,10 @@ export default function Section06() {
       </div>
       {/* PC CTA帯 */}
       <a
-        href="#contact"
-        aria-label="無料相談はこちら"
+        href="https://lin.ee/yFZ5vjU"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LINEで無料相談"
         className="hidden lg:flex items-stretch bg-[#111111] no-underline"
         style={{ minHeight: "108px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none" }}
       >

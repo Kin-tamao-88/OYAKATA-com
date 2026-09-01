@@ -153,7 +153,9 @@ export default function Hero() {
             下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
           </p>
           <a
-            href="#contact"
+            href="https://lin.ee/yFZ5vjU"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="LINEで無料相談"
             className="flex items-center justify-center gap-2.5 bg-[#FFD000] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
           >
@@ -310,7 +312,9 @@ export default function Hero() {
 
       {/* ══ PC 黒CTA帯 ══════════════════════════════════════════════════ */}
       <a
-        href="#contact"
+        href="https://lin.ee/yFZ5vjU"
+        target="_blank"
+        rel="noopener noreferrer"
         aria-label="LINEで無料相談"
         className="hidden lg:flex items-center justify-center gap-[180px] bg-[#111111] no-underline hover:bg-[#1a1a1a] transition-colors"
         style={{ minHeight: "120px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none", cursor: "pointer" }}

@@ -135,7 +135,7 @@ export default function Section09() {
                 <line x1="7" y1="14" x2="7" y2="17" stroke="#D4A820" strokeWidth="1.5" strokeLinecap="round" />
                 <line x1="4" y1="17" x2="10" y2="17" stroke="#D4A820" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
-              <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムご利用企業様の社員さんにインタビューしました！</p>
+              <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムご利用企業様の<br className="lg:hidden" />社員さんにインタビューしました！</p>
             </div>
             <p className="text-[#555] text-[13px] lg:text-[14px]">元請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
           </div>
@@ -207,8 +207,10 @@ export default function Section09() {
             </p>
           </div>
           <a
-            href="#contact"
-            aria-label="無料相談はこちら"
+            href="https://lin.ee/yFZ5vjU"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LINEで無料相談"
             className="relative z-10 shrink-0 flex flex-col items-center justify-center no-underline gap-[10px] px-12"
           >
             <div className="relative">

@@ -10,7 +10,6 @@ const navItems = [
   { label: "導入実績・成果", href: "#s07" },
   { label: "現場の声", href: "#s08" },
   { label: "ご相談後のサポート", href: "#s09" },
-  { label: "無料相談フォーム", href: "#contact" },
 ];
 
 const pcNavItems = [
@@ -88,9 +87,9 @@ export default function Header() {
               <a
                 href="#contact"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 bg-[#D4A820] py-4 no-underline"
+                className="flex items-center justify-center gap-2 bg-[#FFD000] py-4 no-underline"
               >
-                <span className="font-black text-[#1a1a1a] text-[15px]">無料相談はこちら ›</span>
+                <span className="font-black text-[#1a1a1a] text-[15px]">無料のご相談はこちら ›</span>
               </a>
             </div>
           </div>
@@ -158,7 +157,9 @@ export default function Header() {
 
           {/* LINE CTA：ヘッダー全高パネル */}
           <a
-            href="#contact"
+            href="https://lin.ee/yFZ5vjU"
+            target="_blank"
+            rel="noopener noreferrer"
             className="relative flex flex-col items-center justify-center flex-shrink-0 self-stretch no-underline hover:bg-gray-50 transition-colors"
             style={{ paddingLeft: "36px", paddingRight: "36px", textDecoration: "none" }}
           >

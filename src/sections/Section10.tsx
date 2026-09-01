@@ -39,7 +39,7 @@ export default function Section10() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">会社名</label>
-                  <span className="bg-[#D4A820] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -63,7 +63,7 @@ export default function Section10() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">ご担当者名</label>
-                  <span className="bg-[#D4A820] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -84,7 +84,7 @@ export default function Section10() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">電話番号</label>
-                  <span className="bg-[#D4A820] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -104,7 +104,7 @@ export default function Section10() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">メールアドレス</label>
-                  <span className="bg-[#D4A820] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -125,7 +125,7 @@ export default function Section10() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">お住まいの地域</label>
-                  <span className="bg-[#D4A820] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -185,11 +185,11 @@ export default function Section10() {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="w-full max-w-[600px] bg-[#D4A820] hover:bg-[#c49718] transition-colors text-white font-black text-[19px] lg:text-[22px] py-5 rounded-xl flex items-center justify-center gap-3"
+                className="w-full max-w-[600px] bg-[#FFD000] hover:brightness-95 transition-all text-[#1a1a1a] font-black text-[19px] lg:text-[22px] py-5 rounded-xl flex items-center justify-center gap-3"
               >
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                  <rect x="1" y="4" width="20" height="14" rx="2" stroke="white" strokeWidth="1.8" />
-                  <path d="M1 7.5l10 7 10-7" stroke="white" strokeWidth="1.8" />
+                  <rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1a1a" strokeWidth="1.8" />
+                  <path d="M1 7.5l10 7 10-7" stroke="#1a1a1a" strokeWidth="1.8" />
                 </svg>
                 無料相談を申し込む
                 <span className="text-[22px] leading-none">›</span>
