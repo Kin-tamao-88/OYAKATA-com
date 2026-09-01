@@ -119,7 +119,7 @@ export default function ScrollCtaSp() {
 
             {/* CTAボタン */}
             <div
-              className="flex items-center justify-center gap-1.5 bg-[#f5a623] hover:brightness-95 active:brightness-95 transition-all"
+              className="flex items-center justify-center gap-1.5 bg-[#FFD000] hover:brightness-95 active:brightness-95 transition-all"
               style={{ borderRadius: "6px", padding: "10px 8px" }}
             >
               <span

@@ -155,7 +155,7 @@ export default function Hero() {
           <a
             href="#contact"
             aria-label="LINEで無料相談"
-            className="flex items-center justify-center gap-2.5 bg-[#f5a623] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
+            className="flex items-center justify-center gap-2.5 bg-[#FFD000] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
           >
             <span
               className="flex items-center justify-center flex-shrink-0 rounded-full"
@@ -350,7 +350,7 @@ export default function Hero() {
 
           {/* CTAボタン */}
           <div
-            className="flex items-center bg-yellow-brand hover:brightness-95 transition-all"
+            className="flex items-center bg-[#FFD000] hover:brightness-95 transition-all"
             style={{ gap: "12px", borderRadius: "7px", padding: "15px 28px", whiteSpace: "nowrap" }}
           >
             <span

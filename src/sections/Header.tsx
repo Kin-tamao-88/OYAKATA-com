@@ -164,7 +164,7 @@ export default function Header() {
           >
             {/* CTAボタン */}
             <div
-              className="flex items-center bg-yellow-brand hover:brightness-95 transition-all"
+              className="flex items-center bg-[#FFD000] hover:brightness-95 transition-all"
               style={{ gap: "10px", borderRadius: "6px", padding: "11px 22px", whiteSpace: "nowrap" }}
             >
               <span
