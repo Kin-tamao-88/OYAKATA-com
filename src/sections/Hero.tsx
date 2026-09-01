@@ -92,7 +92,7 @@ export default function Hero() {
                 marginTop: "4px",
                 marginBottom: "-17px",
                 zIndex: 10,
-                transform: "translateY(22px) rotate(-6deg)",
+                transform: "translateY(-3px) rotate(-6deg)",
                 transformOrigin: "left center",
               }}
             >
@@ -122,7 +122,7 @@ export default function Hero() {
               src={brushHeroText}
               alt="もっと増やす。"
               className="relative block"
-              style={{ width: "260px", height: "auto", marginLeft: "-4px", marginTop: "7px", zIndex: 2 }}
+              style={{ width: "260px", height: "auto", marginLeft: "-4px", marginTop: "7px", zIndex: 2, transform: "translateY(-25px)" }}
             />
 
           </div>
@@ -154,14 +154,18 @@ export default function Hero() {
           </p>
           <a
             href="#contact"
-            aria-label="無料相談はこちら"
-            className="flex items-center justify-center gap-2.5 bg-[#D4A820] no-underline rounded-lg py-3 w-full"
+            aria-label="LINEで無料相談"
+            className="flex items-center justify-center gap-2.5 bg-[#f5a623] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
           >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-            <span className="font-black text-[#1a1a1a] text-[16px]">無料相談はこちら ›</span>
+            <span
+              className="flex items-center justify-center flex-shrink-0 rounded-full"
+              style={{ width: "20px", height: "20px", backgroundColor: "#fff" }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" role="img" aria-label="LINE" fill="#06C755">
+                <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+              </svg>
+            </span>
+            <span className="font-black text-[#1a1a1a] text-[16px]">LINEで無料相談 ›</span>
           </a>
         </div>
       </div>
@@ -252,7 +256,7 @@ export default function Hero() {
 
             <div
               className="relative font-black text-white leading-none"
-              style={{ fontSize: "78px", letterSpacing: "-0.04em", marginTop: "8px", marginBottom: "-32px", zIndex: 10, transform: "translateY(64px) rotate(-6deg)", transformOrigin: "left center" }}
+              style={{ fontSize: "78px", letterSpacing: "-0.04em", marginTop: "8px", marginBottom: "-32px", zIndex: 10, transform: "translateY(49px) rotate(-6deg)", transformOrigin: "left center" }}
             >
               元請け案件を、
             </div>
@@ -307,7 +311,7 @@ export default function Hero() {
       {/* ══ PC 黒CTA帯 ══════════════════════════════════════════════════ */}
       <a
         href="#contact"
-        aria-label="無料相談はこちら"
+        aria-label="LINEで無料相談"
         className="hidden lg:flex items-center justify-center gap-[180px] bg-[#111111] no-underline hover:bg-[#1a1a1a] transition-colors"
         style={{ minHeight: "120px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none", cursor: "pointer" }}
       >
@@ -334,9 +338,9 @@ export default function Hero() {
               className="text-white"
               style={{ backgroundColor: "#252525", fontSize: "12px", fontWeight: 500, padding: "6px 16px", borderRadius: "5px", whiteSpace: "nowrap", lineHeight: 1.4 }}
             >
-              無料相談はカンタン&thinsp;
-              <span style={{ color: "#D4A820", fontSize: "16px", fontWeight: 900 }}>1分</span>
-              &thinsp;で入力完了
+              LINEならカンタン&thinsp;
+              <span style={{ color: "#f5a623", fontSize: "16px", fontWeight: 900 }}>1分</span>
+              &thinsp;で相談
             </div>
             <div
               className="absolute left-1/2"
@@ -346,15 +350,19 @@ export default function Hero() {
 
           {/* CTAボタン */}
           <div
-            className="flex items-center bg-[#D4A820]"
+            className="flex items-center bg-yellow-brand hover:brightness-95 transition-all"
             style={{ gap: "12px", borderRadius: "7px", padding: "15px 28px", whiteSpace: "nowrap" }}
           >
-            <svg width="22" height="17" viewBox="0 0 28 22" fill="none" aria-hidden="true">
-              <rect x="1.5" y="1.5" width="25" height="19" rx="2.5" stroke="#111" strokeWidth="2.2" fill="none" />
-              <polyline points="1.5,4.5 14,13.5 26.5,4.5" stroke="#111" strokeWidth="2.2" strokeLinejoin="round" fill="none" />
-            </svg>
-            <span className="font-black text-[#111111]" style={{ fontSize: "19px" }}>無料相談はこちら</span>
-            <span className="font-black text-[#111111]" style={{ fontSize: "17px" }}>›</span>
+            <span
+              className="flex items-center justify-center flex-shrink-0 rounded-full"
+              style={{ width: "30px", height: "30px", backgroundColor: "#fff" }}
+            >
+              <svg width="19" height="19" viewBox="0 0 24 24" role="img" aria-label="LINE" fill="#06C755">
+                <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+              </svg>
+            </span>
+            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "19px" }}>LINEで無料相談</span>
+            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "17px" }}>›</span>
           </div>
         </div>
       </a>
