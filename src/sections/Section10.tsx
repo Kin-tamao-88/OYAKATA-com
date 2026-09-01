@@ -201,6 +201,19 @@ export default function Section10() {
 
           </div>
         </div>
+
+        {/* ── 運営者情報 ── */}
+        <div className="mt-6 lg:mt-8 text-center">
+          <p className="text-[#666] text-[13px] lg:text-[14px] leading-relaxed">
+            運営会社：アイブレ株式会社
+          </p>
+          <a
+            href="/privacy"
+            className="inline-block mt-2 text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#1a1a1a] transition-colors"
+          >
+            プライバシーポリシー
+          </a>
+        </div>
       </div>
     </section>
   );
