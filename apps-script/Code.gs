@@ -33,13 +33,14 @@ function doPost(e) {
     }
 
     var receivedAt = new Date();
+    var receivedAtLabel = Utilities.formatDate(receivedAt, 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
 
     var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
     if (!sheet) {
       return jsonResponse({ success: false, error: 'シートが見つかりません。' });
     }
 
-    sheet.appendRow([receivedAt, company, name, phone, email, area, message]);
+    sheet.appendRow([receivedAtLabel, company, name, phone, email, area, message]);
 
     sendNotificationEmail({
       company: company,
@@ -48,7 +49,7 @@ function doPost(e) {
       email: email,
       area: area,
       message: message,
-      receivedAt: receivedAt,
+      receivedAtLabel: receivedAtLabel,
     });
 
     return jsonResponse({ success: true });
@@ -63,8 +64,6 @@ function sanitize(value) {
 }
 
 function sendNotificationEmail(d) {
-  var formattedDate = Utilities.formatDate(d.receivedAt, 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
-
   var subject = '【親方ドットコム】新しい無料相談が入りました';
   var body =
     '親方ドットコムから新しいお問い合わせが入りました。\n\n' +
@@ -74,7 +73,7 @@ function sendNotificationEmail(d) {
     'メールアドレス：' + d.email + '\n' +
     'お住まいの地域：' + d.area + '\n' +
     'ご相談内容：' + (d.message || '（記入なし）') + '\n\n' +
-    '受付日時：' + formattedDate;
+    '受付日時：' + d.receivedAtLabel;
 
   MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
 }

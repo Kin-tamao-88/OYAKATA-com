@@ -9,3 +9,4 @@ dist
 reference/
 public/favicon.png
 .claude/
+.vercel
