@@ -1,4 +1,5 @@
 import paintDark from "../assets/images/ui/hero-paint-dark.webp";
+import { trackLineClick } from "../lib/analytics";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import imgMarketing from "../assets/images/OC06/reason-industry-marketing.webp";
 import imgData from "../assets/images/OC06/reason-data-analysis.webp";
@@ -132,6 +133,7 @@ export default function Section07() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LINEで無料相談"
+            onClick={trackLineClick}
             className="relative z-10 shrink-0 flex flex-col items-center justify-center no-underline gap-[10px] px-12"
           >
             <div className="relative">

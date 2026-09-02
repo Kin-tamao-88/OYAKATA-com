@@ -1,5 +1,6 @@
 import { useState } from "react";
 import logoMark from "../assets/images/logos/logo-mark2.webp";
+import { trackLineClick } from "../lib/analytics";
 
 const navItems = [
   { label: "親方ドットコムとは？", href: "#s01" },
@@ -160,6 +161,7 @@ export default function Header() {
             href="https://lin.ee/yFZ5vjU"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackLineClick}
             className="relative flex flex-col items-center justify-center flex-shrink-0 self-stretch no-underline hover:bg-gray-50 transition-colors"
             style={{ paddingLeft: "36px", paddingRight: "36px", textDecoration: "none" }}
           >

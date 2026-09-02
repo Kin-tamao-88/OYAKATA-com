@@ -1,5 +1,6 @@
 import React from "react";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
+import { trackLineClick } from "../lib/analytics";
 import paintDark from "../assets/images/ui/hero-paint-dark.webp";
 import imgGenba from "../assets/images/OC08/better08-genba.webp";
 import imgWakate from "../assets/images/OC08/better08-wakate.webp";
@@ -211,6 +212,7 @@ export default function Section09() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LINEで無料相談"
+            onClick={trackLineClick}
             className="relative z-10 shrink-0 flex flex-col items-center justify-center no-underline gap-[10px] px-12"
           >
             <div className="relative">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { trackLineClick } from "../lib/analytics";
 
 export default function ScrollCtaSp() {
   const [visible, setVisible] = useState(false);
@@ -47,6 +48,7 @@ export default function ScrollCtaSp() {
         href="https://lin.ee/yFZ5vjU"
         target="_blank"
         rel="noopener noreferrer"
+        onClick={trackLineClick}
         className="relative block bg-[#111] rounded-xl overflow-hidden no-underline"
         style={{ textDecoration: "none" }}
       >

@@ -1,4 +1,5 @@
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
+import { trackLineClick } from "../lib/analytics";
 
 const steps = [
   {
@@ -170,6 +171,7 @@ export default function Section06() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LINEで無料相談"
+        onClick={trackLineClick}
         className="hidden lg:flex items-stretch bg-[#111111] no-underline"
         style={{ minHeight: "108px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none" }}
       >

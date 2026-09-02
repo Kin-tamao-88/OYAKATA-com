@@ -5,6 +5,7 @@ import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.webp";
 import badge1 from "../assets/images/ui/badge-1-unit-price.webp";
 import badge2 from "../assets/images/ui/badge-2-inquiry.webp";
 import badge3 from "../assets/images/ui/badge-3-speed.webp";
+import { trackLineClick } from "../lib/analytics";
 
 export default function Hero() {
   return (
@@ -157,6 +158,7 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LINEで無料相談"
+            onClick={trackLineClick}
             className="flex items-center justify-center gap-2.5 bg-[#FFD000] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
           >
             <span
@@ -316,6 +318,7 @@ export default function Hero() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LINEで無料相談"
+        onClick={trackLineClick}
         className="hidden lg:flex items-center justify-center gap-[180px] bg-[#111111] no-underline hover:bg-[#1a1a1a] transition-colors"
         style={{ minHeight: "120px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none", cursor: "pointer" }}
       >
