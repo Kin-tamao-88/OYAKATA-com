@@ -1,4 +1,43 @@
+import { useState } from "react";
+import type { FormEvent } from "react";
+import {
+  AREA_OPTIONS,
+  INITIAL_CONTACT_FORM,
+  pushGenerateLeadEvent,
+  submitContactForm,
+} from "../lib/contactForm";
+import type { ContactFormState } from "../lib/contactForm";
+
 export default function Section10() {
+  const [form, setForm] = useState<ContactFormState>(INITIAL_CONTACT_FORM);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  function updateField<K extends keyof ContactFormState>(key: K, value: ContactFormState[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    const result = await submitContactForm(form);
+
+    if (result.ok) {
+      pushGenerateLeadEvent();
+      setForm(INITIAL_CONTACT_FORM);
+      setIsSubmitted(true);
+    } else {
+      setErrorMessage(result.message);
+    }
+
+    setIsSubmitting(false);
+  }
+
   return (
     <section className="bg-[#f5f5f5] py-16 lg:py-24">
       <div className="max-w-[960px] mx-auto px-5 lg:px-8">
@@ -25,6 +64,24 @@ export default function Section10() {
 
           {/* ── フォームエリア ── */}
           <div className="px-7 lg:px-12 pt-8 pb-10 lg:pt-10 lg:pb-12">
+
+            {isSubmitted ? (
+              <div className="py-10 lg:py-14 text-center">
+                <div className="mx-auto mb-5 w-14 h-14 rounded-full bg-[#FFD000]/15 flex items-center justify-center">
+                  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+                    <path d="M5 13.5l5.5 5.5L21 8" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <p className="text-[#1a1a1a] font-black text-[20px] lg:text-[22px] mb-3">
+                  送信が完了しました
+                </p>
+                <p className="text-[#1a1a1a] text-[14px] lg:text-[15px] leading-[1.85]">
+                  お問い合わせいただきありがとうございます。<br />
+                  1営業日以内に担当者よりご連絡いたします。
+                </p>
+              </div>
+            ) : (
+            <form onSubmit={handleSubmit}>
 
             {/* リードテキスト */}
             <p className="text-[#1a1a1a] text-[14px] lg:text-[15px] leading-[1.85] mb-8 lg:mb-10">
@@ -53,7 +110,10 @@ export default function Section10() {
                   </span>
                   <input
                     type="text"
+                    required
                     placeholder="株式会社○○建設"
+                    value={form.company}
+                    onChange={(e) => updateField("company", e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
                   />
                 </div>
@@ -74,7 +134,10 @@ export default function Section10() {
                   </span>
                   <input
                     type="text"
+                    required
                     placeholder="例）山田 太郎"
+                    value={form.name}
+                    onChange={(e) => updateField("name", e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
                   />
                 </div>
@@ -94,7 +157,10 @@ export default function Section10() {
                   </span>
                   <input
                     type="tel"
+                    required
                     placeholder="例）090-1234-5678"
+                    value={form.phone}
+                    onChange={(e) => updateField("phone", e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
                   />
                 </div>
@@ -115,7 +181,10 @@ export default function Section10() {
                   </span>
                   <input
                     type="email"
+                    required
                     placeholder="例）info@example.com"
+                    value={form.email}
+                    onChange={(e) => updateField("email", e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
                   />
                 </div>
@@ -135,17 +204,17 @@ export default function Section10() {
                     </svg>
                   </span>
                   <select
-                    defaultValue=""
-                    className="w-full pl-10 pr-10 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#c0c0c0] appearance-none bg-white focus:outline-none focus:border-[#D4A820]"
+                    required
+                    value={form.area}
+                    onChange={(e) => updateField("area", e.target.value)}
+                    className={`w-full pl-10 pr-10 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] appearance-none bg-white focus:outline-none focus:border-[#D4A820] ${form.area ? "text-[#1a1a1a]" : "text-[#c0c0c0]"}`}
                   >
                     <option value="" disabled>選択してください</option>
-                    <option value="hokkaido" className="text-[#1a1a1a]">北海道</option>
-                    <option value="tohoku" className="text-[#1a1a1a]">東北</option>
-                    <option value="kanto" className="text-[#1a1a1a]">関東</option>
-                    <option value="chubu" className="text-[#1a1a1a]">中部</option>
-                    <option value="kinki" className="text-[#1a1a1a]">近畿</option>
-                    <option value="chugoku" className="text-[#1a1a1a]">中国・四国</option>
-                    <option value="kyushu" className="text-[#1a1a1a]">九州・沖縄</option>
+                    {AREA_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value} className="text-[#1a1a1a]">
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                   <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
@@ -171,6 +240,8 @@ export default function Section10() {
                   <textarea
                     rows={5}
                     placeholder={"現在の集客状況やお悩み、\nご相談したい内容をご自由にご記入ください。"}
+                    value={form.message}
+                    onChange={(e) => updateField("message", e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] resize-none focus:outline-none focus:border-[#D4A820]"
                   />
                 </div>
@@ -185,19 +256,35 @@ export default function Section10() {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="w-full max-w-[600px] bg-[#FFD000] hover:brightness-95 transition-all text-[#1a1a1a] font-black text-[19px] lg:text-[22px] py-5 rounded-xl flex items-center justify-center gap-3"
+                disabled={isSubmitting}
+                className="w-full max-w-[600px] bg-[#FFD000] hover:brightness-95 transition-all text-[#1a1a1a] font-black text-[19px] lg:text-[22px] py-5 rounded-xl flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                  <rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1a1a" strokeWidth="1.8" />
-                  <path d="M1 7.5l10 7 10-7" stroke="#1a1a1a" strokeWidth="1.8" />
-                </svg>
-                無料相談を申し込む
-                <span className="text-[22px] leading-none">›</span>
+                {isSubmitting ? (
+                  "送信中…"
+                ) : (
+                  <>
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                      <rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1a1a" strokeWidth="1.8" />
+                      <path d="M1 7.5l10 7 10-7" stroke="#1a1a1a" strokeWidth="1.8" />
+                    </svg>
+                    無料相談を申し込む
+                    <span className="text-[22px] leading-none">›</span>
+                  </>
+                )}
               </button>
             </div>
 
             {/* サブテキスト */}
             <p className="text-center text-[#999] text-[12px] lg:text-[13px] mt-3">1営業日以内にご連絡します。</p>
+
+            {errorMessage && (
+              <p className="text-center text-[#c0392b] text-[13px] lg:text-[14px] mt-4">
+                {errorMessage}
+              </p>
+            )}
+
+            </form>
+            )}
 
           </div>
         </div>
