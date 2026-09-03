@@ -3,15 +3,20 @@
  *
  * POST /api/line/webhook
  *
- * 生のリクエストボディをそのままHMAC検証する必要があるため、
- * Web標準の Request が使える Edge Runtime を使用する。
- * （Node.js Runtime では Vercel がボディを事前パースするため生ボディを取得できない）
+ * Node.js Runtime で動作させる（config を書かない場合の既定ランタイム）。
+ * Edge Runtime では api.line.me への fetch が完了せず、
+ * fetch 直後のログも出ないまま FUNCTION_INVOCATION_TIMEOUT(25s) になったため。
+ *
+ * 署名検証にはパース前の生ボディが必要なため、
+ * リクエストストリームから直接バイト列を読み取って検証する。
  */
-export const config = {
-  runtime: "edge",
-};
+import { createHmac, timingSafeEqual } from "node:crypto";
+import type { IncomingMessage, ServerResponse } from "node:http";
 
 const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
+
+/** Reply API の待ち時間上限。Function のタイムアウトより必ず短くする */
+const REPLY_TIMEOUT_MS = 7000;
 
 /** LINE Developers の「検証」で送られてくるダミーの replyToken */
 const VERIFY_REPLY_TOKEN = "00000000000000000000000000000000";
@@ -53,43 +58,63 @@ type LineWebhookBody = {
   events?: LineWebhookEvent[];
 };
 
-const encoder = new TextEncoder();
+/** Vercel Node.js Runtime が渡すリクエスト（パース済みボディが付く場合がある） */
+type VercelNodeRequest = IncomingMessage & { body?: unknown };
 
-function toBase64(bytes: Uint8Array): string {
-  let binary = "";
-  for (let i = 0; i < bytes.length; i += 1) {
-    binary += String.fromCharCode(bytes[i]);
+/**
+ * リクエストストリームから生ボディを読み取る。
+ * 既に読み終わっているストリームを待つとハングするため、その場合は空を返す。
+ */
+async function readStreamBody(req: IncomingMessage): Promise<Buffer> {
+  if (req.readableEnded || req.readable === false) {
+    return Buffer.alloc(0);
   }
-  return btoa(binary);
+
+  const chunks: Buffer[] = [];
+  for await (const chunk of req) {
+    chunks.push(typeof chunk === "string" ? Buffer.from(chunk, "utf8") : chunk);
+  }
+  return Buffer.concat(chunks);
 }
 
-/** 長さ・内容ともに定数時間で比較する */
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) {
+/**
+ * 署名検証に使う生ボディ候補を返す。
+ *
+ * 通常はストリームから読んだバイト列をそのまま使う。
+ * ランタイムがボディを事前パースしてストリームを消費していた場合に限り、
+ * パース済みボディの再シリアライズを候補に加える
+ * （LINE は空白なしJSONを送るため一致する）。
+ * どの候補も HMAC 検証を通過する必要があるため、検証の強度は変わらない。
+ */
+function buildRawBodyCandidates(
+  streamBody: Buffer,
+  parsedBody: unknown
+): Buffer[] {
+  if (streamBody.length > 0) {
+    return [streamBody];
+  }
+  if (typeof parsedBody === "string") {
+    return [Buffer.from(parsedBody, "utf8")];
+  }
+  if (parsedBody !== null && typeof parsedBody === "object") {
+    return [Buffer.from(JSON.stringify(parsedBody), "utf8")];
+  }
+  return [];
+}
+
+/** x-line-signature を LINE_CHANNEL_SECRET で検証する（HMAC-SHA256 / Base64） */
+function isValidSignature(
+  channelSecret: string,
+  rawBody: Buffer,
+  signature: string
+): boolean {
+  const expected = createHmac("sha256", channelSecret).update(rawBody).digest();
+  const provided = Buffer.from(signature, "base64");
+
+  if (provided.length !== expected.length) {
     return false;
   }
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return diff === 0;
-}
-
-/** x-line-signature を LINE_CHANNEL_SECRET で検証する（HMAC-SHA256 → Base64） */
-async function isValidSignature(
-  channelSecret: string,
-  rawBody: string,
-  signature: string
-): Promise<boolean> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(channelSecret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const mac = await crypto.subtle.sign("HMAC", key, encoder.encode(rawBody));
-  return timingSafeEqual(toBase64(new Uint8Array(mac)), signature);
+  return timingSafeEqual(provided, expected);
 }
 
 function isStartTrigger(text: string): boolean {
@@ -97,32 +122,59 @@ function isStartTrigger(text: string): boolean {
 }
 
 async function replyQ1(accessToken: string, replyToken: string): Promise<void> {
-  const res = await fetch(LINE_REPLY_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      replyToken,
-      messages: [
-        {
-          type: "text",
-          text: Q1_TEXT,
-          quickReply: {
-            items: Q1_QUICK_REPLY_LABELS.map((label) => ({
-              type: "action",
-              action: {
-                type: "message",
-                label,
-                text: label,
-              },
-            })),
-          },
+  const payload = JSON.stringify({
+    replyToken,
+    messages: [
+      {
+        type: "text",
+        text: Q1_TEXT,
+        quickReply: {
+          items: Q1_QUICK_REPLY_LABELS.map((label) => ({
+            type: "action",
+            action: {
+              type: "message",
+              label,
+              text: label,
+            },
+          })),
         },
-      ],
-    }),
+      },
+    ],
   });
+
+  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  console.log(
+    "[line/webhook][debug] reply: payload生成完了 → fetch開始",
+    JSON.stringify({
+      payloadBytes: Buffer.byteLength(payload, "utf8"),
+      timeoutMs: REPLY_TIMEOUT_MS,
+    })
+  );
+  // --- [一時デバッグログ] ここまで ---
+
+  let res: Response;
+  try {
+    res = await fetch(LINE_REPLY_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: payload,
+      // 応答が返らない場合でも Function をハングさせない
+      signal: AbortSignal.timeout(REPLY_TIMEOUT_MS),
+    });
+  } catch (error) {
+    // タイムアウト・DNS・到達不可はここに入る
+    console.error(
+      "[line/webhook] reply API unreachable:",
+      error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+    );
+    return;
+  }
+
+  // ボディを読み切ってコネクションを解放する
+  const responseBody = await res.text();
 
   // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
   console.log(
@@ -132,20 +184,35 @@ async function replyQ1(accessToken: string, replyToken: string): Promise<void> {
   // --- [一時デバッグログ] ここまで ---
 
   if (!res.ok) {
-    console.error(
-      "[line/webhook] reply API failed:",
-      res.status,
-      await res.text()
-    );
+    console.error("[line/webhook] reply API failed:", res.status, responseBody);
   }
 }
 
-export default async function handler(request: Request): Promise<Response> {
-  if (request.method !== "POST") {
-    return new Response("Method Not Allowed", {
-      status: 405,
-      headers: { Allow: "POST" },
-    });
+export default async function handler(
+  req: VercelNodeRequest,
+  res: ServerResponse
+): Promise<void> {
+  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  console.log(
+    "[line/webhook][debug] handler開始:",
+    JSON.stringify({
+      method: req.method ?? null,
+      runtime:
+        typeof (globalThis as { EdgeRuntime?: unknown }).EdgeRuntime ===
+        "undefined"
+          ? "nodejs"
+          : "edge",
+      nodeVersion: process.version,
+      hasFetch: typeof fetch === "function",
+    })
+  );
+  // --- [一時デバッグログ] ここまで ---
+
+  if (req.method !== "POST") {
+    res.statusCode = 405;
+    res.setHeader("Allow", "POST");
+    res.end("Method Not Allowed");
+    return;
   }
 
   const channelSecret = process.env.LINE_CHANNEL_SECRET;
@@ -153,24 +220,53 @@ export default async function handler(request: Request): Promise<Response> {
 
   if (!channelSecret || !accessToken) {
     console.error("[line/webhook] missing LINE environment variables");
-    return new Response("Server Configuration Error", { status: 500 });
+    res.statusCode = 500;
+    res.end("Server Configuration Error");
+    return;
   }
 
   // 署名検証のため、パース前の生ボディを取得する
-  const rawBody = await request.text();
-  const signature = request.headers.get("x-line-signature");
+  const streamBody = await readStreamBody(req);
+  const rawBodyCandidates = buildRawBodyCandidates(streamBody, req.body);
+  const signatureHeader = req.headers["x-line-signature"];
+  const signature = Array.isArray(signatureHeader)
+    ? signatureHeader[0]
+    : signatureHeader;
 
-  if (!signature || !(await isValidSignature(channelSecret, rawBody, signature))) {
-    return new Response("Unauthorized", { status: 401 });
+  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  console.log(
+    "[line/webhook][debug] 生ボディ取得:",
+    JSON.stringify({
+      streamBodyBytes: streamBody.length,
+      candidateCount: rawBodyCandidates.length,
+      hasSignatureHeader: Boolean(signature),
+      // 値は出力しない。トークン前後の空白混入という設定ミスの検知のみ
+      accessTokenHasSurroundingWhitespace: accessToken !== accessToken.trim(),
+    })
+  );
+  // --- [一時デバッグログ] ここまで ---
+
+  const verifiedBody = signature
+    ? rawBodyCandidates.find((candidate) =>
+        isValidSignature(channelSecret, candidate, signature)
+      )
+    : undefined;
+
+  if (!verifiedBody) {
+    res.statusCode = 401;
+    res.end("Unauthorized");
+    return;
   }
 
   // ---- ここから先は署名検証済み ----
 
   let body: LineWebhookBody;
   try {
-    body = JSON.parse(rawBody) as LineWebhookBody;
+    body = JSON.parse(verifiedBody.toString("utf8")) as LineWebhookBody;
   } catch {
-    return new Response("Bad Request", { status: 400 });
+    res.statusCode = 400;
+    res.end("Bad Request");
+    return;
   }
 
   // Webhook URL の「検証」は events: [] で送られてくるため、そのまま 200 を返す
@@ -178,12 +274,8 @@ export default async function handler(request: Request): Promise<Response> {
 
   // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
   console.log(
-    "[line/webhook][debug] request:",
-    JSON.stringify({
-      eventCount: events.length,
-      // 値は出力しない。トークン前後の空白混入という設定ミスの検知のみ
-      accessTokenHasSurroundingWhitespace: accessToken !== accessToken.trim(),
-    })
+    "[line/webhook][debug] 署名検証OK:",
+    JSON.stringify({ eventCount: events.length })
   );
   // --- [一時デバッグログ] ここまで ---
 
@@ -230,6 +322,13 @@ export default async function handler(request: Request): Promise<Response> {
       continue;
     }
 
+    // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+    console.log(
+      "[line/webhook][debug] トリガー一致 → replyQ1 呼び出し:",
+      JSON.stringify({ index })
+    );
+    // --- [一時デバッグログ] ここまで ---
+
     try {
       await replyQ1(accessToken, replyToken);
     } catch (error) {
@@ -238,5 +337,7 @@ export default async function handler(request: Request): Promise<Response> {
     }
   }
 
-  return new Response("OK", { status: 200 });
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.end("OK");
 }
