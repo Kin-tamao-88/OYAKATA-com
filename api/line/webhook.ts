@@ -1,5 +1,5 @@
 /**
- * LINE Messaging API Webhook（ヒアリング Q1〜Q10）
+ * LINE Messaging API Webhook（ヒアリング Q1〜Q10 → 営業台帳へ保存）
  *
  * POST /api/line/webhook
  *
@@ -10,26 +10,39 @@
  * 署名検証にはパース前の生ボディが必要なため、
  * リクエストストリームから直接バイト列を読み取って検証する。
  *
- * 回答状態は Upstash Redis(REST) に userId 単位で保存する。
+ * 状態管理は役割を分ける。
+ *   Upstash Redis … ヒアリング途中の一時状態と保存状況(pending/saving/saved)
+ *   Google Sheets … 回答完了リードの営業用台帳（Apps Script経由）
+ *
  * Vercel Functions はリクエスト間でメモリが永続化される保証がないため、
  * グローバル変数やインメモリ Map は状態管理に使わない。
+ *
+ * ログは障害調査に必要なものだけを出す。個人情報・認証情報は一切出力しない。
  */
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
 
-/** Reply API の待ち時間上限。Function のタイムアウトより必ず短くする */
-const REPLY_TIMEOUT_MS = 7000;
-
-/** 状態ストアの待ち時間上限 */
-const STATE_TIMEOUT_MS = 3000;
+/** 外部APIの待ち時間上限。maxDuration は安全余裕であり、待ち時間ではない */
+const REPLY_TIMEOUT_MS = 5000;
+const STATE_TIMEOUT_MS = 2000;
+const SHEETS_TIMEOUT_MS = 8000;
 
 /** 状態の保持期間（7日）。書き込みのたびに延長される */
 const STATE_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 /** 状態キーの接頭辞。スキーマ変更時は v2 に上げて旧データと分離する */
 const STATE_KEY_PREFIX = "line:hearing:v1:";
+
+/**
+ * 台帳保存の処理中ロック。
+ * 保存済みかどうかは sheetStatus が持ち、このロックは同時実行の排他のみを担う。
+ * 処理時間（最大でも Sheets 8秒＋Redis 数回）を十分上回り、
+ * 異常終了しても短時間で失効して再試行を妨げない値にする。
+ */
+const SHEET_LOCK_KEY_PREFIX = "line:hearing:sheetlock:";
+const SHEET_LOCK_TTL_SECONDS = 15;
 
 /** LINE Developers の「検証」で送られてくるダミーの replyToken */
 const VERIFY_REPLY_TOKEN = "00000000000000000000000000000000";
@@ -169,11 +182,6 @@ const QUESTIONS: readonly Question[] = [
 
 const DONE_STEP = "done";
 
-/** 全質問の選択肢。ログに値を出してよい固定文言かどうかの判定に使う */
-const ALL_CHOICES: ReadonlySet<string> = new Set(
-  QUESTIONS.flatMap((question) => question.choices ?? [])
-);
-
 function findQuestion(step: string): Question | undefined {
   return QUESTIONS.find((question) => question.step === step);
 }
@@ -181,6 +189,12 @@ function findQuestion(step: string): Question | undefined {
 function nextStep(step: string): string {
   const index = QUESTIONS.findIndex((question) => question.step === step);
   return QUESTIONS[index + 1]?.step ?? DONE_STEP;
+}
+
+function describeError(error: unknown): string {
+  return error instanceof Error
+    ? `${error.name}: ${error.message}`
+    : String(error);
 }
 
 // ── 電話番号バリデーション ────────────────────────────
@@ -218,6 +232,9 @@ function isValidJapanesePhone(raw: string): boolean {
 
 // ── 状態ストア（Upstash Redis REST） ──────────────────
 
+/** 台帳への保存状況 */
+type SheetStatus = "pending" | "saving" | "saved";
+
 type HearingState = {
   /** 開始トリガーで選ばれた4択 */
   initialConcern: string;
@@ -226,6 +243,11 @@ type HearingState = {
   answers: Partial<Record<AnswerKey, string>>;
   startedAt: string;
   updatedAt: string;
+  /** Q10受理時刻。台帳の登録日時と重複判定キーを兼ねる */
+  completedAt?: string;
+  sheetStatus?: SheetStatus;
+  savedAt?: string;
+  savedRow?: number;
 };
 
 type StateStore = { url: string; token: string };
@@ -248,6 +270,7 @@ function getStateStore(): StateStore | null {
 
 async function runStateCommand(
   store: StateStore,
+  label: string,
   command: string[]
 ): Promise<unknown> {
   const res = await fetch(store.url, {
@@ -263,7 +286,7 @@ async function runStateCommand(
   const payload = (await res.json()) as { result?: unknown; error?: string };
 
   if (!res.ok || payload.error) {
-    throw new Error(`state store command failed (status ${res.status})`);
+    throw new Error(`state store ${label} failed (status ${res.status})`);
   }
   return payload.result;
 }
@@ -272,11 +295,15 @@ function stateKey(userId: string): string {
   return `${STATE_KEY_PREFIX}${userId}`;
 }
 
+function sheetLockKey(userId: string): string {
+  return `${SHEET_LOCK_KEY_PREFIX}${userId}`;
+}
+
 async function loadState(
   store: StateStore,
   userId: string
 ): Promise<HearingState | null> {
-  const raw = await runStateCommand(store, ["GET", stateKey(userId)]);
+  const raw = await runStateCommand(store, "GET", ["GET", stateKey(userId)]);
 
   if (typeof raw !== "string") {
     return null;
@@ -294,13 +321,177 @@ async function saveState(
   userId: string,
   state: HearingState
 ): Promise<void> {
-  await runStateCommand(store, [
+  await runStateCommand(store, "SET", [
     "SET",
     stateKey(userId),
     JSON.stringify(state),
     "EX",
     String(STATE_TTL_SECONDS),
   ]);
+}
+
+/** 台帳保存の処理中ロックを取得する。取得できなければ false */
+async function acquireSheetLock(
+  store: StateStore,
+  userId: string
+): Promise<boolean> {
+  const result = await runStateCommand(store, "SET NX", [
+    "SET",
+    sheetLockKey(userId),
+    "1",
+    "NX",
+    "EX",
+    String(SHEET_LOCK_TTL_SECONDS),
+  ]);
+  return result !== null;
+}
+
+async function releaseSheetLock(
+  store: StateStore,
+  userId: string
+): Promise<void> {
+  await runStateCommand(store, "DEL", ["DEL", sheetLockKey(userId)]);
+}
+
+// ── 営業台帳（Apps Script 経由の Google Sheets） ───────
+
+type SheetsEndpoint = { url: string; token: string };
+
+type SheetsSaveResult =
+  | { ok: true; duplicate: boolean; row?: number }
+  | { ok: false; reason: string };
+
+function getSheetsEndpoint(): SheetsEndpoint | null {
+  const url = process.env.LINE_SHEETS_API_URL;
+  const token = process.env.LINE_SHEETS_API_TOKEN;
+
+  if (!url || !token) {
+    return null;
+  }
+  return { url, token };
+}
+
+async function postLeadToSheets(
+  endpoint: SheetsEndpoint,
+  userId: string,
+  state: HearingState
+): Promise<SheetsSaveResult> {
+  const res = await fetch(endpoint.url, {
+    method: "POST",
+    // Apps Script は本文をそのまま受け取るため text/plain を使う
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      token: endpoint.token,
+      userId,
+      completedAt: state.completedAt,
+      initialConcern: state.initialConcern,
+      ...state.answers,
+    }),
+    signal: AbortSignal.timeout(SHEETS_TIMEOUT_MS),
+  });
+
+  if (!res.ok) {
+    return { ok: false, reason: `http ${res.status}` };
+  }
+
+  let payload: { success?: boolean; duplicate?: boolean; row?: number; error?: string };
+  try {
+    payload = (await res.json()) as typeof payload;
+  } catch {
+    // デプロイ未完了などで HTML が返るケース
+    return { ok: false, reason: "invalid response" };
+  }
+
+  if (!payload.success) {
+    return { ok: false, reason: payload.error ?? "unknown" };
+  }
+  return {
+    ok: true,
+    duplicate: Boolean(payload.duplicate),
+    row: payload.row,
+  };
+}
+
+/**
+ * 回答完了リードを台帳へ保存する。
+ *
+ * 重複保存は3段で防ぐ。
+ *   1. sheetStatus === "saved" なら二度と送らない（恒久的な事実）
+ *   2. Redis の NX ロックで同時実行を1つに絞る（短命・finallyで必ず解放）
+ *   3. Apps Script 側が (登録日時, userId) で行を照合し追記しない
+ *
+ * 失敗しても回答データは消さず sheetStatus を pending に戻して再試行可能にする。
+ * ユーザーへの返信内容はこの結果に左右されない。
+ */
+async function saveLeadToSheets(
+  store: StateStore,
+  endpoint: SheetsEndpoint,
+  userId: string,
+  state: HearingState
+): Promise<void> {
+  if (state.sheetStatus === "saved" || !state.completedAt) {
+    return;
+  }
+
+  let locked = false;
+  try {
+    locked = await acquireSheetLock(store, userId);
+  } catch (error) {
+    console.error("[line/webhook] sheet lock failed:", describeError(error));
+    return;
+  }
+  if (!locked) {
+    // 他のインスタンスが処理中。追記は1件だけに保たれる
+    return;
+  }
+
+  let current = state;
+  try {
+    // ロック取得後に最新状態を読み直す（取得前に保存済みになっていた場合の対策）
+    const fresh = await loadState(store, userId);
+    if (fresh) {
+      current = fresh;
+    }
+    if (current.sheetStatus === "saved" || !current.completedAt) {
+      return;
+    }
+
+    await saveState(store, userId, { ...current, sheetStatus: "saving" });
+
+    const result = await postLeadToSheets(endpoint, userId, current);
+
+    if (result.ok) {
+      await saveState(store, userId, {
+        ...current,
+        sheetStatus: "saved",
+        savedAt: new Date().toISOString(),
+        savedRow: result.row,
+      });
+      return;
+    }
+
+    console.error("[line/webhook] sheets save failed:", result.reason);
+    await saveState(store, userId, { ...current, sheetStatus: "pending" });
+  } catch (error) {
+    console.error("[line/webhook] sheets save error:", describeError(error));
+    try {
+      await saveState(store, userId, { ...current, sheetStatus: "pending" });
+    } catch (nested) {
+      console.error(
+        "[line/webhook] failed to reset sheetStatus:",
+        describeError(nested)
+      );
+    }
+  } finally {
+    try {
+      await releaseSheetLock(store, userId);
+    } catch (error) {
+      console.error(
+        "[line/webhook] failed to release sheet lock:",
+        describeError(error)
+      );
+    }
+  }
 }
 
 // ── LINE 返信 ────────────────────────────────────────
@@ -337,20 +528,13 @@ async function replyMessage(
   } catch (error) {
     console.error(
       "[line/webhook] reply API unreachable:",
-      error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+      describeError(error)
     );
     return;
   }
 
   // ボディを読み切ってコネクションを解放する
   const responseBody = await res.text();
-
-  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-  console.log(
-    "[line/webhook][debug] reply API:",
-    JSON.stringify({ status: res.status, ok: res.ok })
-  );
-  // --- [一時デバッグログ] ここまで ---
 
   if (!res.ok) {
     console.error("[line/webhook] reply API failed:", res.status, responseBody);
@@ -363,52 +547,6 @@ async function askQuestion(
   question: Question
 ): Promise<void> {
   await replyMessage(accessToken, replyToken, question.text, question.choices);
-}
-
-// ── 安全なログ整形 ───────────────────────────────────
-
-/**
- * 回答をログ用に整形する。
- * 選択肢は固定文言なのでそのまま出す。
- * 自由入力は会社名・担当者名・電話番号など PII を含むため値を出さない。
- */
-function describeAnswer(
-  question: Question,
-  value: string | undefined
-): unknown {
-  if (value === undefined) {
-    return null;
-  }
-  if (question.choices) {
-    return value;
-  }
-  if (question.answerKey === "q9Phone") {
-    return { filled: true, digitCount: normalizePhone(value).length };
-  }
-  return { filled: true, length: value.length };
-}
-
-function describeState(state: HearingState): string {
-  const answers: Record<string, unknown> = {};
-  for (const question of QUESTIONS) {
-    answers[question.answerKey] = describeAnswer(
-      question,
-      state.answers[question.answerKey]
-    );
-  }
-
-  const answeredCount = QUESTIONS.filter(
-    (question) => state.answers[question.answerKey] !== undefined
-  ).length;
-
-  return JSON.stringify({
-    initialConcern: state.initialConcern,
-    step: state.step,
-    answeredCount,
-    totalQuestions: QUESTIONS.length,
-    allAnswered: answeredCount === QUESTIONS.length,
-    answers,
-  });
 }
 
 // ── Webhook 本体 ─────────────────────────────────────
@@ -497,6 +635,7 @@ function isStartTrigger(text: string): boolean {
  */
 async function handleTextMessage(
   store: StateStore,
+  sheets: SheetsEndpoint | null,
   accessToken: string,
   userId: string,
   replyToken: string,
@@ -506,22 +645,14 @@ async function handleTextMessage(
   if (isStartTrigger(text)) {
     const now = new Date().toISOString();
     const firstQuestion = QUESTIONS[0];
-    const state: HearingState = {
+
+    await saveState(store, userId, {
       initialConcern: text,
       step: firstQuestion.step,
       answers: {},
       startedAt: now,
       updatedAt: now,
-    };
-
-    await saveState(store, userId, state);
-
-    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-    console.log(
-      "[line/webhook][debug] ヒアリング開始:",
-      JSON.stringify({ initialConcern: text, step: state.step })
-    );
-    // --- [一時デバッグログ] ここまで ---
+    });
 
     await askQuestion(accessToken, replyToken, firstQuestion);
     return;
@@ -531,12 +662,10 @@ async function handleTextMessage(
 
   // 進行中のヒアリングが無い場合と、完了済みの場合は自動返信しない
   if (!state || state.step === DONE_STEP) {
-    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-    console.log(
-      "[line/webhook][debug] 自動返信なし:",
-      JSON.stringify({ hasState: Boolean(state), step: state?.step ?? null })
-    );
-    // --- [一時デバッグログ] ここまで ---
+    // 台帳への保存が終わっていないリードがあれば、この機会に再試行する
+    if (state && state.sheetStatus !== "saved" && sheets) {
+      await saveLeadToSheets(store, sheets, userId, state);
+    }
     return;
   }
 
@@ -549,12 +678,6 @@ async function handleTextMessage(
   // Quick Reply の質問は想定された選択肢のみ受理し、
   // それ以外は同じ質問を出し直して回答を待つ
   if (question.choices && !question.choices.includes(text)) {
-    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-    console.log(
-      "[line/webhook][debug] 選択肢外の入力 → 同じ質問を再送:",
-      JSON.stringify({ step: state.step })
-    );
-    // --- [一時デバッグログ] ここまで ---
     await askQuestion(accessToken, replyToken, question);
     return;
   }
@@ -567,30 +690,35 @@ async function handleTextMessage(
     }
     const result = question.validate?.(text);
     if (result && !result.ok) {
-      // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-      console.log(
-        "[line/webhook][debug] 入力バリデーションNG → 再入力を依頼:",
-        JSON.stringify({ step: state.step })
-      );
-      // --- [一時デバッグログ] ここまで ---
       await replyMessage(accessToken, replyToken, result.message);
       return;
     }
   }
 
+  const now = new Date().toISOString();
+  const step = nextStep(state.step);
   const updated: HearingState = {
     ...state,
-    step: nextStep(state.step),
+    step,
     answers: { ...state.answers, [question.answerKey]: text },
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
+    ...(step === DONE_STEP
+      ? { completedAt: now, sheetStatus: "pending" as const }
+      : {}),
   };
 
+  // 先に回答完了状態を確定させる。
+  // これにより Q10 を重複受信しても以降の処理には入らない。
   await saveState(store, userId, updated);
 
   if (updated.step === DONE_STEP) {
-    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-    console.log("[line/webhook][debug] ヒアリング完了:", describeState(updated));
-    // --- [一時デバッグログ] ここまで ---
+    if (sheets) {
+      await saveLeadToSheets(store, sheets, userId, updated);
+    } else {
+      console.error("[line/webhook] sheets endpoint is not configured");
+    }
+
+    // 台帳保存の成否にかかわらず、ユーザーには完了メッセージを返す
     await replyMessage(accessToken, replyToken, COMPLETION_TEXT);
     return;
   }
@@ -601,13 +729,6 @@ async function handleTextMessage(
     return;
   }
 
-  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-  console.log(
-    "[line/webhook][debug] 回答を保存 → 次の質問:",
-    JSON.stringify({ answered: question.answerKey, nextStep: updated.step })
-  );
-  // --- [一時デバッグログ] ここまで ---
-
   await askQuestion(accessToken, replyToken, following);
 }
 
@@ -615,22 +736,6 @@ export default async function handler(
   req: VercelNodeRequest,
   res: ServerResponse
 ): Promise<void> {
-  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-  console.log(
-    "[line/webhook][debug] handler開始:",
-    JSON.stringify({
-      method: req.method ?? null,
-      runtime:
-        typeof (globalThis as { EdgeRuntime?: unknown }).EdgeRuntime ===
-        "undefined"
-          ? "nodejs"
-          : "edge",
-      nodeVersion: process.version,
-      hasFetch: typeof fetch === "function",
-    })
-  );
-  // --- [一時デバッグログ] ここまで ---
-
   if (req.method !== "POST") {
     res.statusCode = 405;
     res.setHeader("Allow", "POST");
@@ -656,19 +761,6 @@ export default async function handler(
     ? signatureHeader[0]
     : signatureHeader;
 
-  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-  console.log(
-    "[line/webhook][debug] 生ボディ取得:",
-    JSON.stringify({
-      streamBodyBytes: streamBody.length,
-      candidateCount: rawBodyCandidates.length,
-      hasSignatureHeader: Boolean(signature),
-      // 値は出力しない。トークン前後の空白混入という設定ミスの検知のみ
-      accessTokenHasSurroundingWhitespace: accessToken !== accessToken.trim(),
-    })
-  );
-  // --- [一時デバッグログ] ここまで ---
-
   const verifiedBody = signature
     ? rawBodyCandidates.find((candidate) =>
         isValidSignature(channelSecret, candidate, signature)
@@ -676,6 +768,7 @@ export default async function handler(
     : undefined;
 
   if (!verifiedBody) {
+    console.error("[line/webhook] signature verification failed");
     res.statusCode = 401;
     res.end("Unauthorized");
     return;
@@ -695,13 +788,7 @@ export default async function handler(
   // Webhook URL の「検証」は events: [] で送られてくるため、そのまま 200 を返す
   const events = body.events ?? [];
   const store = getStateStore();
-
-  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-  console.log(
-    "[line/webhook][debug] 署名検証OK:",
-    JSON.stringify({ eventCount: events.length, hasStateStore: Boolean(store) })
-  );
-  // --- [一時デバッグログ] ここまで ---
+  const sheets = getSheetsEndpoint();
 
   if (events.length > 0 && !store) {
     // 状態を保存できない状態で会話を始めると途中で破綻するため、返信しない
@@ -714,52 +801,36 @@ export default async function handler(
     return;
   }
 
-  for (const [index, event] of events.entries()) {
-    const messageType = event.message?.type;
-    const text = (event.message?.text ?? "").trim();
-    const userId = event.source?.userId;
-    const replyToken = event.replyToken;
-
-    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
-    // 自由入力は PII を含むため値を出さない。
-    // トリガー・選択肢に完全一致した固定文言のみ値を出す。
-    const isKnownPhrase = isStartTrigger(text) || ALL_CHOICES.has(text);
-    console.log(
-      "[line/webhook][debug] event:",
-      JSON.stringify({
-        index,
-        eventType: event.type ?? null,
-        messageType: messageType ?? null,
-        text: isKnownPhrase ? text : undefined,
-        textLength: text.length,
-        isKnownPhrase,
-        hasUserId: Boolean(userId),
-        hasReplyToken: Boolean(replyToken),
-        isVerifyReplyToken: replyToken === VERIFY_REPLY_TOKEN,
-      })
-    );
-    // --- [一時デバッグログ] ここまで ---
-
-    if (event.type !== "message" || messageType !== "text") {
+  for (const event of events) {
+    if (event.type !== "message" || event.message?.type !== "text") {
       continue;
     }
+
+    const replyToken = event.replyToken;
     if (!replyToken || replyToken === VERIFY_REPLY_TOKEN) {
       continue;
     }
+
     // 1対1トーク以外は userId が取れず状態管理できないため対象外
+    const userId = event.source?.userId;
     if (!userId || !store) {
       continue;
     }
 
     try {
-      await handleTextMessage(store, accessToken, userId, replyToken, text);
+      await handleTextMessage(
+        store,
+        sheets,
+        accessToken,
+        userId,
+        replyToken,
+        (event.message.text ?? "").trim()
+      );
     } catch (error) {
       // 失敗してもLINE側の再送を招かないよう 200 を返す
       console.error(
         "[line/webhook] failed to handle message:",
-        error instanceof Error
-          ? `${error.name}: ${error.message}`
-          : String(error)
+        describeError(error)
       );
     }
   }
