@@ -124,6 +124,13 @@ async function replyQ1(accessToken: string, replyToken: string): Promise<void> {
     }),
   });
 
+  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  console.log(
+    "[line/webhook][debug] reply API:",
+    JSON.stringify({ status: res.status, ok: res.ok })
+  );
+  // --- [一時デバッグログ] ここまで ---
+
   if (!res.ok) {
     console.error(
       "[line/webhook] reply API failed:",
@@ -169,8 +176,47 @@ export default async function handler(request: Request): Promise<Response> {
   // Webhook URL の「検証」は events: [] で送られてくるため、そのまま 200 を返す
   const events = body.events ?? [];
 
-  for (const event of events) {
-    if (event.type !== "message" || event.message?.type !== "text") {
+  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  console.log(
+    "[line/webhook][debug] request:",
+    JSON.stringify({
+      eventCount: events.length,
+      // 値は出力しない。トークン前後の空白混入という設定ミスの検知のみ
+      accessTokenHasSurroundingWhitespace: accessToken !== accessToken.trim(),
+    })
+  );
+  // --- [一時デバッグログ] ここまで ---
+
+  for (const [index, event] of events.entries()) {
+    const messageType = event.message?.type;
+    const rawText = event.message?.text ?? "";
+    const normalizedText = rawText.trim();
+    const matchedTriggerIndex = START_TRIGGERS.indexOf(normalizedText);
+
+    // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+    console.log(
+      "[line/webhook][debug] event:",
+      JSON.stringify({
+        index,
+        eventType: event.type ?? null,
+        messageType: messageType ?? null,
+        text: rawText,
+        textLength: rawText.length,
+        trimmedLength: normalizedText.length,
+        matchedTrigger: matchedTriggerIndex >= 0,
+        matchedTriggerIndex,
+        hasReplyToken: Boolean(event.replyToken),
+        isVerifyReplyToken: event.replyToken === VERIFY_REPLY_TOKEN,
+        // 完全一致しなかった場合のみ、不可視文字・異体字を特定するため出力
+        codePoints:
+          matchedTriggerIndex >= 0
+            ? undefined
+            : [...normalizedText].map((char) => char.codePointAt(0)),
+      })
+    );
+    // --- [一時デバッグログ] ここまで ---
+
+    if (event.type !== "message" || messageType !== "text") {
       continue;
     }
 
@@ -180,7 +226,7 @@ export default async function handler(request: Request): Promise<Response> {
     }
 
     // トリガー以外の通常メッセージには現段階では自動返信しない
-    if (!isStartTrigger((event.message.text ?? "").trim())) {
+    if (!isStartTrigger(normalizedText)) {
       continue;
     }
 
