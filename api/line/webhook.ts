@@ -23,11 +23,13 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
+const LINE_PROFILE_ENDPOINT = "https://api.line.me/v2/bot/profile/";
 
 /** 外部APIの待ち時間上限。maxDuration は安全余裕であり、待ち時間ではない */
 const REPLY_TIMEOUT_MS = 5000;
 const STATE_TIMEOUT_MS = 2000;
-const SHEETS_TIMEOUT_MS = 8000;
+const SHEETS_TIMEOUT_MS = 7000;
+const PROFILE_TIMEOUT_MS = 3000;
 
 /** 状態の保持期間（7日）。書き込みのたびに延長される */
 const STATE_TTL_SECONDS = 60 * 60 * 24 * 7;
@@ -38,7 +40,7 @@ const STATE_KEY_PREFIX = "line:hearing:v1:";
 /**
  * 台帳保存の処理中ロック。
  * 保存済みかどうかは sheetStatus が持ち、このロックは同時実行の排他のみを担う。
- * 処理時間（最大でも Sheets 8秒＋Redis 数回）を十分上回り、
+ * 処理時間（最大でも プロフィール3秒＋Sheets 7秒＋Redis 数回）を十分上回り、
  * 異常終了しても短時間で失効して再試行を妨げない値にする。
  */
 const SHEET_LOCK_KEY_PREFIX = "line:hearing:sheetlock:";
@@ -245,6 +247,8 @@ type HearingState = {
   updatedAt: string;
   /** Q10受理時刻。台帳の登録日時と重複判定キーを兼ねる */
   completedAt?: string;
+  /** LINEプロフィールの表示名。取得できるまで undefined のまま */
+  displayName?: string;
   sheetStatus?: SheetStatus;
   savedAt?: string;
   savedRow?: number;
@@ -371,9 +375,43 @@ function getSheetsEndpoint(): SheetsEndpoint | null {
   return { url, token };
 }
 
+/**
+ * LINEプロフィールから表示名を取得する。
+ * 営業台帳には userId ではなく表示名を載せるため。
+ * 取得に失敗しても例外は投げない（ヒアリングと台帳保存を止めないため）。
+ */
+async function fetchDisplayName(
+  accessToken: string,
+  userId: string
+): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `${LINE_PROFILE_ENDPOINT}${encodeURIComponent(userId)}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        signal: AbortSignal.timeout(PROFILE_TIMEOUT_MS),
+      }
+    );
+
+    if (!res.ok) {
+      await res.text();
+      console.error("[line/webhook] profile API failed:", res.status);
+      return null;
+    }
+
+    const payload = (await res.json()) as { displayName?: unknown };
+    return typeof payload.displayName === "string" ? payload.displayName : null;
+  } catch (error) {
+    console.error(
+      "[line/webhook] profile API unreachable:",
+      describeError(error)
+    );
+    return null;
+  }
+}
+
 async function postLeadToSheets(
   endpoint: SheetsEndpoint,
-  userId: string,
   state: HearingState
 ): Promise<SheetsSaveResult> {
   const res = await fetch(endpoint.url, {
@@ -382,8 +420,10 @@ async function postLeadToSheets(
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify({
       token: endpoint.token,
-      userId,
+      // userId は台帳に載せないため送らない。
+      // 重複判定は Apps Script 側で (登録日時, 電話番号) により行う。
       completedAt: state.completedAt,
+      displayName: state.displayName ?? "",
       initialConcern: state.initialConcern,
       ...state.answers,
     }),
@@ -426,6 +466,7 @@ async function postLeadToSheets(
 async function saveLeadToSheets(
   store: StateStore,
   endpoint: SheetsEndpoint,
+  accessToken: string,
   userId: string,
   state: HearingState
 ): Promise<void> {
@@ -456,9 +497,18 @@ async function saveLeadToSheets(
       return;
     }
 
+    // 表示名は一度取得できれば状態に保持する。
+    // 失敗した場合は undefined のまま残し、次の再試行で取り直す。
+    if (current.displayName === undefined) {
+      const displayName = await fetchDisplayName(accessToken, userId);
+      if (displayName !== null) {
+        current = { ...current, displayName };
+      }
+    }
+
     await saveState(store, userId, { ...current, sheetStatus: "saving" });
 
-    const result = await postLeadToSheets(endpoint, userId, current);
+    const result = await postLeadToSheets(endpoint, current);
 
     if (result.ok) {
       await saveState(store, userId, {
@@ -664,7 +714,7 @@ async function handleTextMessage(
   if (!state || state.step === DONE_STEP) {
     // 台帳への保存が終わっていないリードがあれば、この機会に再試行する
     if (state && state.sheetStatus !== "saved" && sheets) {
-      await saveLeadToSheets(store, sheets, userId, state);
+      await saveLeadToSheets(store, sheets, accessToken, userId, state);
     }
     return;
   }
@@ -713,7 +763,7 @@ async function handleTextMessage(
 
   if (updated.step === DONE_STEP) {
     if (sheets) {
-      await saveLeadToSheets(store, sheets, userId, updated);
+      await saveLeadToSheets(store, sheets, accessToken, userId, updated);
     } else {
       console.error("[line/webhook] sheets endpoint is not configured");
     }

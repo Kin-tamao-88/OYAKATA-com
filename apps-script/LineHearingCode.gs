@@ -21,8 +21,29 @@ const DATE_FORMAT = 'yyyy/MM/dd HH:mm:ss';
 /** 同時実行の排他待ち時間。呼び出し側のtimeoutより短くする */
 const LOCK_WAIT_MS = 5000;
 
-/** 台帳の列順（A列〜N列） */
-const COLUMN_COUNT = 14;
+/** 台帳の列構成（A列〜N列）。空シートの場合はこの内容を1行目へ自動作成する */
+const HEADERS = [
+  '登録日時',
+  'LINE表示名',
+  '最初の悩み',
+  '業種',
+  '対応エリア',
+  '従業員数',
+  '年商',
+  '新規獲得方法',
+  'HP状況',
+  '会社名・屋号',
+  '担当者名',
+  '電話番号',
+  '電話希望時間',
+  '回答完了',
+];
+
+const COLUMN_COUNT = HEADERS.length;
+
+/** 重複判定に使う列（1始まり）。A列=登録日時、L列=電話番号 */
+const KEY_COLUMN_DATE = 1;
+const KEY_COLUMN_PHONE = 12;
 
 function doGet() {
   // デプロイ確認用。書き込みはPOSTのみ受け付ける
@@ -53,11 +74,8 @@ function doPost(e) {
       return jsonResponse({ success: false, error: 'unauthorized' });
     }
 
-    var userId = sanitize(data.userId);
     var completedAt = sanitize(data.completedAt);
-
-    // 重複判定のキーになるため、この2つは必須
-    if (!userId || !completedAt) {
+    if (!completedAt) {
       return jsonResponse({ success: false, error: 'invalid payload' });
     }
 
@@ -65,11 +83,13 @@ function doPost(e) {
     if (isNaN(completedDate.getTime())) {
       return jsonResponse({ success: false, error: 'invalid completedAt' });
     }
+
     var registeredAtLabel = Utilities.formatDate(completedDate, TIMEZONE, DATE_FORMAT);
+    var phone = sanitize(data.q9Phone);
 
     var row = [
       registeredAtLabel, // A 登録日時
-      userId, // B LINE userId
+      sanitize(data.displayName), // B LINE表示名
       sanitize(data.initialConcern), // C 最初の悩み
       sanitize(data.q1Job), // D 業種
       sanitize(data.q2Area), // E 対応エリア
@@ -79,7 +99,7 @@ function doPost(e) {
       sanitize(data.q6Website), // I HP状況
       sanitize(data.q7Company), // J 会社名・屋号
       sanitize(data.q8ContactName), // K 担当者名
-      sanitize(data.q9Phone), // L 電話番号
+      phone, // L 電話番号
       sanitize(data.q10CallTime), // M 電話希望時間
       '完了', // N 回答完了
     ];
@@ -103,20 +123,20 @@ function doPost(e) {
         return jsonResponse({ success: false, error: 'sheet not found' });
       }
 
-      // (登録日時, LINE userId) が既にあれば追記しない。
+      ensureHeader(sheet);
+
+      // (登録日時, 電話番号) が既にあれば追記しない。
       // 追記後に呼び出し側が落ちて再試行された場合の二重登録を防ぐ。
-      var existingRow = findExistingRow(sheet, registeredAtLabel, userId);
+      // 再試行は同じ completedAt と同じ電話番号を送るため確実に一致する。
+      var existingRow = findExistingRow(sheet, registeredAtLabel, phone);
       if (existingRow > 0) {
         return jsonResponse({ success: true, duplicate: true, row: existingRow });
       }
 
-      sheet.appendRow(row);
+      var targetRow = sheet.getLastRow() + 1;
+      writeRow(sheet, targetRow, row);
 
-      return jsonResponse({
-        success: true,
-        duplicate: false,
-        row: sheet.getLastRow(),
-      });
+      return jsonResponse({ success: true, duplicate: false, row: targetRow });
     } finally {
       lock.releaseLock();
     }
@@ -128,20 +148,42 @@ function doPost(e) {
 }
 
 /**
- * 同じ (登録日時, LINE userId) の行番号を返す。無ければ 0。
- * A列がテキストでも日付値でも比較できるよう正規化する。
+ * 空シートの場合のみ1行目へヘッダーを作成する。
+ * 既に行が存在する場合は一切変更しない。
  */
-function findExistingRow(sheet, registeredAtLabel, userId) {
+function ensureHeader(sheet) {
+  if (sheet.getLastRow() > 0) {
+    return;
+  }
+  writeRow(sheet, 1, HEADERS);
+}
+
+/**
+ * 1行分を書き込む。
+ * 書き込み前に対象行を書式なしテキストにするため、
+ * 電話番号の先頭0や登録日時がシート側の書式設定に影響されない。
+ */
+function writeRow(sheet, rowIndex, values) {
+  var range = sheet.getRange(rowIndex, 1, 1, COLUMN_COUNT);
+  range.setNumberFormat('@');
+  range.setValues([values]);
+}
+
+/**
+ * 同じ (登録日時, 電話番号) の行番号を返す。無ければ 0。
+ * 既存行が日付値・数値で保存されていても比較できるよう正規化する。
+ */
+function findExistingRow(sheet, registeredAtLabel, phone) {
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) {
     return 0;
   }
 
-  var values = sheet.getRange(2, 1, lastRow - 1, 2).getValues();
+  var values = sheet.getRange(2, 1, lastRow - 1, KEY_COLUMN_PHONE).getValues();
   for (var i = 0; i < values.length; i++) {
-    var rowLabel = toDateLabel(values[i][0]);
-    var rowUserId = sanitize(values[i][1]);
-    if (rowLabel === registeredAtLabel && rowUserId === userId) {
+    var rowLabel = toDateLabel(values[i][KEY_COLUMN_DATE - 1]);
+    var rowPhone = sanitize(values[i][KEY_COLUMN_PHONE - 1]);
+    if (rowLabel === registeredAtLabel && rowPhone === phone) {
       return i + 2;
     }
   }
