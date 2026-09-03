@@ -76,6 +76,10 @@ const PHONE_RETRY_TEXT = [
   "例：090-1234-5678",
 ].join("\n");
 
+/** Q10でこの選択肢を選んだ場合のみ、具体的な希望日時を追加で聞く */
+const CALL_TIME_DETAIL_CHOICE = "日時を指定したい";
+const CALL_TIME_DETAIL_STEP = "q10Detail";
+
 // ── 質問定義 ──────────────────────────────────────────
 
 type AnswerKey =
@@ -99,6 +103,8 @@ type Question = {
   choices?: readonly string[];
   /** 自由入力の追加検証。未指定なら空でなければ受理 */
   validate?: (input: string) => { ok: true } | { ok: false; message: string };
+  /** 特定の回答のときだけ、通常の次の質問ではなく指定の質問へ進む */
+  branchOn?: { answer: string; step: string };
 };
 
 const QUESTIONS: readonly Question[] = [
@@ -179,17 +185,43 @@ const QUESTIONS: readonly Question[] = [
     answerKey: "q10CallTime",
     text: "Q10. お電話可能な時間帯を教えてください。",
     choices: ["午前", "12〜15時", "15〜18時", "18時以降", "日時を指定したい"],
+    // 「日時を指定したい」のときだけ完了させず、具体的な希望日時を聞く
+    branchOn: { answer: CALL_TIME_DETAIL_CHOICE, step: CALL_TIME_DETAIL_STEP },
   },
+];
+
+/**
+ * Q10で「日時を指定したい」が選ばれたときだけ聞く追加質問。
+ * 回答は q10CallTime を上書きするため、台帳の「電話希望時間」列には
+ * 選択肢ではなくユーザーが入力した具体的な希望日時が入る。
+ */
+const CALL_TIME_DETAIL_QUESTION: Question = {
+  step: CALL_TIME_DETAIL_STEP,
+  answerKey: "q10CallTime",
+  text: "承知しました。ご希望の日時を教えてください。",
+};
+
+/** 通常フローの質問に、分岐先の追加質問を加えた全質問 */
+const ALL_QUESTIONS: readonly Question[] = [
+  ...QUESTIONS,
+  CALL_TIME_DETAIL_QUESTION,
 ];
 
 const DONE_STEP = "done";
 
 function findQuestion(step: string): Question | undefined {
-  return QUESTIONS.find((question) => question.step === step);
+  return ALL_QUESTIONS.find((question) => question.step === step);
 }
 
-function nextStep(step: string): string {
-  const index = QUESTIONS.findIndex((question) => question.step === step);
+function nextStep(question: Question, answer: string): string {
+  if (question.branchOn && question.branchOn.answer === answer) {
+    return question.branchOn.step;
+  }
+  // 分岐先の追加質問は通常フローに含まれないため、回答した時点で完了する
+  const index = QUESTIONS.findIndex((item) => item.step === question.step);
+  if (index < 0) {
+    return DONE_STEP;
+  }
   return QUESTIONS[index + 1]?.step ?? DONE_STEP;
 }
 
@@ -746,7 +778,7 @@ async function handleTextMessage(
   }
 
   const now = new Date().toISOString();
-  const step = nextStep(state.step);
+  const step = nextStep(question, text);
   const updated: HearingState = {
     ...state,
     step,
