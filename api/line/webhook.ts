@@ -1,5 +1,5 @@
 /**
- * LINE Messaging API Webhook
+ * LINE Messaging API Webhook（ヒアリング Q1〜Q10）
  *
  * POST /api/line/webhook
  *
@@ -9,6 +9,10 @@
  *
  * 署名検証にはパース前の生ボディが必要なため、
  * リクエストストリームから直接バイト列を読み取って検証する。
+ *
+ * 回答状態は Upstash Redis(REST) に userId 単位で保存する。
+ * Vercel Functions はリクエスト間でメモリが永続化される保証がないため、
+ * グローバル変数やインメモリ Map は状態管理に使わない。
  */
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
@@ -17,6 +21,15 @@ const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
 
 /** Reply API の待ち時間上限。Function のタイムアウトより必ず短くする */
 const REPLY_TIMEOUT_MS = 7000;
+
+/** 状態ストアの待ち時間上限 */
+const STATE_TIMEOUT_MS = 3000;
+
+/** 状態の保持期間（7日）。書き込みのたびに延長される */
+const STATE_TTL_SECONDS = 60 * 60 * 24 * 7;
+
+/** 状態キーの接頭辞。スキーマ変更時は v2 に上げて旧データと分離する */
+const STATE_KEY_PREFIX = "line:hearing:v1:";
 
 /** LINE Developers の「検証」で送られてくるダミーの replyToken */
 const VERIFY_REPLY_TOKEN = "00000000000000000000000000000000";
@@ -29,24 +42,381 @@ const START_TRIGGERS: readonly string[] = [
   "今後の集客に備えたい",
 ];
 
-const Q1_TEXT = [
+const Q1_INTRO = [
   "ありがとうございます！",
   "あなたに合ったご案内のため、いくつか質問させてください。",
   "",
-  "Q1. どんなお仕事をされていますか？",
 ].join("\n");
 
-const Q1_QUICK_REPLY_LABELS: readonly string[] = [
-  "外壁・屋根塗装",
-  "リフォーム",
-  "工務店・建築",
-  "設備・電気",
-  "その他",
+const COMPLETION_TEXT = [
+  "ご回答ありがとうございました！",
+  "",
+  "内容を確認のうえ、担当者よりご連絡いたします。",
+  "ご相談内容について追加で伝えておきたいことがございましたら、",
+  "このままトーク画面からお気軽にお送りください。",
+].join("\n");
+
+const PHONE_RETRY_TEXT = [
+  "電話番号をもう一度ご入力ください。",
+  "例：090-1234-5678",
+].join("\n");
+
+// ── 質問定義 ──────────────────────────────────────────
+
+type AnswerKey =
+  | "q1Job"
+  | "q2Area"
+  | "q3Employees"
+  | "q4Revenue"
+  | "q5Acquisition"
+  | "q6Website"
+  | "q7Company"
+  | "q8ContactName"
+  | "q9Phone"
+  | "q10CallTime";
+
+type Question = {
+  /** この質問の回答を待っている状態を表すキー */
+  step: string;
+  answerKey: AnswerKey;
+  text: string;
+  /** 指定時は Quick Reply。この選択肢と完全一致した入力のみ受理する */
+  choices?: readonly string[];
+  /** 自由入力の追加検証。未指定なら空でなければ受理 */
+  validate?: (input: string) => { ok: true } | { ok: false; message: string };
+};
+
+const QUESTIONS: readonly Question[] = [
+  {
+    step: "q1",
+    answerKey: "q1Job",
+    text: `${Q1_INTRO}Q1. どんなお仕事をされていますか？`,
+    choices: [
+      "外壁・屋根塗装",
+      "リフォーム",
+      "工務店・建築",
+      "設備・電気",
+      "その他",
+    ],
+  },
+  {
+    step: "q2",
+    answerKey: "q2Area",
+    text: "Q2. 主な対応エリアを教えてください。\n\n例：東京都、神奈川県",
+  },
+  {
+    step: "q3",
+    answerKey: "q3Employees",
+    text: "Q3. 従業員数を教えてください。",
+    choices: ["ご自身のみ", "2〜5名", "6〜14名", "15名以上"],
+  },
+  {
+    step: "q4",
+    answerKey: "q4Revenue",
+    text: "Q4. 現在の年商を教えてください。",
+    choices: [
+      "〜1,000万円",
+      "1,000〜3,000万円",
+      "3,000〜5,000万円",
+      "5,000万円〜1億円",
+      "1億円以上",
+    ],
+  },
+  {
+    step: "q5",
+    answerKey: "q5Acquisition",
+    text: "Q5. 現在、新規のお客様はどのように獲得していますか？",
+    choices: [
+      "紹介・口コミが中心",
+      "下請け案件が中心",
+      "ポータルサイト",
+      "Google・SNSなどWeb集客",
+      "特に集客していない",
+    ],
+  },
+  {
+    step: "q6",
+    answerKey: "q6Website",
+    text: "Q6. 自社ホームページはありますか？",
+    choices: ["ある", "ない", "あるが、ほぼ活用できていない"],
+  },
+  {
+    step: "q7",
+    answerKey: "q7Company",
+    text: "Q7. 会社名・屋号を教えてください。",
+  },
+  {
+    step: "q8",
+    answerKey: "q8ContactName",
+    text: "Q8. ご担当者名を教えてください。",
+  },
+  {
+    step: "q9",
+    answerKey: "q9Phone",
+    text: "Q9. ご連絡先のお電話番号を教えてください。",
+    validate: (input) =>
+      isValidJapanesePhone(input)
+        ? { ok: true }
+        : { ok: false, message: PHONE_RETRY_TEXT },
+  },
+  {
+    step: "q10",
+    answerKey: "q10CallTime",
+    text: "Q10. お電話可能な時間帯を教えてください。",
+    choices: ["午前", "12〜15時", "15〜18時", "18時以降", "日時を指定したい"],
+  },
 ];
+
+const DONE_STEP = "done";
+
+/** 全質問の選択肢。ログに値を出してよい固定文言かどうかの判定に使う */
+const ALL_CHOICES: ReadonlySet<string> = new Set(
+  QUESTIONS.flatMap((question) => question.choices ?? [])
+);
+
+function findQuestion(step: string): Question | undefined {
+  return QUESTIONS.find((question) => question.step === step);
+}
+
+function nextStep(step: string): string {
+  const index = QUESTIONS.findIndex((question) => question.step === step);
+  return QUESTIONS[index + 1]?.step ?? DONE_STEP;
+}
+
+// ── 電話番号バリデーション ────────────────────────────
+
+/** 全角数字を半角へ、ハイフン・空白・括弧を除去。+81 は 0 に置換する */
+function normalizePhone(raw: string): string {
+  const halfWidth = raw.replace(/[０-９＋]/g, (char) =>
+    String.fromCharCode(char.charCodeAt(0) - 0xfee0)
+  );
+  const stripped = halfWidth.replace(/[\s　()（）.\-‐‑‒–—―ー－ｰ]/g, "");
+  return stripped.startsWith("+81") ? `0${stripped.slice(3)}` : stripped;
+}
+
+/**
+ * 日本国内の電話番号として妥当かを判定する。
+ * ハイフンあり・なしの両方を許容する。
+ * - 11桁: 050 / 070 / 080 / 090 で始まる番号
+ * - 10桁: 0 で始まる固定電話・0120 等（携帯プレフィックスは除外）
+ */
+function isValidJapanesePhone(raw: string): boolean {
+  const digits = normalizePhone(raw);
+
+  if (!/^\d+$/.test(digits)) {
+    return false;
+  }
+  // 0000000000 のような明らかに不自然な入力を弾く
+  if (/^(\d)\1+$/.test(digits)) {
+    return false;
+  }
+
+  const isMobile = /^0[5789]0\d{8}$/.test(digits);
+  const isLandline = /^0(?![5789]0)\d{9}$/.test(digits);
+  return isMobile || isLandline;
+}
+
+// ── 状態ストア（Upstash Redis REST） ──────────────────
+
+type HearingState = {
+  /** 開始トリガーで選ばれた4択 */
+  initialConcern: string;
+  /** 現在回答を待っている質問。全問完了後は "done" */
+  step: string;
+  answers: Partial<Record<AnswerKey, string>>;
+  startedAt: string;
+  updatedAt: string;
+};
+
+type StateStore = { url: string; token: string };
+
+/**
+ * Upstash の接続情報を返す。
+ * Vercel Marketplace 経由なら KV_*、Upstash コンソール直接作成なら UPSTASH_* の
+ * 名前で環境変数が入るため、どちらも受け付ける。
+ */
+function getStateStore(): StateStore | null {
+  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+  const token =
+    process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (!url || !token) {
+    return null;
+  }
+  return { url: url.replace(/\/+$/, ""), token };
+}
+
+async function runStateCommand(
+  store: StateStore,
+  command: string[]
+): Promise<unknown> {
+  const res = await fetch(store.url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${store.token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(command),
+    signal: AbortSignal.timeout(STATE_TIMEOUT_MS),
+  });
+
+  const payload = (await res.json()) as { result?: unknown; error?: string };
+
+  if (!res.ok || payload.error) {
+    throw new Error(`state store command failed (status ${res.status})`);
+  }
+  return payload.result;
+}
+
+function stateKey(userId: string): string {
+  return `${STATE_KEY_PREFIX}${userId}`;
+}
+
+async function loadState(
+  store: StateStore,
+  userId: string
+): Promise<HearingState | null> {
+  const raw = await runStateCommand(store, ["GET", stateKey(userId)]);
+
+  if (typeof raw !== "string") {
+    return null;
+  }
+  try {
+    return JSON.parse(raw) as HearingState;
+  } catch {
+    // 壊れたデータは無いものとして扱い、次の開始トリガーで作り直す
+    return null;
+  }
+}
+
+async function saveState(
+  store: StateStore,
+  userId: string,
+  state: HearingState
+): Promise<void> {
+  await runStateCommand(store, [
+    "SET",
+    stateKey(userId),
+    JSON.stringify(state),
+    "EX",
+    String(STATE_TTL_SECONDS),
+  ]);
+}
+
+// ── LINE 返信 ────────────────────────────────────────
+
+async function replyMessage(
+  accessToken: string,
+  replyToken: string,
+  text: string,
+  choices?: readonly string[]
+): Promise<void> {
+  const message: Record<string, unknown> = { type: "text", text };
+
+  if (choices) {
+    message.quickReply = {
+      items: choices.map((label) => ({
+        type: "action",
+        action: { type: "message", label, text: label },
+      })),
+    };
+  }
+
+  let res: Response;
+  try {
+    res = await fetch(LINE_REPLY_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ replyToken, messages: [message] }),
+      // 応答が返らない場合でも Function をハングさせない
+      signal: AbortSignal.timeout(REPLY_TIMEOUT_MS),
+    });
+  } catch (error) {
+    console.error(
+      "[line/webhook] reply API unreachable:",
+      error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+    );
+    return;
+  }
+
+  // ボディを読み切ってコネクションを解放する
+  const responseBody = await res.text();
+
+  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+  console.log(
+    "[line/webhook][debug] reply API:",
+    JSON.stringify({ status: res.status, ok: res.ok })
+  );
+  // --- [一時デバッグログ] ここまで ---
+
+  if (!res.ok) {
+    console.error("[line/webhook] reply API failed:", res.status, responseBody);
+  }
+}
+
+async function askQuestion(
+  accessToken: string,
+  replyToken: string,
+  question: Question
+): Promise<void> {
+  await replyMessage(accessToken, replyToken, question.text, question.choices);
+}
+
+// ── 安全なログ整形 ───────────────────────────────────
+
+/**
+ * 回答をログ用に整形する。
+ * 選択肢は固定文言なのでそのまま出す。
+ * 自由入力は会社名・担当者名・電話番号など PII を含むため値を出さない。
+ */
+function describeAnswer(
+  question: Question,
+  value: string | undefined
+): unknown {
+  if (value === undefined) {
+    return null;
+  }
+  if (question.choices) {
+    return value;
+  }
+  if (question.answerKey === "q9Phone") {
+    return { filled: true, digitCount: normalizePhone(value).length };
+  }
+  return { filled: true, length: value.length };
+}
+
+function describeState(state: HearingState): string {
+  const answers: Record<string, unknown> = {};
+  for (const question of QUESTIONS) {
+    answers[question.answerKey] = describeAnswer(
+      question,
+      state.answers[question.answerKey]
+    );
+  }
+
+  const answeredCount = QUESTIONS.filter(
+    (question) => state.answers[question.answerKey] !== undefined
+  ).length;
+
+  return JSON.stringify({
+    initialConcern: state.initialConcern,
+    step: state.step,
+    answeredCount,
+    totalQuestions: QUESTIONS.length,
+    allAnswered: answeredCount === QUESTIONS.length,
+    answers,
+  });
+}
+
+// ── Webhook 本体 ─────────────────────────────────────
 
 type LineWebhookEvent = {
   type?: string;
   replyToken?: string;
+  source?: { type?: string; userId?: string };
   message?: {
     type?: string;
     text?: string;
@@ -121,78 +491,131 @@ function isStartTrigger(text: string): boolean {
   return START_TRIGGERS.includes(text);
 }
 
-async function replyQ1(accessToken: string, replyToken: string): Promise<void> {
-  const payload = JSON.stringify({
-    replyToken,
-    messages: [
-      {
-        type: "text",
-        text: Q1_TEXT,
-        quickReply: {
-          items: Q1_QUICK_REPLY_LABELS.map((label) => ({
-            type: "action",
-            action: {
-              type: "message",
-              label,
-              text: label,
-            },
-          })),
-        },
-      },
-    ],
-  });
+/**
+ * テキストメッセージ1件を処理する。
+ * 状態の読み書きに失敗した場合は例外を投げ、呼び出し側でログに残す。
+ */
+async function handleTextMessage(
+  store: StateStore,
+  accessToken: string,
+  userId: string,
+  replyToken: string,
+  text: string
+): Promise<void> {
+  // 開始トリガーはいつ送られても最初からやり直す
+  if (isStartTrigger(text)) {
+    const now = new Date().toISOString();
+    const firstQuestion = QUESTIONS[0];
+    const state: HearingState = {
+      initialConcern: text,
+      step: firstQuestion.step,
+      answers: {},
+      startedAt: now,
+      updatedAt: now,
+    };
 
-  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
-  console.log(
-    "[line/webhook][debug] reply: payload生成完了 → fetch開始",
-    JSON.stringify({
-      payloadBytes: Buffer.byteLength(payload, "utf8"),
-      timeoutMs: REPLY_TIMEOUT_MS,
-    })
-  );
-  // --- [一時デバッグログ] ここまで ---
+    await saveState(store, userId, state);
 
-  let res: Response;
-  try {
-    res = await fetch(LINE_REPLY_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: payload,
-      // 応答が返らない場合でも Function をハングさせない
-      signal: AbortSignal.timeout(REPLY_TIMEOUT_MS),
-    });
-  } catch (error) {
-    // タイムアウト・DNS・到達不可はここに入る
-    console.error(
-      "[line/webhook] reply API unreachable:",
-      error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+    console.log(
+      "[line/webhook][debug] ヒアリング開始:",
+      JSON.stringify({ initialConcern: text, step: state.step })
     );
+    // --- [一時デバッグログ] ここまで ---
+
+    await askQuestion(accessToken, replyToken, firstQuestion);
     return;
   }
 
-  // ボディを読み切ってコネクションを解放する
-  const responseBody = await res.text();
+  const state = await loadState(store, userId);
 
-  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  // 進行中のヒアリングが無い場合と、完了済みの場合は自動返信しない
+  if (!state || state.step === DONE_STEP) {
+    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+    console.log(
+      "[line/webhook][debug] 自動返信なし:",
+      JSON.stringify({ hasState: Boolean(state), step: state?.step ?? null })
+    );
+    // --- [一時デバッグログ] ここまで ---
+    return;
+  }
+
+  const question = findQuestion(state.step);
+  if (!question) {
+    console.error("[line/webhook] unknown step in stored state");
+    return;
+  }
+
+  // Quick Reply の質問は想定された選択肢のみ受理し、
+  // それ以外は同じ質問を出し直して回答を待つ
+  if (question.choices && !question.choices.includes(text)) {
+    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+    console.log(
+      "[line/webhook][debug] 選択肢外の入力 → 同じ質問を再送:",
+      JSON.stringify({ step: state.step })
+    );
+    // --- [一時デバッグログ] ここまで ---
+    await askQuestion(accessToken, replyToken, question);
+    return;
+  }
+
+  // 自由入力の検証（Q9 電話番号など）
+  if (!question.choices) {
+    if (text.length === 0) {
+      await askQuestion(accessToken, replyToken, question);
+      return;
+    }
+    const result = question.validate?.(text);
+    if (result && !result.ok) {
+      // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+      console.log(
+        "[line/webhook][debug] 入力バリデーションNG → 再入力を依頼:",
+        JSON.stringify({ step: state.step })
+      );
+      // --- [一時デバッグログ] ここまで ---
+      await replyMessage(accessToken, replyToken, result.message);
+      return;
+    }
+  }
+
+  const updated: HearingState = {
+    ...state,
+    step: nextStep(state.step),
+    answers: { ...state.answers, [question.answerKey]: text },
+    updatedAt: new Date().toISOString(),
+  };
+
+  await saveState(store, userId, updated);
+
+  if (updated.step === DONE_STEP) {
+    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+    console.log("[line/webhook][debug] ヒアリング完了:", describeState(updated));
+    // --- [一時デバッグログ] ここまで ---
+    await replyMessage(accessToken, replyToken, COMPLETION_TEXT);
+    return;
+  }
+
+  const following = findQuestion(updated.step);
+  if (!following) {
+    console.error("[line/webhook] next step not found");
+    return;
+  }
+
+  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
   console.log(
-    "[line/webhook][debug] reply API:",
-    JSON.stringify({ status: res.status, ok: res.ok })
+    "[line/webhook][debug] 回答を保存 → 次の質問:",
+    JSON.stringify({ answered: question.answerKey, nextStep: updated.step })
   );
   // --- [一時デバッグログ] ここまで ---
 
-  if (!res.ok) {
-    console.error("[line/webhook] reply API failed:", res.status, responseBody);
-  }
+  await askQuestion(accessToken, replyToken, following);
 }
 
 export default async function handler(
   req: VercelNodeRequest,
   res: ServerResponse
 ): Promise<void> {
-  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
   console.log(
     "[line/webhook][debug] handler開始:",
     JSON.stringify({
@@ -233,7 +656,7 @@ export default async function handler(
     ? signatureHeader[0]
     : signatureHeader;
 
-  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
   console.log(
     "[line/webhook][debug] 生ボディ取得:",
     JSON.stringify({
@@ -271,39 +694,48 @@ export default async function handler(
 
   // Webhook URL の「検証」は events: [] で送られてくるため、そのまま 200 を返す
   const events = body.events ?? [];
+  const store = getStateStore();
 
-  // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+  // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
   console.log(
     "[line/webhook][debug] 署名検証OK:",
-    JSON.stringify({ eventCount: events.length })
+    JSON.stringify({ eventCount: events.length, hasStateStore: Boolean(store) })
   );
   // --- [一時デバッグログ] ここまで ---
 
+  if (events.length > 0 && !store) {
+    // 状態を保存できない状態で会話を始めると途中で破綻するため、返信しない
+    console.error(
+      "[line/webhook] state store is not configured " +
+        "(KV_REST_API_URL / KV_REST_API_TOKEN)"
+    );
+    res.statusCode = 200;
+    res.end("OK");
+    return;
+  }
+
   for (const [index, event] of events.entries()) {
     const messageType = event.message?.type;
-    const rawText = event.message?.text ?? "";
-    const normalizedText = rawText.trim();
-    const matchedTriggerIndex = START_TRIGGERS.indexOf(normalizedText);
+    const text = (event.message?.text ?? "").trim();
+    const userId = event.source?.userId;
+    const replyToken = event.replyToken;
 
-    // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
+    // --- [一時デバッグログ] ここから（動作確認後に削除する） ---
+    // 自由入力は PII を含むため値を出さない。
+    // トリガー・選択肢に完全一致した固定文言のみ値を出す。
+    const isKnownPhrase = isStartTrigger(text) || ALL_CHOICES.has(text);
     console.log(
       "[line/webhook][debug] event:",
       JSON.stringify({
         index,
         eventType: event.type ?? null,
         messageType: messageType ?? null,
-        text: rawText,
-        textLength: rawText.length,
-        trimmedLength: normalizedText.length,
-        matchedTrigger: matchedTriggerIndex >= 0,
-        matchedTriggerIndex,
-        hasReplyToken: Boolean(event.replyToken),
-        isVerifyReplyToken: event.replyToken === VERIFY_REPLY_TOKEN,
-        // 完全一致しなかった場合のみ、不可視文字・異体字を特定するため出力
-        codePoints:
-          matchedTriggerIndex >= 0
-            ? undefined
-            : [...normalizedText].map((char) => char.codePointAt(0)),
+        text: isKnownPhrase ? text : undefined,
+        textLength: text.length,
+        isKnownPhrase,
+        hasUserId: Boolean(userId),
+        hasReplyToken: Boolean(replyToken),
+        isVerifyReplyToken: replyToken === VERIFY_REPLY_TOKEN,
       })
     );
     // --- [一時デバッグログ] ここまで ---
@@ -311,29 +743,24 @@ export default async function handler(
     if (event.type !== "message" || messageType !== "text") {
       continue;
     }
-
-    const replyToken = event.replyToken;
     if (!replyToken || replyToken === VERIFY_REPLY_TOKEN) {
       continue;
     }
-
-    // トリガー以外の通常メッセージには現段階では自動返信しない
-    if (!isStartTrigger(normalizedText)) {
+    // 1対1トーク以外は userId が取れず状態管理できないため対象外
+    if (!userId || !store) {
       continue;
     }
 
-    // --- [一時デバッグログ] ここから（原因特定後に削除する） ---
-    console.log(
-      "[line/webhook][debug] トリガー一致 → replyQ1 呼び出し:",
-      JSON.stringify({ index })
-    );
-    // --- [一時デバッグログ] ここまで ---
-
     try {
-      await replyQ1(accessToken, replyToken);
+      await handleTextMessage(store, accessToken, userId, replyToken, text);
     } catch (error) {
-      // 返信に失敗してもLINE側の再送を招かないよう 200 を返す
-      console.error("[line/webhook] reply failed:", error);
+      // 失敗してもLINE側の再送を招かないよう 200 を返す
+      console.error(
+        "[line/webhook] failed to handle message:",
+        error instanceof Error
+          ? `${error.name}: ${error.message}`
+          : String(error)
+      );
     }
   }
 
