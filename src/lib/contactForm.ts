@@ -36,8 +36,21 @@ type ContactApiResponse = {
 const GENERIC_ERROR_MESSAGE =
   "送信に失敗しました。通信環境をご確認のうえ、再度お試しください。";
 
+const TIMEOUT_ERROR_MESSAGE =
+  "送信に時間がかかっています。しばらく時間をおいてから、もう一度お試しください。";
+
+const SUBMIT_TIMEOUT_MS = 25000;
+
+export function createRequestId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `req-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
 export async function submitContactForm(
-  form: ContactFormState
+  form: ContactFormState,
+  requestId: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   const apiUrl = import.meta.env.VITE_CONTACT_API_URL;
 
@@ -49,6 +62,9 @@ export async function submitContactForm(
     AREA_OPTIONS.find((option) => option.value === form.area)?.label ?? "";
 
   const utm = getStoredUtmParams();
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS);
 
   try {
     const res = await fetch(apiUrl, {
@@ -66,7 +82,9 @@ export async function submitContactForm(
         utm_campaign: utm.utm_campaign,
         utm_content: utm.utm_content,
         utm_term: utm.utm_term,
+        request_id: requestId,
       }),
+      signal: controller.signal,
     });
 
     if (!res.ok) {
@@ -80,8 +98,13 @@ export async function submitContactForm(
     }
 
     return { ok: true };
-  } catch {
+  } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") {
+      return { ok: false, message: TIMEOUT_ERROR_MESSAGE };
+    }
     return { ok: false, message: GENERIC_ERROR_MESSAGE };
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 

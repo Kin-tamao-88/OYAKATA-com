@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 import {
   AREA_OPTIONS,
   INITIAL_CONTACT_FORM,
+  createRequestId,
   pushGenerateLeadEvent,
   submitContactForm,
 } from "../lib/contactForm";
@@ -13,6 +14,13 @@ export default function Section10() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // 同一送信の再試行（タイムアウト後の再送など）で同じrequestIdを使い回すことで、
+  // Apps Script側の重複保存防止と突き合わせる。成功後にのみ次回送信用の新しいIDを発行する。
+  const requestIdRef = useRef<string | null>(null);
+  if (!requestIdRef.current) {
+    requestIdRef.current = createRequestId();
+  }
 
   function updateField<K extends keyof ContactFormState>(key: K, value: ContactFormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -25,12 +33,13 @@ export default function Section10() {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    const result = await submitContactForm(form);
+    const result = await submitContactForm(form, requestIdRef.current!);
 
     if (result.ok) {
       pushGenerateLeadEvent();
       setForm(INITIAL_CONTACT_FORM);
       setIsSubmitted(true);
+      requestIdRef.current = createRequestId();
     } else {
       setErrorMessage(result.message);
     }
