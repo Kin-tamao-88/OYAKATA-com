@@ -1,5 +1,6 @@
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import { trackLineClick } from "../lib/analytics";
+import { buildLineCtaHref } from "../lib/line";
 
 const steps = [
   {
@@ -167,7 +168,7 @@ export default function Section06() {
       </div>
       {/* PC CTA帯 */}
       <a
-        href="https://lin.ee/yFZ5vjU"
+        href={buildLineCtaHref()}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LINEで無料相談"

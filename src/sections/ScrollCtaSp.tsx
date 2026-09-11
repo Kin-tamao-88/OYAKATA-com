@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { trackLineClick } from "../lib/analytics";
+import { buildLineCtaHref } from "../lib/line";
 
 export default function ScrollCtaSp() {
   const [visible, setVisible] = useState(false);
@@ -45,7 +46,7 @@ export default function ScrollCtaSp() {
       }`}
     >
       <a
-        href="https://lin.ee/yFZ5vjU"
+        href={buildLineCtaHref()}
         target="_blank"
         rel="noopener noreferrer"
         onClick={trackLineClick}

@@ -38,6 +38,16 @@ const STATE_TTL_SECONDS = 60 * 60 * 24 * 7;
 const STATE_KEY_PREFIX = "line:hearing:v1:";
 
 /**
+ * Meta広告CR（クリエイティブ識別子）紐付けのキー接頭辞。
+ * api/line/liff-cr.ts が書き込み、ここでは読み取り専用として扱う。
+ * スキーマはそちらと合わせて v1 とする。
+ */
+const CR_KEY_PREFIX = "line:cr:v1:";
+
+/** CRが見つからない場合（自然流入・直接友だち追加）に台帳へ記録する値 */
+const UNKNOWN_CR = "不明";
+
+/**
  * 台帳保存の処理中ロック。
  * 保存済みかどうかは sheetStatus が持ち、このロックは同時実行の排他のみを担う。
  * 処理時間（最大でも プロフィール3秒＋Sheets 7秒＋Redis 数回）を十分上回り、
@@ -335,6 +345,38 @@ function sheetLockKey(userId: string): string {
   return `${SHEET_LOCK_KEY_PREFIX}${userId}`;
 }
 
+function crKey(userId: string): string {
+  return `${CR_KEY_PREFIX}${userId}`;
+}
+
+/**
+ * LIFF経由で紐付けられたCRを取得する。
+ * 取得できない（自然流入・直接友だち追加・期限切れ）場合は UNKNOWN_CR を返す。
+ * 読み取り失敗はヒアリング・台帳保存を止める理由にならないため、例外を投げない。
+ */
+async function loadCr(store: StateStore, userId: string): Promise<string> {
+  try {
+    const raw = await runStateCommand(store, "GET cr", ["GET", crKey(userId)]);
+    return typeof raw === "string" && raw ? raw : UNKNOWN_CR;
+  } catch (error) {
+    console.error("[line/webhook] failed to load cr:", describeError(error));
+    return UNKNOWN_CR;
+  }
+}
+
+/**
+ * 消費済みのCR紐付けを削除する。
+ * 同一ユーザーが後日（TTL内に）別の広告経由で再度ヒアリングを開始した際に、
+ * 古いCRが誤って引き継がれるのを防ぐ。削除失敗はTTL失効に任せるため無視する。
+ */
+async function deleteCr(store: StateStore, userId: string): Promise<void> {
+  try {
+    await runStateCommand(store, "DEL cr", ["DEL", crKey(userId)]);
+  } catch (error) {
+    console.error("[line/webhook] failed to delete cr:", describeError(error));
+  }
+}
+
 async function loadState(
   store: StateStore,
   userId: string
@@ -444,7 +486,8 @@ async function fetchDisplayName(
 
 async function postLeadToSheets(
   endpoint: SheetsEndpoint,
-  state: HearingState
+  state: HearingState,
+  cr: string
 ): Promise<SheetsSaveResult> {
   const res = await fetch(endpoint.url, {
     method: "POST",
@@ -457,6 +500,8 @@ async function postLeadToSheets(
       completedAt: state.completedAt,
       displayName: state.displayName ?? "",
       initialConcern: state.initialConcern,
+      // Meta広告クリエイティブ識別子。紐付けが無い場合は UNKNOWN_CR
+      cr,
       ...state.answers,
     }),
     signal: AbortSignal.timeout(SHEETS_TIMEOUT_MS),
@@ -540,7 +585,8 @@ async function saveLeadToSheets(
 
     await saveState(store, userId, { ...current, sheetStatus: "saving" });
 
-    const result = await postLeadToSheets(endpoint, current);
+    const cr = await loadCr(store, userId);
+    const result = await postLeadToSheets(endpoint, current, cr);
 
     if (result.ok) {
       await saveState(store, userId, {
@@ -549,6 +595,8 @@ async function saveLeadToSheets(
         savedAt: new Date().toISOString(),
         savedRow: result.row,
       });
+      // 消費済みのCR紐付けを削除する。失敗してもTTLで自然に失効するため無視してよい
+      await deleteCr(store, userId);
       return;
     }
 

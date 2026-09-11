@@ -37,6 +37,7 @@ const HEADERS = [
   '電話番号',
   '電話希望時間',
   '回答完了',
+  '流入CR',
 ];
 
 const COLUMN_COUNT = HEADERS.length;
@@ -102,6 +103,7 @@ function doPost(e) {
       phone, // L 電話番号
       sanitize(data.q10CallTime), // M 電話希望時間
       '完了', // N 回答完了
+      sanitize(data.cr) || '不明', // O 流入CR（Meta広告クリエイティブ識別子）
     ];
 
     if (row.length !== COLUMN_COUNT) {

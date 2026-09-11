@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logoMark from "../assets/images/logos/logo-mark2.webp";
 import { trackLineClick } from "../lib/analytics";
+import { buildLineCtaHref } from "../lib/line";
 
 const navItems = [
   { label: "親方ドットコムとは？", href: "#s01" },
@@ -158,7 +159,7 @@ export default function Header() {
 
           {/* LINE CTA：ヘッダー全高パネル */}
           <a
-            href="https://lin.ee/yFZ5vjU"
+            href={buildLineCtaHref()}
             target="_blank"
             rel="noopener noreferrer"
             onClick={trackLineClick}

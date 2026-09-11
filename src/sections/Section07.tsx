@@ -1,6 +1,7 @@
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 import paintDark from "../assets/images/ui/hero-paint-dark.webp";
 import { trackLineClick } from "../lib/analytics";
+import { buildLineCtaHref } from "../lib/line";
 import imgCase01 from "../assets/images/OC07/results-case01-30.webp";
 import imgCase02 from "../assets/images/OC07/results-case02-50.webp";
 import brushYellow from "../assets/images/ui/brush-yellow.webp";
@@ -224,7 +225,7 @@ export default function Section08() {
             </p>
           </div>
           <a
-            href="https://lin.ee/yFZ5vjU"
+            href={buildLineCtaHref()}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LINEで無料相談"

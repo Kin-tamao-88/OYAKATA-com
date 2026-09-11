@@ -6,6 +6,7 @@ import badge1 from "../assets/images/ui/badge-1-unit-price.webp";
 import badge2 from "../assets/images/ui/badge-2-inquiry.webp";
 import badge3 from "../assets/images/ui/badge-3-speed.webp";
 import { trackLineClick } from "../lib/analytics";
+import { buildLineCtaHref } from "../lib/line";
 
 export default function Hero() {
   return (
@@ -154,7 +155,7 @@ export default function Hero() {
             下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
           </p>
           <a
-            href="https://lin.ee/yFZ5vjU"
+            href={buildLineCtaHref()}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LINEで無料相談"
@@ -314,7 +315,7 @@ export default function Hero() {
 
       {/* ══ PC 黒CTA帯 ══════════════════════════════════════════════════ */}
       <a
-        href="https://lin.ee/yFZ5vjU"
+        href={buildLineCtaHref()}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LINEで無料相談"
