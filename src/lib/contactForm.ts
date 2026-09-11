@@ -1,3 +1,5 @@
+import { getStoredUtmParams } from "./utm";
+
 export type ContactFormState = {
   company: string;
   name: string;
@@ -46,6 +48,8 @@ export async function submitContactForm(
   const areaLabel =
     AREA_OPTIONS.find((option) => option.value === form.area)?.label ?? "";
 
+  const utm = getStoredUtmParams();
+
   try {
     const res = await fetch(apiUrl, {
       method: "POST",
@@ -57,6 +61,11 @@ export async function submitContactForm(
         email: form.email,
         area: areaLabel,
         message: form.message,
+        utm_source: utm.utm_source,
+        utm_medium: utm.utm_medium,
+        utm_campaign: utm.utm_campaign,
+        utm_content: utm.utm_content,
+        utm_term: utm.utm_term,
       }),
     });
 

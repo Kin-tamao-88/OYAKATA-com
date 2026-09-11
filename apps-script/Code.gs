@@ -27,6 +27,11 @@ function doPost(e) {
     var email = sanitize(data.email);
     var area = sanitize(data.area);
     var message = sanitize(data.message);
+    var utmSource = sanitize(data.utm_source);
+    var utmMedium = sanitize(data.utm_medium);
+    var utmCampaign = sanitize(data.utm_campaign);
+    var utmContent = sanitize(data.utm_content);
+    var utmTerm = sanitize(data.utm_term);
 
     if (!company || !name || !phone || !email || !area) {
       return jsonResponse({ success: false, error: '必須項目が不足しています。' });
@@ -40,7 +45,20 @@ function doPost(e) {
       return jsonResponse({ success: false, error: 'シートが見つかりません。' });
     }
 
-    sheet.appendRow([receivedAtLabel, company, name, phone, email, area, message]);
+    sheet.appendRow([
+      receivedAtLabel,
+      company,
+      name,
+      phone,
+      email,
+      area,
+      message,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmContent,
+      utmTerm,
+    ]);
 
     sendNotificationEmail({
       company: company,
@@ -50,6 +68,11 @@ function doPost(e) {
       area: area,
       message: message,
       receivedAtLabel: receivedAtLabel,
+      utmSource: utmSource,
+      utmMedium: utmMedium,
+      utmCampaign: utmCampaign,
+      utmContent: utmContent,
+      utmTerm: utmTerm,
     });
 
     return jsonResponse({ success: true });
@@ -73,6 +96,11 @@ function sendNotificationEmail(d) {
     'メールアドレス：' + d.email + '\n' +
     'お住まいの地域：' + d.area + '\n' +
     'ご相談内容：' + (d.message || '（記入なし）') + '\n\n' +
+    '流入元：' + (d.utmSource || '（なし）') + '\n' +
+    '媒体：' + (d.utmMedium || '（なし）') + '\n' +
+    'キャンペーン：' + (d.utmCampaign || '（なし）') + '\n' +
+    'クリエイティブ（CR）：' + (d.utmContent || '（なし）') + '\n' +
+    '検索語：' + (d.utmTerm || '（なし）') + '\n\n' +
     '受付日時：' + d.receivedAtLabel;
 
   MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
