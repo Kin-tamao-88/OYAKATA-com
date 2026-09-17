@@ -73,7 +73,7 @@ export default function Privacy() {
                   1. 取得する情報
                 </h2>
                 <p>
-                  当社は、本サービスのお問い合わせ、無料相談、LINE公式アカウント等を通じて、以下の情報を取得する場合があります。
+                  当社は、本サービスのお問い合わせ、無料診断、LINE公式アカウント等を通じて、以下の情報を取得する場合があります。
                 </p>
                 <ul className="list-disc pl-5 mt-3 space-y-1.5">
                   <li>会社名</li>
@@ -95,7 +95,7 @@ export default function Privacy() {
                 </h2>
                 <p>当社は、取得した個人情報を以下の目的で利用します。</p>
                 <ul className="list-disc pl-5 mt-3 space-y-1.5">
-                  <li>お問い合わせ、無料相談等への対応</li>
+                  <li>お問い合わせ、無料診断等への対応</li>
                   <li>本サービスおよび関連サービスのご案内、ご提案</li>
                   <li>利用者との連絡、商談その他必要な対応</li>
                   <li>本サービスの提供、運営および改善</li>

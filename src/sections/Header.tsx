@@ -91,7 +91,7 @@ export default function Header() {
                 onClick={() => setIsOpen(false)}
                 className="flex items-center justify-center gap-2 bg-[#FFD000] py-4 no-underline"
               >
-                <span className="font-black text-[#1a1a1a] text-[15px]">無料のご相談はこちら ›</span>
+                <span className="font-black text-[#1a1a1a] text-[15px]">無料診断はこちら ›</span>
               </a>
             </div>
           </div>

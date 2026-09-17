@@ -156,14 +156,14 @@ export default function Section06() {
         </p>
         <a
           href="#contact"
-          aria-label="無料相談はこちら"
+          aria-label="無料診断はこちら"
           className="flex items-center justify-center gap-2.5 bg-[#D4A820] no-underline rounded-lg py-3 w-full"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <rect x="2" y="4" width="20" height="16" rx="2" />
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
           </svg>
-          <span className="font-black text-[#1a1a1a] text-[16px]">無料相談はこちら ›</span>
+          <span className="font-black text-[#1a1a1a] text-[16px]">無料診断はこちら ›</span>
         </a>
       </div>
       {/* PC CTA帯 */}

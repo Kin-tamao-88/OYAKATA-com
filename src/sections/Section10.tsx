@@ -59,7 +59,7 @@ export default function Section10() {
             <div className="flex items-center gap-4 lg:gap-5 min-w-0 w-full lg:w-auto">
               <div className="min-w-0 text-center lg:text-left w-full lg:w-auto">
                 <h2 className="text-white font-black leading-none text-[24px] lg:text-[36px] whitespace-nowrap">
-                  無料相談フォーム
+                  無料診断フォーム
                 </h2>
                 <p className="text-[#aaaaaa] text-[11px] lg:text-[13px] mt-1.5 leading-none">
                   元請け案件を増やすための第一歩です。
@@ -276,7 +276,7 @@ export default function Section10() {
                       <rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1a1a" strokeWidth="1.8" />
                       <path d="M1 7.5l10 7 10-7" stroke="#1a1a1a" strokeWidth="1.8" />
                     </svg>
-                    無料相談を申し込む
+                    無料診断を申し込む
                     <span className="text-[22px] leading-none">›</span>
                   </>
                 )}

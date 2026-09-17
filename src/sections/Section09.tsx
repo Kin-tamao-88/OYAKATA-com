@@ -58,7 +58,7 @@ const trustItems = [
       </svg>
     ),
     title: "ご相談無料",
-    detail: "無理な営業は一切しません",
+    detail: "御社の課題をお聞かせください。",
   },
   {
     icon: (
@@ -145,7 +145,7 @@ export default function Section09() {
 
       </div>
 
-      {/* ── 無料相談で分かること ── */}
+      {/* ── 無料診断で分かること ── */}
       <div className="bg-[#1a1a1a] relative">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] py-10 lg:py-14">
 
