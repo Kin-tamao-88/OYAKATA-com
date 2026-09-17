@@ -157,7 +157,7 @@ export default function Section09() {
           {/* ヘッダー */}
           <div className="flex items-center gap-4 mb-10">
             <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
-            <span className="text-white font-bold text-[14px] lg:text-[16px] whitespace-nowrap">無料相談で分かること</span>
+            <span className="text-white font-bold text-[14px] lg:text-[16px] whitespace-nowrap">無料診断で分かること</span>
             <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
           </div>
 
