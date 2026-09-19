@@ -23,6 +23,40 @@ const pcNavItems = [
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPhoneShown, setIsPhoneShown] = useState(false);
+
+  const phoneInner = (
+    <div
+      className={`flex items-center gap-2.5 rounded-md${
+        isPhoneShown ? "" : " outline outline-[1.5px] outline-offset-[7px] outline-[#f5a623] group-hover:outline-[#D4A820]"
+      }`}
+    >
+      <div
+        className="flex items-center justify-center flex-shrink-0 rounded-full"
+        style={{ width: "42px", height: "42px", backgroundColor: "#f5a623" }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"
+            fill="#fff"
+          />
+        </svg>
+      </div>
+      <div className="flex min-w-[122.92px] flex-col leading-tight">
+        {isPhoneShown ? (
+          <>
+            <span className="text-[#1a1a1a]" style={{ fontSize: "11px", fontWeight: 500 }}>お電話でのご相談</span>
+            <span className="text-[#D4A820] font-bold" style={{ fontSize: "17px" }}>080-4772-9896</span>
+          </>
+        ) : (
+          <>
+            <span className="text-[#1a1a1a] font-bold text-[11px]">お電話でのご相談は</span>
+            <span className="text-[#D4A820] font-black text-[15px] whitespace-nowrap group-hover:underline underline-offset-2">こちらをクリック</span>
+          </>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -132,27 +166,23 @@ export default function Header() {
           </nav>
 
           {/* 電話番号エリア */}
-          <a
-            href="tel:08047729896"
-            className="flex items-center gap-2.5 flex-shrink-0 no-underline"
-            style={{ paddingLeft: "20px", paddingRight: "20px" }}
-          >
-            <div
-              className="flex items-center justify-center flex-shrink-0 rounded-full"
-              style={{ width: "42px", height: "42px", backgroundColor: "#f5a623" }}
+          {isPhoneShown ? (
+            <a
+              href="tel:08047729896"
+              className="group flex items-center flex-shrink-0 no-underline px-5"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"
-                  fill="#fff"
-                />
-              </svg>
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-[#1a1a1a]" style={{ fontSize: "11px", fontWeight: 500 }}>お電話でのご相談</span>
-              <span className="text-[#D4A820] font-bold" style={{ fontSize: "17px" }}>080-4772-9896</span>
-            </div>
-          </a>
+              {phoneInner}
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsPhoneShown(true)}
+              aria-label="お電話でのご相談はこちらをクリック。電話番号を表示します"
+              className="group flex items-center flex-shrink-0 cursor-pointer px-5 text-left"
+            >
+              {phoneInner}
+            </button>
+          )}
 
           {/* 区切り線 */}
           <div className="flex-shrink-0" style={{ width: "1px", backgroundColor: "#e5e5e5", marginTop: "26px", marginBottom: "26px" }} />
