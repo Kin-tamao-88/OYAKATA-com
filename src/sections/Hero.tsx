@@ -1,12 +1,27 @@
-import heroBg from "../assets/images/hero/hero-right-background2.webp";
+import heroBg from "../assets/images/hero/hero-new-background.webp";
 import paintDark from "../assets/images/ui/hero-paint-dark2.webp";
 import brushHeroText from "../assets/images/ui/brush-hero-text.webp";
 import brushHeroYellow from "../assets/images/ui/brush-hero-yellow.webp";
-import badge1 from "../assets/images/ui/badge-1-unit-price.webp";
-import badge2 from "../assets/images/ui/badge-2-inquiry.webp";
-import badge3 from "../assets/images/ui/badge-3-speed.webp";
 import { trackLineClick } from "../lib/analytics";
 import { buildLineCtaHref } from "../lib/line";
+
+const HERO_POINTS = [
+  { title: "反響", lead: "地域のお客さんから", result: "相談が入る" },
+  { title: "直請け", lead: "紹介に頼らず", result: "直接受注" },
+  { title: "売上", lead: "安定して", result: "伸ばしていく" },
+];
+
+// PC人物写真(1986×792の横長)の表示位置：写真の右端=メインコンテナ右端。高さ基準のcoverで人物サイズは高さ(105%)で決まり、幅では変わらない。
+// 100%=右端合わせ、+39.5cqh=写真の右端側の背景余白を約15%(≒40px超)残す位置。
+const PC_PHOTO_POSITION = "calc(100% + 39.5cqh) top";
+
+// PC人物写真のマスク(コンテナ=セクション基準)：コピー・3カラム(内容の右端=640px)までは白基調、そこから住宅・人物へ立ち上げる。右端は不透明のままコンテナ右端で終了
+const PC_PHOTO_MASK =
+  "linear-gradient(to right, transparent 640px, rgba(0, 0, 0, 0.5) 750px, black 940px)";
+
+// 結果部分の下に敷く、FVのブラシに馴染むラフなマーカー線
+const MARKER_PATH =
+  "M1 6.5 L3 4.2 L9 4.8 L18 3.6 L30 4.4 L44 3.4 L58 4.2 L72 3.2 L86 4 L96 3.4 L99 4.6 L97.5 6.6 L99 8.4 L88 8 L74 9 L60 8.2 L46 9.2 L32 8.4 L18 9.3 L8 8.6 L2 9 Z";
 
 export default function Hero() {
   return (
@@ -28,9 +43,15 @@ export default function Hero() {
               src={heroBg}
               alt=""
               aria-hidden="true"
-              style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-55%)", height: "120%", width: "auto", maxWidth: "none" }}
+              style={{ position: "absolute", top: "-44px", left: "50%", transform: "translateX(calc(-66% + 22px))", height: "88%", width: "auto", maxWidth: "none" }}
             />
           </div>
+
+          {/* 3ポイント手前から下へ白100%になるオーバーレイ（人物のサイズ・位置は不変） */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-[236px] bg-gradient-to-t from-white from-[72%] to-transparent pointer-events-none"
+          />
 
           {/* 左：テキストコンテンツ */}
           <div className="relative z-10 pl-4 pt-16 pb-8">
@@ -43,7 +64,7 @@ export default function Hero() {
               style={{
                 position: "absolute",
                 top: "45%",
-                left: "-80px",
+                left: "-86px",
                 transform: "translateY(-50%)",
                 width: "360px",
                 height: "auto",
@@ -89,62 +110,85 @@ export default function Hero() {
             <div
               className="relative font-black text-white leading-none"
               style={{
-                fontSize: "34px",
+                fontSize: "27px",
                 letterSpacing: "-0.04em",
                 marginTop: "4px",
-                marginBottom: "-17px",
+                marginBottom: "-10px",
                 zIndex: 10,
-                transform: "translateY(-3px) rotate(-6deg)",
+                transform: "translate(-6px, 8px) rotate(-6deg)",
                 transformOrigin: "left center",
               }}
             >
-              元請け案件を、
+              直請けの仕事を、
             </div>
-
-            {/* 黄色ブラシ */}
-            <img
-              src={brushHeroYellow}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                bottom: "0px",
-                left: "-10px",
-                width: "300px",
-                height: "auto",
-                maxWidth: "none",
-                zIndex: 1,
-                mixBlendMode: "screen",
-                pointerEvents: "none",
-              }}
-            />
 
             {/* H1：2行目（brushHeroText） */}
             <img
               src={brushHeroText}
               alt="もっと増やす。"
               className="relative block"
-              style={{ width: "260px", height: "auto", marginLeft: "-4px", marginTop: "7px", zIndex: 2, transform: "translateY(-25px)" }}
+              style={{ width: "260px", height: "auto", marginLeft: "-4px", marginTop: "7px", zIndex: 2, transform: "translate(-6px, -21.5px)", clipPath: "inset(0 5% 0 0)" }}
             />
 
           </div>
 
           {/* サブコピー */}
-          <div className="relative z-10 px-4 pt-4 pb-6">
-            <p className="inline-block font-bold text-white bg-[#1a1a1a] text-[13px] leading-snug mb-1 px-2 py-1">
-              集客のプロが、御社の売上を後押しします。
-            </p>
-            <p className="text-[#1a1a1a] font-bold text-[12px] leading-relaxed">
-              工務店・リフォーム・外壁塗装・設備・内装など<br />
-              工事業者専門の集客支援サービス
+          <div className="relative z-10 px-4 -mt-8 pb-[31px]">
+            <p className="inline-block font-bold text-white bg-[#1a1a1a] text-[15px] leading-snug px-2 py-1">
+              紹介・下請けに頼らず、<br />
+              自社で仕事を取れる仕組みを。
             </p>
           </div>
 
-          {/* 実績バッジ */}
-          <div className="relative z-10 grid grid-cols-3 gap-2 px-4 pb-9">
-            <img src={badge1} alt="受注単価 平均40%UP" className="w-full h-auto" />
-            <img src={badge2} alt="問い合わせ数 平均3倍" className="w-full h-auto" />
-            <img src={badge3} alt="最短1ヶ月で効果実感" className="w-full h-auto" />
+          {/* 3ポイント */}
+          <div className="relative z-10 px-4">
+            <div className="flex h-[82px] items-center">
+              {HERO_POINTS.map((point, i) => (
+                <div
+                  key={point.title}
+                  className={`flex flex-1 flex-col items-center${i > 0 ? " border-l border-[#555]" : ""}`}
+                >
+                  <div className="w-fit pt-[9px]">
+                    <p className="relative whitespace-nowrap text-[24px] font-black leading-[24px] text-[#1a1a1a]">
+                      <span aria-hidden="true" className="absolute -left-[7px] top-1/2 h-5 w-1 -translate-y-1/2 bg-[#9FC9EC]" />
+                      {point.title}
+                    </p>
+                  </div>
+                  <p className="mt-1.5 whitespace-nowrap text-center text-[12px] leading-[1.6] text-[#444]">
+                    <span className="font-bold text-[#1a1a1a]">{point.lead}</span>
+                    <br />
+                    <span className="relative inline-block text-[13px] font-black leading-[19.2px] text-[#1a1a1a]">
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 100 10"
+                        preserveAspectRatio="none"
+                        className="absolute -bottom-px -left-1.5 -z-10 h-[11px] w-[calc(100%+12px)]"
+                      >
+                        <path d={MARKER_PATH} fill="#FFD000" />
+                      </svg>
+                      {point.result}
+                    </span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* キャッチコピー */}
+          <div className="relative z-10 px-4 pt-4 pb-[22.08px]">
+            <div className="flex items-center gap-2">
+              <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
+              <p className="whitespace-nowrap text-[20px] font-black leading-[1.3] text-[#1a1a1a]">
+                あなたの地域の反響を、
+              </p>
+              <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
+            </div>
+            <p className="text-center text-[28px] font-black leading-[1.2] tracking-[-0.04em] text-[#1a1a1a]">
+              <span className="relative inline-block whitespace-nowrap">
+                <span aria-hidden="true" className="absolute -inset-x-2 -bottom-[5px] -z-10 h-[11px] -rotate-[1.5deg] bg-[#FFD000]" />
+                丸ごと自社へ。
+              </span>
+            </p>
           </div>
 
         </section>
@@ -178,29 +222,18 @@ export default function Hero() {
       {/* ══ PC Hero ════════════════════════════════════════════════════ */}
       <section className="relative bg-white hidden lg:block" style={{ minHeight: "600px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto" }}>
 
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-          <div style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: "62%",
-            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%, black 80%, transparent 100%)",
-            maskImage: "linear-gradient(to right, transparent 0%, black 28%, black 80%, transparent 100%)",
-          }}>
+        {/* 人物写真レイヤー：メインコンテナ(1280px)内に収める。写真の右端=コンテナ右端 */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 overflow-hidden pointer-events-none [container-type:size]"
+          style={{ zIndex: 1, WebkitMaskImage: PC_PHOTO_MASK, maskImage: PC_PHOTO_MASK }}
+        >
+          <div style={{ position: "absolute", top: "-30px", height: "105%", left: "38%", right: 0 }}>
             <img
               src={heroBg}
               alt=""
               aria-hidden="true"
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: 0,
-                transform: "translateX(-50%)",
-                height: "130%",
-                width: "auto",
-                maxWidth: "none",
-              }}
+              style={{ display: "block", width: "100%", height: "100%", objectFit: "cover", objectPosition: PC_PHOTO_POSITION }}
             />
           </div>
         </div>
@@ -261,9 +294,9 @@ export default function Hero() {
 
             <div
               className="relative font-black text-white leading-none"
-              style={{ fontSize: "78px", letterSpacing: "-0.04em", marginTop: "8px", marginBottom: "-32px", zIndex: 10, transform: "translateY(49px) rotate(-6deg)", transformOrigin: "left center" }}
+              style={{ fontSize: "78px", letterSpacing: "-0.04em", marginTop: "8px", marginBottom: "-32px", zIndex: 10, transform: "translateY(49px) rotate(-6deg)", transformOrigin: "left center", whiteSpace: "nowrap" }}
             >
-              元請け案件を、
+              直請けの仕事を、
             </div>
 
             <img
@@ -292,22 +325,53 @@ export default function Hero() {
 
           </div>
 
-          <p
-            className="font-bold text-[#1a1a1a] leading-snug"
-            style={{ fontSize: "20px", marginBottom: "8px" }}
-          >
-            集客のプロが、御社の売上を後押しします。
+          <p className="font-bold text-[#1a1a1a] leading-snug text-[20px] mt-1 mb-[28px] whitespace-nowrap">
+            紹介・下請けに頼らず、自社で仕事を取れる仕組みを。
           </p>
 
-          <p className="text-[#1a1a1a] leading-relaxed" style={{ fontSize: "14px" }}>
-            工務店・リフォーム・外壁塗装・設備・内装など<br />
-            工事業者専門の集客支援サービス
-          </p>
+          {/* 3ポイント */}
+          <div className="flex">
+            {HERO_POINTS.map((point, i) => (
+              <div
+                key={point.title}
+                className={`flex flex-1 flex-col items-center${i > 0 ? " border-l border-[#555]" : ""}`}
+              >
+                <div className="w-fit">
+                  <p className="relative whitespace-nowrap text-[32px] font-black leading-[33.6px] text-[#1a1a1a]">
+                    <span aria-hidden="true" className="absolute -left-[10px] top-1/2 h-7 w-[5px] -translate-y-1/2 bg-[#9FC9EC]" />
+                    {point.title}
+                  </p>
+                </div>
+                <p className="mt-1.5 whitespace-nowrap text-center text-[16px] leading-[1.5] text-[#444]">
+                  <span className="font-bold text-[#1a1a1a]">{point.lead}</span>
+                  <br />
+                  <span className="relative inline-block text-[17px] font-black leading-[25.5px] text-[#1a1a1a]">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 100 10"
+                      preserveAspectRatio="none"
+                      className="absolute -bottom-px -left-2 -z-10 h-[14px] w-[calc(100%+16px)]"
+                    >
+                      <path d={MARKER_PATH} fill="#FFD000" />
+                    </svg>
+                    {point.result}
+                  </span>
+                </p>
+              </div>
+            ))}
+          </div>
 
-          <div className="flex items-center gap-4 mt-5">
-            <img src={badge1} alt="受注単価 平均40%UP" style={{ width: "150px", height: "auto" }} />
-            <img src={badge2} alt="問い合わせ数 平均3倍" style={{ width: "150px", height: "auto" }} />
-            <img src={badge3} alt="最短1ヶ月で効果実感" style={{ width: "150px", height: "auto" }} />
+          {/* キャッチコピー */}
+          <div className="mt-[27.42px] flex items-center gap-3">
+            <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
+            <p className="whitespace-nowrap text-[22px] font-black leading-[1.3] text-[#1a1a1a]">
+              あなたの地域の反響を、
+              <span className="relative inline-block text-[32px] leading-[1.2] tracking-[-0.04em]">
+                <span aria-hidden="true" className="absolute -inset-x-2 -bottom-[6px] -z-10 h-3 -rotate-[1.5deg] bg-[#FFD000]" />
+                丸ごと自社へ。
+              </span>
+            </p>
+            <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
           </div>
 
         </div>
