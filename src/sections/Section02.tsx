@@ -10,7 +10,7 @@ const cards = [
   {
     num: "01",
     title: "売上が減る",
-    body: "元請け案件が取れず、下請けや単価の安い仕事に頼らざるを得ない。",
+    body: "直請け案件が取れず、下請けや単価の安い仕事に頼らざるを得ない。",
     gold: false,
     icon: <img src={iconWork} alt="" className="w-[122px] h-[122px] object-contain" aria-hidden="true" />,
   },
@@ -31,7 +31,7 @@ const cards = [
   {
     num: "04",
     title: "さらに仕事が減る",
-    body: "身動きが取れず元請け案件も増えず、また仕事が減っていく。",
+    body: "身動きが取れず直請け案件も増えず、また仕事が減っていく。",
     gold: false,
     icon: <img src={iconConnect} alt="" className="w-[122px] h-[122px] object-contain" aria-hidden="true" />,
   },
@@ -64,7 +64,7 @@ export default function Section03() {
               <span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">続けていませんか？</span>
             </h2>
             <p className="text-[#1a1a1a] text-[14px] lg:text-[16px] leading-[2]">
-              元請けを増やしたいと思いながらも、<br />
+              直請けを増やしたいと思いながらも、<br />
               日々の業務に追われて、なかなか前に進めない。<br />
               そんな工事業者様からのご相談が増えています。
             </p>
@@ -128,7 +128,7 @@ export default function Section03() {
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <p className="relative z-10 text-white font-black text-[16px] lg:text-[18px] leading-[2]">
             負の連鎖から抜け出し、<br />
-            <span className="text-[#D4A820]">元請け案件を増やす仕組み</span><span className="text-white lg:text-[#D4A820]">が必要です。</span>
+            <span className="text-[#D4A820]">直請け案件を増やす仕組み</span><span className="text-white lg:text-[#D4A820]">が必要です。</span>
           </p>
         </div>
 

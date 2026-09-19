@@ -15,13 +15,13 @@ const problems = [
   {
     num: "02",
     title: "仕事が不安定",
-    body: <>元請けからの依頼が止まると、<br className="lg:hidden" />仕事が一気に減ってしまう。</>,
+    body: <>直請けからの依頼が止まると、<br className="lg:hidden" />仕事が一気に減ってしまう。</>,
     icon: <img src={iconUnstable} alt="" className="w-[56px] h-[56px] object-contain" aria-hidden="true" />,
   },
   {
     num: "03",
     title: "営業する時間がない",
-    body: <>現場が忙しく元請けの<br className="lg:hidden" />仕事を増やす時間が取れない。</>,
+    body: <>現場が忙しく直請けの<br className="lg:hidden" />仕事を増やす時間が取れない。</>,
     icon: <img src={iconNoTime} alt="" className="w-[56px] h-[56px] object-contain" aria-hidden="true" />,
   },
   {
@@ -50,7 +50,7 @@ export default function Section04() {
           </div>
           <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
           <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[27px] lg:text-[52px]">
-            元請けを増やさないと、<br />
+            直請けを増やさないと、<br />
             <span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">会社は大きくならない。</span>
           </h2>
           <p className="text-[#555] text-[15px]">多くの工事業者が、同じ悩みに直面しています。</p>

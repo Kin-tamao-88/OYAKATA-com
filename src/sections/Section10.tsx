@@ -62,7 +62,7 @@ export default function Section10() {
                   無料診断フォーム
                 </h2>
                 <p className="text-[#aaaaaa] text-[11px] lg:text-[13px] mt-1.5 leading-none">
-                  元請け案件を増やすための第一歩です。
+                  直請け案件を増やすための第一歩です。
                 </p>
               </div>
             </div>
@@ -95,7 +95,7 @@ export default function Section10() {
             {/* リードテキスト */}
             <p className="text-[#1a1a1a] text-[14px] lg:text-[15px] leading-[1.85] mb-8 lg:mb-10">
               現在の集客状況やお悩みをお聞かせください。<br />
-              元請け案件を増やすための改善ポイントを無料でご提案いたします。
+              直請け案件を増やすための改善ポイントを無料でご提案いたします。
             </p>
 
             {/* フォームグリッド */}

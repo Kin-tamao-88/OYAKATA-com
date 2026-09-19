@@ -10,11 +10,11 @@ const reasons = [
   {
     num: "01",
     title: "工事業界専門の\nマーケティング",
-    body: "一般企業向けではなく、工事業界に特化した戦略で、元請け受注につながる集客を実現します。",
+    body: "一般企業向けではなく、工事業界に特化した戦略で、直請け受注につながる集客を実現します。",
     checks: [
       "業界特有の商習慣・集客動向を理解",
       "工務店・リフォーム会社に特化した戦略設計",
-      "元請け受注に直結する施策のみを提案",
+      "直請け受注に直結する施策のみを提案",
     ],
     img: imgMarketing,
     imgAlt: "建設現場を見る工事業者",
@@ -36,7 +36,7 @@ const reasons = [
   {
     num: "03",
     title: "集客から改善まで\n一貫して伴走",
-    body: "広告運用だけで終わらず、分析・改善まで一貫してサポートし、元請け受注の増加を実現します。",
+    body: "広告運用だけで終わらず、分析・改善まで一貫してサポートし、直請け受注の増加を実現します。",
     checks: [
       "専任担当が課題発見から改善まで伴走",
       "定期的な改善提案で成果を最大化",
@@ -117,7 +117,7 @@ export default function Section07() {
         <div className="lg:hidden relative overflow-hidden -mx-0 px-5 py-5 text-center">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <p className="relative z-10 text-white font-black text-[16px] leading-[2]">
-            すべては元請けとしての<br /><span className="text-[#D4A820]">受注を得るために。</span>
+            すべては直請けとしての<br /><span className="text-[#D4A820]">受注を得るために。</span>
           </p>
         </div>
         {/* PC */}
@@ -126,7 +126,7 @@ export default function Section07() {
           <div className="flex-1 py-7" />
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
             <p className="text-white font-black text-[18px] leading-[2] text-center">
-              すべては元請けとしての<span className="text-[#D4A820]">受注を得るために。</span>
+              すべては直請けとしての<span className="text-[#D4A820]">受注を得るために。</span>
             </p>
           </div>
           <a

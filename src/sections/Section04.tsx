@@ -177,7 +177,7 @@ export default function Section05() {
           <img src={brushYellow} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
           <div className="relative bg-[#1a1a1a] px-6 py-4 lg:px-10 lg:py-5 text-center">
             <p className="text-white font-black text-[16px] lg:text-[20px]">
-              親方ドットコムは、<br className="lg:hidden" /><span className="text-[#D4A820]">元請け案件が自然と集まる<br className="lg:hidden" />仕組みづくり</span>を支援します。
+              親方ドットコムは、<br className="lg:hidden" /><span className="text-[#D4A820]">直請け案件が自然と集まる<br className="lg:hidden" />仕組みづくり</span>を支援します。
             </p>
           </div>
         </div>

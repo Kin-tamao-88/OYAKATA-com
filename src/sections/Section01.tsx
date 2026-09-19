@@ -50,7 +50,7 @@ export default function Section02B() {
               <p className="relative z-10 text-[#1a1a1a] text-[13px] lg:text-[16px] leading-[2] pb-8 lg:pb-0">
                 データ分析に基づいた集客戦略の立案から、<br />
                 広告運用・改善までを一貫してサポート。<br />
-                元請け案件の獲得に特化した仕組みづくりで、<br />
+                直請け案件の獲得に特化した仕組みづくりで、<br />
                 工事業者の売上と事業成長に貢献します。
               </p>
             </div>
@@ -108,7 +108,7 @@ export default function Section02B() {
                 </svg>
               </div>
               <h3 className="text-[#D4A820] font-black text-[17px] lg:text-[20px] mb-1">戦略設計</h3>
-              <p className="text-white/65 text-[13px] lg:text-[15px] leading-[1.9]">工事業界の市場・競合・顧客を分析し、元請け案件獲得に特化した集客戦略を設計します。</p>
+              <p className="text-white/65 text-[13px] lg:text-[15px] leading-[1.9]">工事業界の市場・競合・顧客を分析し、直請け案件獲得に特化した集客戦略を設計します。</p>
             </div>
 
             {/* 広告運用 */}

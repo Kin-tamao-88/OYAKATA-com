@@ -19,7 +19,7 @@ const cases = [
     salesBefore: "320",
     salesAfter: "715",
     period: "3ヶ月",
-    comment: "元請け受注が安定して入るようになり、以前のような",
+    comment: "直請け受注が安定して入るようになり、以前のような",
     commentUnderline: "仕事探しの不安がなくなりました。",
   },
   {
@@ -34,7 +34,7 @@ const cases = [
     salesBefore: "420",
     salesAfter: "1050",
     period: "2ヶ月",
-    comment: <>継続的に元請けの案件が入るようになり、<br /></>,
+    comment: <>継続的に直請けの案件が入るようになり、<br /></>,
     commentUnderline: "売上が安定して、会社の体力がつきました。",
   },
 ];
@@ -61,12 +61,12 @@ export default function Section08() {
             <div className="relative overflow-hidden mb-4">
               <img src={brushYellow} alt="" aria-hidden="true" className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[300%] object-cover pointer-events-none opacity-60" />
               <h2 className="relative z-10 text-[#1a1a1a] font-black leading-[1.2] text-[22px] lg:text-[46px]">
-                元請け受注が安定すると、<br />
+                直請け受注が安定すると、<br />
                 経営はここまで変わります。
               </h2>
             </div>
             <p className="text-[#333] text-[13px] lg:text-[15px]">
-              問い合わせが増えるだけではなく、<br className="lg:hidden" /><span className="text-[#D4A820] font-bold">継続的な元請け受注と売上アップ</span>を<br className="lg:hidden" />実現した事例をご紹介します。
+              問い合わせが増えるだけではなく、<br className="lg:hidden" /><span className="text-[#D4A820] font-bold">継続的な直請け受注と売上アップ</span>を<br className="lg:hidden" />実現した事例をご紹介します。
             </p>
           </div>
 

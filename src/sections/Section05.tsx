@@ -38,7 +38,7 @@ const steps = [
     body: null,
     bodyJsx: (
       <span>
-        <span className="text-[#D4A820] font-bold">2000社を超える実績データ</span>を<br className="lg:hidden" />活用し<span className="text-[#D4A820] font-bold">最短1ヶ月</span>で元請け<br className="lg:hidden" />受注の増加を実現します。
+        <span className="text-[#D4A820] font-bold">2000社を超える実績データ</span>を<br className="lg:hidden" />活用し<span className="text-[#D4A820] font-bold">最短1ヶ月</span>で直請け<br className="lg:hidden" />受注の増加を実現します。
       </span>
     ),
     icon: (

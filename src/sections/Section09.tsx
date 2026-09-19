@@ -1,6 +1,6 @@
 const consultItems = [
   {
-    label: "元請け案件が\n増えない原因",
+    label: "直請け案件が\n増えない原因",
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
         <circle cx="20" cy="20" r="12" stroke="#D4A820" strokeWidth="2.5" />

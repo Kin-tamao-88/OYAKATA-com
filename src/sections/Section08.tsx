@@ -139,7 +139,7 @@ export default function Section09() {
               </svg>
               <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムご利用企業様の<br className="lg:hidden" />社員さんにインタビューしました！</p>
             </div>
-            <p className="text-[#555] text-[13px] lg:text-[14px]">元請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
+            <p className="text-[#555] text-[13px] lg:text-[14px]">直請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
           </div>
 
           {/* ── Cards ── */}
