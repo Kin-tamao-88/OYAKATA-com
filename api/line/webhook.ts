@@ -126,7 +126,7 @@ const QUESTIONS: readonly Question[] = [
   {
     step: "q1",
     answerKey: "q1Job",
-    text: `${Q1_INTRO}Q1. どんなお仕事をされていますか？`,
+    text: `${Q1_INTRO}Q1. どんなお仕事をされていますか？\n👇 下から選んでください`,
     choices: [
       "外壁・屋根塗装",
       "リフォーム",
@@ -143,13 +143,13 @@ const QUESTIONS: readonly Question[] = [
   {
     step: "q3",
     answerKey: "q3Employees",
-    text: "Q3. 従業員数を教えてください。",
+    text: "Q3. 従業員数を教えてください。\n👇 下から選んでください",
     choices: ["ご自身のみ", "2〜5名", "6〜14名", "15名以上"],
   },
   {
     step: "q4",
     answerKey: "q4Revenue",
-    text: "Q4. 現在の年商を教えてください。",
+    text: "Q4. 現在の年商を教えてください。\n👇 下から選んでください",
     choices: [
       "〜1,000万円",
       "1,000〜3,000万円",
@@ -161,7 +161,7 @@ const QUESTIONS: readonly Question[] = [
   {
     step: "q5",
     answerKey: "q5Acquisition",
-    text: "Q5. 現在、新規のお客様はどのように獲得していますか？",
+    text: "Q5. 現在、新規のお客様はどのように獲得していますか？\n👇 下から選んでください",
     choices: [
       "紹介・口コミが中心",
       "下請け案件が中心",
@@ -173,7 +173,7 @@ const QUESTIONS: readonly Question[] = [
   {
     step: "q6",
     answerKey: "q6Website",
-    text: "Q6. 自社ホームページはありますか？",
+    text: "Q6. 自社ホームページはありますか？\n👇 下から選んでください",
     choices: ["ある", "ない", "あるが、ほぼ活用できていない"],
   },
   {
@@ -198,7 +198,7 @@ const QUESTIONS: readonly Question[] = [
   {
     step: "q10",
     answerKey: "q10CallTime",
-    text: "Q10. お電話可能な時間帯を教えてください。",
+    text: "Q10. お電話可能な時間帯を教えてください。\n👇 下から選んでください",
     choices: ["午前", "12〜15時", "15〜18時", "18時以降", "日時を指定したい"],
     // 「日時を指定したい」のときだけ完了させず、具体的な希望日時を聞く
     branchOn: { answer: CALL_TIME_DETAIL_CHOICE, step: CALL_TIME_DETAIL_STEP },
