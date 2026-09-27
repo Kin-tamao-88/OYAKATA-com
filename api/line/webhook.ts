@@ -95,6 +95,40 @@ const PHONE_RETRY_TEXT = [
 const CALL_TIME_DETAIL_CHOICE = "日時を指定したい";
 const CALL_TIME_DETAIL_STEP = "q10Detail";
 
+/**
+ * 台帳の行特定に使うRowKey（HMAC-SHA256, hex）を算出する際のドメイン分離用文字列。
+ * 生のuserIdは台帳（Apps Script）へ一切送らないため、このハッシュ値のみを渡す。
+ * セッション開始時刻(startedAt)も入力に含めることで、同一ユーザーが後日
+ * 別のセッションでヒアリングをやり直した場合に別の行として扱われる
+ * （過去の完了済みリードを新しいセッションが上書きしないようにするため）。
+ */
+const ROWKEY_HMAC_CONTEXT = "line-hearing-rowkey:v1:";
+
+function computeRowKey(
+  channelSecret: string,
+  userId: string,
+  startedAt: string
+): string {
+  return createHmac("sha256", channelSecret)
+    .update(`${ROWKEY_HMAC_CONTEXT}${userId}:${startedAt}`)
+    .digest("hex");
+}
+
+/**
+ * 台帳の「ヒアリング進捗」列に書く値を決める。
+ * Q10完了時は常に "Q10完了"。日時指定の詳細待ち（q10Detail）は
+ * まだQ10が確定していない状態のため "Q10" として扱う。
+ */
+function progressLabel(justAnsweredStep: string, resultingStep: string): string {
+  if (resultingStep === DONE_STEP) {
+    return "Q10完了";
+  }
+  if (justAnsweredStep === CALL_TIME_DETAIL_STEP) {
+    return "Q10";
+  }
+  return justAnsweredStep.toUpperCase();
+}
+
 // ── 質問定義 ──────────────────────────────────────────
 
 type AnswerKey =
@@ -296,6 +330,11 @@ type HearingState = {
   completedAt?: string;
   /** LINEプロフィールの表示名。取得できるまで undefined のまま */
   displayName?: string;
+  /**
+   * 流入CR。台帳への初回同期（通常はQ1回答時）に一度だけRedisから読み出して確定し、
+   * 以降はこの値をそのまま使い回す（再取得しない）。取得できるまで undefined のまま
+   */
+  cr?: string;
   sheetStatus?: SheetStatus;
   savedAt?: string;
   savedRow?: number;
@@ -492,7 +531,9 @@ async function fetchDisplayName(
 async function postLeadToSheets(
   endpoint: SheetsEndpoint,
   state: HearingState,
-  cr: string
+  rowKey: string,
+  progress: string,
+  isFinal: boolean
 ): Promise<SheetsSaveResult> {
   const res = await fetch(endpoint.url, {
     method: "POST",
@@ -500,13 +541,18 @@ async function postLeadToSheets(
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify({
       token: endpoint.token,
-      // userId は台帳に載せないため送らない。
-      // 重複判定は Apps Script 側で (登録日時, 電話番号) により行う。
-      completedAt: state.completedAt,
+      // userId は台帳に載せないため送らない。行の特定は RowKey（非可逆ハッシュ）で行う。
+      rowKey,
+      progress,
+      final: isFinal,
+      // 行の新規作成時（R列 ヒアリング開始日時）にのみ使われる。更新時は無視される
+      startedAt: state.startedAt,
+      // 回答完了（Q10）時のみ。未完了時は undefined のまま送りAppsScript側でA/N列を空欄にする
+      completedAt: isFinal ? state.completedAt : undefined,
       displayName: state.displayName ?? "",
       initialConcern: state.initialConcern,
       // Meta広告クリエイティブ識別子。紐付けが無い場合は UNKNOWN_CR
-      cr,
+      cr: state.cr ?? UNKNOWN_CR,
       ...state.answers,
     }),
     signal: AbortSignal.timeout(SHEETS_TIMEOUT_MS),
@@ -535,24 +581,35 @@ async function postLeadToSheets(
 }
 
 /**
- * 回答完了リードを台帳へ保存する。
+ * 回答の途中経過・回答完了リードを台帳へ同期する（作成 または RowKeyによる更新）。
  *
- * 重複保存は3段で防ぐ。
- *   1. sheetStatus === "saved" なら二度と送らない（恒久的な事実）
- *   2. Redis の NX ロックで同時実行を1つに絞る（短命・finallyで必ず解放）
- *   3. Apps Script 側が (登録日時, userId) で行を照合し追記しない
+ * Q1〜Q9の途中経過は isFinal=false で毎回呼び出し、その時点までの累積回答を
+ * RowKeyで特定した同じ行へ上書きする（行が無ければ新規作成）。
+ * Q10完了時のみ isFinal=true とし、従来通り A列(登録日時)・N列(回答完了)を確定させる。
  *
- * 失敗しても回答データは消さず sheetStatus を pending に戻して再試行可能にする。
+ * 同時実行対策は2段。
+ *   1. Redis の NX ロックで同時実行を1つに絞る（短命・finallyで必ず解放）
+ *   2. Apps Script 側の LockService で行の照合〜書き込みを排他する
+ * isFinal=true の場合はさらに sheetStatus === "saved" を見て、確定後の再送を防ぐ。
+ *
+ * 失敗しても回答データは消さない。isFinal時のみ sheetStatus を pending に戻し再試行可能にする
+ * （途中経過は次の質問への回答時に最新の累積データで自然に再送されるため、個別の再試行は不要）。
  * ユーザーへの返信内容はこの結果に左右されない。
  */
-async function saveLeadToSheets(
+async function syncLeadToSheets(
   store: StateStore,
   endpoint: SheetsEndpoint,
   accessToken: string,
+  channelSecret: string,
   userId: string,
-  state: HearingState
+  state: HearingState,
+  progress: string,
+  isFinal: boolean
 ): Promise<void> {
-  if (state.sheetStatus === "saved" || !state.completedAt) {
+  if (state.sheetStatus === "saved") {
+    return;
+  }
+  if (isFinal && !state.completedAt) {
     return;
   }
 
@@ -564,7 +621,7 @@ async function saveLeadToSheets(
     return;
   }
   if (!locked) {
-    // 他のインスタンスが処理中。追記は1件だけに保たれる
+    // 他のインスタンスが処理中。書き込みは1件だけに保たれる
     return;
   }
 
@@ -575,7 +632,10 @@ async function saveLeadToSheets(
     if (fresh) {
       current = fresh;
     }
-    if (current.sheetStatus === "saved" || !current.completedAt) {
+    if (current.sheetStatus === "saved") {
+      return;
+    }
+    if (isFinal && !current.completedAt) {
       return;
     }
 
@@ -588,34 +648,49 @@ async function saveLeadToSheets(
       }
     }
 
-    await saveState(store, userId, { ...current, sheetStatus: "saving" });
+    // 流入CRは初回同期時（通常はQ1）に一度だけ確定させ、以降はこの値を使い回す。
+    if (current.cr === undefined) {
+      const cr = await loadCr(store, userId);
+      current = { ...current, cr };
+      // 消費済みのCR紐付けを削除する。失敗してもTTLで自然に失効するため無視してよい
+      await deleteCr(store, userId);
+    }
 
-    const cr = await loadCr(store, userId);
-    const result = await postLeadToSheets(endpoint, current, cr);
+    if (isFinal) {
+      await saveState(store, userId, { ...current, sheetStatus: "saving" });
+    } else {
+      // 表示名・CRをキャッシュした変化分だけ反映しておく（sheetStatusは変更しない）
+      await saveState(store, userId, current);
+    }
+
+    const rowKey = computeRowKey(channelSecret, userId, current.startedAt);
+    const result = await postLeadToSheets(endpoint, current, rowKey, progress, isFinal);
 
     if (result.ok) {
       await saveState(store, userId, {
         ...current,
-        sheetStatus: "saved",
-        savedAt: new Date().toISOString(),
+        sheetStatus: isFinal ? "saved" : current.sheetStatus,
+        savedAt: isFinal ? new Date().toISOString() : current.savedAt,
         savedRow: result.row,
       });
-      // 消費済みのCR紐付けを削除する。失敗してもTTLで自然に失効するため無視してよい
-      await deleteCr(store, userId);
       return;
     }
 
     console.error("[line/webhook] sheets save failed:", result.reason);
-    await saveState(store, userId, { ...current, sheetStatus: "pending" });
+    if (isFinal) {
+      await saveState(store, userId, { ...current, sheetStatus: "pending" });
+    }
   } catch (error) {
     console.error("[line/webhook] sheets save error:", describeError(error));
-    try {
-      await saveState(store, userId, { ...current, sheetStatus: "pending" });
-    } catch (nested) {
-      console.error(
-        "[line/webhook] failed to reset sheetStatus:",
-        describeError(nested)
-      );
+    if (isFinal) {
+      try {
+        await saveState(store, userId, { ...current, sheetStatus: "pending" });
+      } catch (nested) {
+        console.error(
+          "[line/webhook] failed to reset sheetStatus:",
+          describeError(nested)
+        );
+      }
     }
   } finally {
     try {
@@ -772,6 +847,7 @@ async function handleTextMessage(
   store: StateStore,
   sheets: SheetsEndpoint | null,
   accessToken: string,
+  channelSecret: string,
   userId: string,
   replyToken: string,
   text: string
@@ -799,7 +875,16 @@ async function handleTextMessage(
   if (!state || state.step === DONE_STEP) {
     // 台帳への保存が終わっていないリードがあれば、この機会に再試行する
     if (state && state.sheetStatus !== "saved" && sheets) {
-      await saveLeadToSheets(store, sheets, accessToken, userId, state);
+      await syncLeadToSheets(
+        store,
+        sheets,
+        accessToken,
+        channelSecret,
+        userId,
+        state,
+        "Q10完了",
+        true
+      );
     }
     return;
   }
@@ -846,9 +931,20 @@ async function handleTextMessage(
   // これにより Q10 を重複受信しても以降の処理には入らない。
   await saveState(store, userId, updated);
 
+  const progress = progressLabel(question.step, updated.step);
+
   if (updated.step === DONE_STEP) {
     if (sheets) {
-      await saveLeadToSheets(store, sheets, accessToken, userId, updated);
+      await syncLeadToSheets(
+        store,
+        sheets,
+        accessToken,
+        channelSecret,
+        userId,
+        updated,
+        progress,
+        true
+      );
     } else {
       console.error("[line/webhook] sheets endpoint is not configured");
     }
@@ -864,7 +960,24 @@ async function handleTextMessage(
     return;
   }
 
+  // 先に次の質問を返信し、回答テンポを変えないようにする。
+  // 台帳への途中経過の同期はその後に行う（Q1回答時点で行を作成、以降は同じ行を更新）。
   await askQuestion(accessToken, replyToken, following);
+
+  if (sheets) {
+    await syncLeadToSheets(
+      store,
+      sheets,
+      accessToken,
+      channelSecret,
+      userId,
+      updated,
+      progress,
+      false
+    );
+  } else {
+    console.error("[line/webhook] sheets endpoint is not configured");
+  }
 }
 
 export default async function handler(
@@ -957,6 +1070,7 @@ export default async function handler(
         store,
         sheets,
         accessToken,
+        channelSecret,
         userId,
         replyToken,
         (event.message.text ?? "").trim()
