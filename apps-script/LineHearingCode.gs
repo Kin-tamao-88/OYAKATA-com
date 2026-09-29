@@ -197,10 +197,11 @@ function ensureHeader(sheet) {
     return;
   }
 
+  // 毎回の呼び出しで走るため、P〜S列のヘッダーは1回でまとめて読む（応答時間短縮）
+  var current = sheet.getRange(1, COLUMN_REMARKS, 1, EXTRA_HEADERS.length).getValues()[0];
   for (var i = 0; i < EXTRA_HEADERS.length; i++) {
-    var cell = sheet.getRange(1, COLUMN_REMARKS + i);
-    if (sanitize(cell.getValue()) === '') {
-      cell.setValue(EXTRA_HEADERS[i]);
+    if (sanitize(current[i]) === '') {
+      sheet.getRange(1, COLUMN_REMARKS + i).setValue(EXTRA_HEADERS[i]);
     }
   }
 }

@@ -28,8 +28,12 @@ const LINE_PROFILE_ENDPOINT = "https://api.line.me/v2/bot/profile/";
 /** 外部APIの待ち時間上限。maxDuration は安全余裕であり、待ち時間ではない */
 const REPLY_TIMEOUT_MS = 5000;
 const STATE_TIMEOUT_MS = 2000;
-const SHEETS_TIMEOUT_MS = 7000;
+const SHEETS_TIMEOUT_MS = 18000;
 const PROFILE_TIMEOUT_MS = 3000;
+
+/** Q10完了の台帳同期が、途中経過の同期とロックで重なったときの待機（合計6秒まで） */
+const FINAL_LOCK_RETRIES = 3;
+const FINAL_LOCK_RETRY_WAIT_MS = 2000;
 
 /** 状態の保持期間（7日）。書き込みのたびに延長される */
 const STATE_TTL_SECONDS = 60 * 60 * 24 * 7;
@@ -616,6 +620,11 @@ async function syncLeadToSheets(
   let locked = false;
   try {
     locked = await acquireSheetLock(store, userId);
+    // Q10完了の同期は、直前の途中経過の同期と重なっても取りこぼさないよう少し待って再試行する
+    for (let attempt = 0; isFinal && !locked && attempt < FINAL_LOCK_RETRIES; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, FINAL_LOCK_RETRY_WAIT_MS));
+      locked = await acquireSheetLock(store, userId);
+    }
   } catch (error) {
     console.error("[line/webhook] sheet lock failed:", describeError(error));
     return;
