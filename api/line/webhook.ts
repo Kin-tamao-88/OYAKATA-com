@@ -19,7 +19,7 @@
  *
  * ログは障害調査に必要なものだけを出す。個人情報・認証情報は一切出力しない。
  */
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
@@ -31,9 +31,20 @@ const STATE_TIMEOUT_MS = 2000;
 const SHEETS_TIMEOUT_MS = 18000;
 const PROFILE_TIMEOUT_MS = 3000;
 
-/** Q10完了の台帳同期が、途中経過の同期とロックで重なったときの待機（合計6秒まで） */
-const FINAL_LOCK_RETRIES = 3;
+/**
+ * Q10完了の台帳同期が、途中経過の同期とロックで重なったときの待機（合計10秒まで）。
+ * 待っても取れなかった場合も何も捨てず、pending（未保存）のまま残して
+ * 進行中の同期の後追い・次のメッセージ受信時に必ず再試行する。
+ */
+const FINAL_LOCK_RETRIES = 5;
 const FINAL_LOCK_RETRY_WAIT_MS = 2000;
+
+/** 最終保存がGASの一時的な混雑(busy)で失敗したときの即時再試行までの待機 */
+const FINAL_BUSY_RETRY_WAIT_MS = 2000;
+
+/** 回答処理ロックの取得待ち（合計6秒まで）。LINE返信まで含めても数秒で終わる処理にだけ使う */
+const ANSWER_LOCK_RETRIES = 20;
+const ANSWER_LOCK_RETRY_WAIT_MS = 300;
 
 /** 状態の保持期間（7日）。書き込みのたびに延長される */
 const STATE_TTL_SECONDS = 60 * 60 * 24 * 7;
@@ -52,13 +63,30 @@ const CR_KEY_PREFIX = "line:cr:v1:";
 const UNKNOWN_CR = "不明";
 
 /**
- * 台帳保存の処理中ロック。
- * 保存済みかどうかは sheetStatus が持ち、このロックは同時実行の排他のみを担う。
- * 処理時間（最大でも プロフィール3秒＋Sheets 7秒＋Redis 数回）を十分上回り、
- * 異常終了しても短時間で失効して再試行を妨げない値にする。
+ * 台帳同期の処理中ロック（同期どうしの排他のみを担う）。
+ * 有効期間は「プロフィール3秒＋Sheets 18秒＋Redis数回」を十分に上回る値にし、
+ * 通信の途中で失効して二重実行にならないようにする。Functionが異常終了しても
+ * この時間で自然に失効する。
  */
 const SHEET_LOCK_KEY_PREFIX = "line:hearing:sheetlock:";
-const SHEET_LOCK_TTL_SECONDS = 15;
+const SHEET_LOCK_TTL_SECONDS = 40;
+
+/**
+ * 回答処理ロック。同一userIdの回答イベントが並列に状態を更新しないよう直列化する。
+ * 保持するのは「状態の読み込み〜更新〜LINE返信」だけで、Sheets同期（GAS通信）は含めない。
+ */
+const ANSWER_LOCK_KEY_PREFIX = "line:hearing:answerlock:";
+const ANSWER_LOCK_TTL_SECONDS = 20;
+
+/**
+ * 台帳同期の結果（保存状況・LINE表示名・CR・行番号）の保存先。
+ * ヒアリング進行状態(STATE_KEY_PREFIX)とは別キーにし、同期処理が進行状態を書き換えられないようにする。
+ */
+const META_KEY_PREFIX = "line:hearing:meta:v1:";
+
+/** Webhookイベントの処理済みマーク（冪等性）。LINEの再送を十分にカバーする1日保持 */
+const EVENT_KEY_PREFIX = "line:hearing:event:v1:";
+const EVENT_TTL_SECONDS = 60 * 60 * 24;
 
 /** LINE Developers の「検証」で送られてくるダミーの replyToken */
 const VERIFY_REPLY_TOKEN = "00000000000000000000000000000000";
@@ -119,18 +147,20 @@ function computeRowKey(
 }
 
 /**
- * 台帳の「ヒアリング進捗」列に書く値を決める。
- * Q10完了時は常に "Q10完了"。日時指定の詳細待ち（q10Detail）は
- * まだQ10が確定していない状態のため "Q10" として扱う。
+ * 台帳の「ヒアリング進捗」列に書く値を、ヒアリング進行状態から決める。
+ * 同期時点の最新stateから算出するため、呼び出し側が古い進捗を渡して台帳を巻き戻すことが無い。
+ * 完了は常に "Q10完了"。日時指定の詳細待ち（q10Detail）はまだQ10が確定していない
+ * 状態のため "Q10"。それ以外は「現在待っている質問の1つ前」＝直近に回答済みの質問。
  */
-function progressLabel(justAnsweredStep: string, resultingStep: string): string {
-  if (resultingStep === DONE_STEP) {
+function progressFromState(state: HearingState): string {
+  if (state.step === DONE_STEP) {
     return "Q10完了";
   }
-  if (justAnsweredStep === CALL_TIME_DETAIL_STEP) {
+  if (state.step === CALL_TIME_DETAIL_STEP) {
     return "Q10";
   }
-  return justAnsweredStep.toUpperCase();
+  const index = QUESTIONS.findIndex((item) => item.step === state.step);
+  return index > 0 ? QUESTIONS[index - 1].step.toUpperCase() : "Q1";
 }
 
 // ── 質問定義 ──────────────────────────────────────────
@@ -320,8 +350,12 @@ function isValidJapanesePhone(raw: string): boolean {
 // ── 状態ストア（Upstash Redis REST） ──────────────────
 
 /** 台帳への保存状況 */
-type SheetStatus = "pending" | "saving" | "saved";
+type SheetStatus = "pending" | "saved";
 
+/**
+ * ヒアリング進行状態。更新してよいのは回答処理（回答処理ロック内）だけ。
+ * 台帳同期は読み取り専用で扱い、決して書き戻さない（古いstateでの巻き戻し防止）。
+ */
 type HearingState = {
   /** 開始トリガーで選ばれた4択 */
   initialConcern: string;
@@ -332,14 +366,30 @@ type HearingState = {
   updatedAt: string;
   /** Q10受理時刻。台帳の登録日時と重複判定キーを兼ねる */
   completedAt?: string;
+  /**
+   * 以下は旧実装（〜2026-10-03）がこのstateへ直接書いていた台帳同期の結果。
+   * 現在は SheetMeta（別キー）へ保存し、ここへは書かない。
+   * 修正前から進行中だったセッションの読み出し互換のためだけに残している。
+   */
+  displayName?: string;
+  cr?: string;
+  sheetStatus?: "pending" | "saving" | "saved";
+  savedAt?: string;
+  savedRow?: number;
+};
+
+/** 台帳同期の結果。同期処理だけが書き込む（ヒアリング進行状態とは別キー） */
+type SheetMeta = {
+  /** どのセッション(HearingState.startedAt)のメタか。別セッションに引き継がないための照合用 */
+  startedAt: string;
   /** LINEプロフィールの表示名。取得できるまで undefined のまま */
   displayName?: string;
   /**
    * 流入CR。台帳への初回同期（通常はQ1回答時）に一度だけRedisから読み出して確定し、
-   * 以降はこの値をそのまま使い回す（再取得しない）。取得できるまで undefined のまま
+   * 以降はこの値を使い回す（再取得しない）。取得できるまで undefined のまま
    */
   cr?: string;
-  sheetStatus?: SheetStatus;
+  sheetStatus: SheetStatus;
   savedAt?: string;
   savedRow?: number;
 };
@@ -456,27 +506,123 @@ async function saveState(
   ]);
 }
 
-/** 台帳保存の処理中ロックを取得する。取得できなければ false */
-async function acquireSheetLock(
+function answerLockKey(userId: string): string {
+  return `${ANSWER_LOCK_KEY_PREFIX}${userId}`;
+}
+
+function metaKey(userId: string): string {
+  return `${META_KEY_PREFIX}${userId}`;
+}
+
+function eventKey(eventId: string): string {
+  return `${EVENT_KEY_PREFIX}${eventId}`;
+}
+
+/**
+ * 台帳同期の結果を読む。現在のセッション(state.startedAt)のものだけを有効とし、
+ * 無ければ（旧実装がstateへ直接書いていた値があればそれを引き継いで）pendingから始める。
+ */
+async function loadMeta(
   store: StateStore,
-  userId: string
-): Promise<boolean> {
+  userId: string,
+  state: HearingState
+): Promise<SheetMeta> {
+  const raw = await runStateCommand(store, "GET meta", ["GET", metaKey(userId)]);
+
+  if (typeof raw === "string") {
+    try {
+      const parsed = JSON.parse(raw) as SheetMeta;
+      if (parsed.startedAt === state.startedAt) {
+        return parsed;
+      }
+    } catch {
+      // 壊れたメタは無いものとして扱い、台帳へ再同期する（RowKeyで同じ行が更新されるだけ）
+    }
+  }
+
+  return {
+    startedAt: state.startedAt,
+    displayName: state.displayName,
+    cr: state.cr,
+    sheetStatus: state.sheetStatus === "saved" ? "saved" : "pending",
+    savedAt: state.savedAt,
+    savedRow: state.savedRow,
+  };
+}
+
+async function saveMeta(
+  store: StateStore,
+  userId: string,
+  meta: SheetMeta
+): Promise<void> {
+  await runStateCommand(store, "SET meta", [
+    "SET",
+    metaKey(userId),
+    JSON.stringify(meta),
+    "EX",
+    String(STATE_TTL_SECONDS),
+  ]);
+}
+
+/**
+ * ロックを取得する。取得できれば所有トークン、できなければ null。
+ * 失効後に他者が取り直したロックを誤って解放しないよう、解放はトークン一致のときだけ行う。
+ */
+async function acquireLock(
+  store: StateStore,
+  key: string,
+  ttlSeconds: number
+): Promise<string | null> {
+  const token = randomUUID();
   const result = await runStateCommand(store, "SET NX", [
     "SET",
-    sheetLockKey(userId),
+    key,
+    token,
+    "NX",
+    "EX",
+    String(ttlSeconds),
+  ]);
+  return result === null ? null : token;
+}
+
+const RELEASE_LOCK_SCRIPT =
+  'if redis.call("GET", KEYS[1]) == ARGV[1] then return redis.call("DEL", KEYS[1]) else return 0 end';
+
+async function releaseLock(
+  store: StateStore,
+  key: string,
+  token: string
+): Promise<void> {
+  await runStateCommand(store, "EVAL release", [
+    "EVAL",
+    RELEASE_LOCK_SCRIPT,
+    "1",
+    key,
+    token,
+  ]);
+}
+
+/**
+ * Webhookイベントを「処理する」と宣言する（SET NX）。
+ * 初めてなら true、既に処理済み・処理中の同一イベント（LINEの再送）なら false。
+ */
+async function claimEvent(store: StateStore, eventId: string): Promise<boolean> {
+  const result = await runStateCommand(store, "SET NX event", [
+    "SET",
+    eventKey(eventId),
     "1",
     "NX",
     "EX",
-    String(SHEET_LOCK_TTL_SECONDS),
+    String(EVENT_TTL_SECONDS),
   ]);
   return result !== null;
 }
 
-async function releaseSheetLock(
+async function releaseEventClaim(
   store: StateStore,
-  userId: string
+  eventId: string
 ): Promise<void> {
-  await runStateCommand(store, "DEL", ["DEL", sheetLockKey(userId)]);
+  await runStateCommand(store, "DEL event", ["DEL", eventKey(eventId)]);
 }
 
 // ── 営業台帳（Apps Script 経由の Google Sheets） ───────
@@ -535,6 +681,7 @@ async function fetchDisplayName(
 async function postLeadToSheets(
   endpoint: SheetsEndpoint,
   state: HearingState,
+  meta: SheetMeta,
   rowKey: string,
   progress: string,
   isFinal: boolean
@@ -553,10 +700,10 @@ async function postLeadToSheets(
       startedAt: state.startedAt,
       // 回答完了（Q10）時のみ。未完了時は undefined のまま送りAppsScript側でA/N列を空欄にする
       completedAt: isFinal ? state.completedAt : undefined,
-      displayName: state.displayName ?? "",
+      displayName: meta.displayName ?? "",
       initialConcern: state.initialConcern,
       // Meta広告クリエイティブ識別子。紐付けが無い場合は UNKNOWN_CR
-      cr: state.cr ?? UNKNOWN_CR,
+      cr: meta.cr ?? UNKNOWN_CR,
       ...state.answers,
     }),
     signal: AbortSignal.timeout(SHEETS_TIMEOUT_MS),
@@ -584,20 +731,32 @@ async function postLeadToSheets(
   };
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /**
- * 回答の途中経過・回答完了リードを台帳へ同期する（作成 または RowKeyによる更新）。
+ * ヒアリング進行状態を「読み取り専用」で台帳へ同期する（作成 または RowKeyによる更新）。
  *
- * Q1〜Q9の途中経過は isFinal=false で毎回呼び出し、その時点までの累積回答を
- * RowKeyで特定した同じ行へ上書きする（行が無ければ新規作成）。
- * Q10完了時のみ isFinal=true とし、従来通り A列(登録日時)・N列(回答完了)を確定させる。
+ * 責務の分離（2026-10-03 修正）:
+ *   - この関数はヒアリング進行状態(step/answers/completedAt)を一切書き換えない。
+ *     書き込むのは同期結果の SheetMeta（別キー）だけ。
+ *     以前は、GAS通信前に読んだ古いstateを通信後に丸ごと書き戻していたため、通信中に
+ *     次の回答が進めたstepが巻き戻り、質問が重複送信され、Q10完了も失われていた。
+ *   - 同期する内容は、ロック取得後に読み直した「その時点の最新state」から毎回作る。
+ *     呼び出し側が古い進捗を渡して台帳を巻き戻すことが無い。
+ *   - 完了(step=done)が確定していれば、最終同期(final)として A列・M列・N列・Q列を確定する。
  *
- * 同時実行対策は2段。
- *   1. Redis の NX ロックで同時実行を1つに絞る（短命・finallyで必ず解放）
- *   2. Apps Script 側の LockService で行の照合〜書き込みを排他する
- * isFinal=true の場合はさらに sheetStatus === "saved" を見て、確定後の再送を防ぐ。
+ * 排他は2段。
+ *   1. Redis のロック（同期どうしの排他。有効期間はSheetsタイムアウトより長い）
+ *   2. Apps Script 側の LockService、および完了済み行を途中経過で上書きしない防御
  *
- * 失敗しても回答データは消さない。isFinal時のみ sheetStatus を pending に戻し再試行可能にする
- * （途中経過は次の質問への回答時に最新の累積データで自然に再送されるため、個別の再試行は不要）。
+ * ロックが取れなかった場合:
+ *   - 途中経過（waitForLock=false）: 次の同期が累積データを送るため、ログに残して終了する。
+ *   - 最終保存（waitForLock=true）: 最大10秒待つ。それでも取れなければ pending のまま残して
+ *     ログへ明示する。進行中の同期が終わった直後に自動で後追いする（allowDrain）ほか、
+ *     お客様の次のメッセージ受信時にも再試行される。回答データは決して捨てない。
+ *
  * ユーザーへの返信内容はこの結果に左右されない。
  */
 async function syncLeadToSheets(
@@ -606,104 +765,67 @@ async function syncLeadToSheets(
   accessToken: string,
   channelSecret: string,
   userId: string,
-  state: HearingState,
-  progress: string,
-  isFinal: boolean
+  waitForLock: boolean,
+  allowDrain: boolean
 ): Promise<void> {
-  if (state.sheetStatus === "saved") {
-    return;
-  }
-  if (isFinal && !state.completedAt) {
-    return;
-  }
-
-  let locked = false;
+  let lockToken: string | null = null;
   try {
-    locked = await acquireSheetLock(store, userId);
-    // Q10完了の同期は、直前の途中経過の同期と重なっても取りこぼさないよう少し待って再試行する
-    for (let attempt = 0; isFinal && !locked && attempt < FINAL_LOCK_RETRIES; attempt++) {
-      await new Promise((resolve) => setTimeout(resolve, FINAL_LOCK_RETRY_WAIT_MS));
-      locked = await acquireSheetLock(store, userId);
+    lockToken = await acquireLock(
+      store,
+      sheetLockKey(userId),
+      SHEET_LOCK_TTL_SECONDS
+    );
+    for (
+      let attempt = 0;
+      waitForLock && !lockToken && attempt < FINAL_LOCK_RETRIES;
+      attempt++
+    ) {
+      await sleep(FINAL_LOCK_RETRY_WAIT_MS);
+      lockToken = await acquireLock(
+        store,
+        sheetLockKey(userId),
+        SHEET_LOCK_TTL_SECONDS
+      );
     }
   } catch (error) {
-    console.error("[line/webhook] sheet lock failed:", describeError(error));
+    console.error(
+      `[line/webhook] sheet lock failed (${waitForLock ? "final, left pending" : "progress"}):`,
+      describeError(error)
+    );
     return;
   }
-  if (!locked) {
-    // 他のインスタンスが処理中。書き込みは1件だけに保たれる
-    return;
-  }
-
-  let current = state;
-  try {
-    // ロック取得後に最新状態を読み直す（取得前に保存済みになっていた場合の対策）
-    const fresh = await loadState(store, userId);
-    if (fresh) {
-      current = fresh;
-    }
-    if (current.sheetStatus === "saved") {
-      return;
-    }
-    if (isFinal && !current.completedAt) {
-      return;
-    }
-
-    // 表示名は一度取得できれば状態に保持する。
-    // 失敗した場合は undefined のまま残し、次の再試行で取り直す。
-    if (current.displayName === undefined) {
-      const displayName = await fetchDisplayName(accessToken, userId);
-      if (displayName !== null) {
-        current = { ...current, displayName };
-      }
-    }
-
-    // 流入CRは初回同期時（通常はQ1）に一度だけ確定させ、以降はこの値を使い回す。
-    if (current.cr === undefined) {
-      const cr = await loadCr(store, userId);
-      current = { ...current, cr };
-      // 消費済みのCR紐付けを削除する。失敗してもTTLで自然に失効するため無視してよい
-      await deleteCr(store, userId);
-    }
-
-    if (isFinal) {
-      await saveState(store, userId, { ...current, sheetStatus: "saving" });
+  if (!lockToken) {
+    if (waitForLock) {
+      // 最終保存は捨てない。stateは完了済み・メタは未保存のままなので、後追い・次回受信で再試行される
+      console.error(
+        "[line/webhook] final sheets sync deferred: lock busy, left pending for retry"
+      );
     } else {
-      // 表示名・CRをキャッシュした変化分だけ反映しておく（sheetStatusは変更しない）
-      await saveState(store, userId, current);
+      console.warn(
+        "[line/webhook] progress sheets sync skipped: lock busy (later sync sends cumulative data)"
+      );
     }
+    return;
+  }
 
-    const rowKey = computeRowKey(channelSecret, userId, current.startedAt);
-    const result = await postLeadToSheets(endpoint, current, rowKey, progress, isFinal);
-
-    if (result.ok) {
-      await saveState(store, userId, {
-        ...current,
-        sheetStatus: isFinal ? "saved" : current.sheetStatus,
-        savedAt: isFinal ? new Date().toISOString() : current.savedAt,
-        savedRow: result.row,
-      });
-      return;
-    }
-
-    console.error("[line/webhook] sheets save failed:", result.reason);
-    if (isFinal) {
-      await saveState(store, userId, { ...current, sheetStatus: "pending" });
-    }
+  let finalSynced = false;
+  try {
+    finalSynced = await syncLockedOnce(
+      store,
+      endpoint,
+      accessToken,
+      channelSecret,
+      userId
+    );
   } catch (error) {
-    console.error("[line/webhook] sheets save error:", describeError(error));
-    if (isFinal) {
-      try {
-        await saveState(store, userId, { ...current, sheetStatus: "pending" });
-      } catch (nested) {
-        console.error(
-          "[line/webhook] failed to reset sheetStatus:",
-          describeError(nested)
-        );
-      }
-    }
+    console.error(
+      "[line/webhook] sheets save error:",
+      describeError(error),
+      "(final data stays pending)"
+    );
   } finally {
     try {
-      await releaseSheetLock(store, userId);
+      await releaseLock(store, sheetLockKey(userId), lockToken);
     } catch (error) {
       console.error(
         "[line/webhook] failed to release sheet lock:",
@@ -711,6 +833,117 @@ async function syncLeadToSheets(
       );
     }
   }
+
+  // 途中経過の同期の最中にQ10が完了していた場合、最終保存はロック待ちで先送りされている。
+  // 進行中だった同期が終わった今、自分で後追いして取りこぼしを防ぐ。
+  if (allowDrain && !waitForLock && !finalSynced) {
+    try {
+      const latest = await loadState(store, userId);
+      if (latest && latest.step === DONE_STEP && latest.completedAt) {
+        const latestMeta = await loadMeta(store, userId, latest);
+        if (latestMeta.sheetStatus !== "saved") {
+          await syncLeadToSheets(
+            store,
+            endpoint,
+            accessToken,
+            channelSecret,
+            userId,
+            true,
+            false
+          );
+        }
+      }
+    } catch (error) {
+      console.error(
+        "[line/webhook] final sheets sync drain failed:",
+        describeError(error)
+      );
+    }
+  }
+}
+
+/**
+ * 同期ロックを保持した状態で、最新のヒアリング進行状態を台帳へ1回送る。
+ * 最終保存まで完了したら true。ヒアリング進行状態は書き換えない（SheetMetaのみ更新）。
+ */
+async function syncLockedOnce(
+  store: StateStore,
+  endpoint: SheetsEndpoint,
+  accessToken: string,
+  channelSecret: string,
+  userId: string
+): Promise<boolean> {
+  // ロック取得後に最新のヒアリング進行状態を読む（読み取り専用）
+  const state = await loadState(store, userId);
+  if (!state) {
+    return false;
+  }
+  let meta = await loadMeta(store, userId, state);
+  if (meta.sheetStatus === "saved") {
+    return false;
+  }
+
+  const isFinal = state.step === DONE_STEP && Boolean(state.completedAt);
+
+  // 表示名は一度取得できれば保持する。失敗した場合は undefined のまま残し、次の再試行で取り直す。
+  let metaChanged = false;
+  if (meta.displayName === undefined) {
+    const displayName = await fetchDisplayName(accessToken, userId);
+    if (displayName !== null) {
+      meta = { ...meta, displayName };
+      metaChanged = true;
+    }
+  }
+
+  // 流入CRは初回同期時（通常はQ1）に一度だけ確定させ、以降はこの値を使い回す。
+  let crLoaded = false;
+  if (meta.cr === undefined) {
+    meta = { ...meta, cr: await loadCr(store, userId) };
+    metaChanged = true;
+    crLoaded = true;
+  }
+
+  if (metaChanged) {
+    await saveMeta(store, userId, meta);
+  }
+  if (crLoaded) {
+    // 確定したCRをメタへ保存した後で、消費済みのCR紐付けを削除する。失敗してもTTLで失効する
+    await deleteCr(store, userId);
+  }
+
+  const rowKey = computeRowKey(channelSecret, userId, state.startedAt);
+  const progress = progressFromState(state);
+
+  let result = await postLeadToSheets(
+    endpoint,
+    state,
+    meta,
+    rowKey,
+    progress,
+    isFinal
+  );
+  // 最終保存はGASの一時的な混雑(busy)なら1回だけ即再試行する
+  if (isFinal && !result.ok && result.reason === "busy") {
+    await sleep(FINAL_BUSY_RETRY_WAIT_MS);
+    result = await postLeadToSheets(endpoint, state, meta, rowKey, progress, isFinal);
+  }
+
+  if (!result.ok) {
+    console.error(
+      `[line/webhook] sheets save failed (${isFinal ? "final, left pending" : "progress"}):`,
+      result.reason
+    );
+    return false;
+  }
+
+  // 書くのは同期結果のメタだけ。ヒアリング進行状態には触れない
+  await saveMeta(store, userId, {
+    ...meta,
+    sheetStatus: isFinal ? "saved" : meta.sheetStatus,
+    savedAt: isFinal ? new Date().toISOString() : meta.savedAt,
+    savedRow: result.row,
+  });
+  return isFinal;
 }
 
 // ── LINE 返信 ────────────────────────────────────────
@@ -772,9 +1005,13 @@ async function askQuestion(
 
 type LineWebhookEvent = {
   type?: string;
+  /** Webhookイベントごとに一意。LINEが再送しても同じ値になる（冪等性の判定キー） */
+  webhookEventId?: string;
+  deliveryContext?: { isRedelivery?: boolean };
   replyToken?: string;
   source?: { type?: string; userId?: string };
   message?: {
+    id?: string;
     type?: string;
     text?: string;
   };
@@ -848,9 +1085,38 @@ function isStartTrigger(text: string): boolean {
   return START_TRIGGERS.includes(text);
 }
 
+/** 回答処理のあとに行う台帳同期の種類 */
+type SyncRequest = "none" | "progress" | "final";
+
+/**
+ * 回答処理ロックを取得する。取得できなければ null。
+ * 保持者が異常終了してもTTLで失効する。待っても取れない場合は、
+ * お客様の回答を捨てないよう呼び出し側でログを残したうえでロック無しで続行する。
+ */
+async function acquireAnswerLock(
+  store: StateStore,
+  userId: string
+): Promise<string | null> {
+  for (let attempt = 0; attempt <= ANSWER_LOCK_RETRIES; attempt++) {
+    const token = await acquireLock(
+      store,
+      answerLockKey(userId),
+      ANSWER_LOCK_TTL_SECONDS
+    );
+    if (token) {
+      return token;
+    }
+    await sleep(ANSWER_LOCK_RETRY_WAIT_MS);
+  }
+  return null;
+}
+
 /**
  * テキストメッセージ1件を処理する。
  * 状態の読み書きに失敗した場合は例外を投げ、呼び出し側でログに残す。
+ *
+ * 回答処理（状態の読み込み〜更新〜LINE返信）は同一userIdで直列化する。
+ * 台帳同期（GAS通信）は回答処理ロックを解放した後に行い、次の回答を待たせない。
  */
 async function handleTextMessage(
   store: StateStore,
@@ -861,6 +1127,58 @@ async function handleTextMessage(
   replyToken: string,
   text: string
 ): Promise<void> {
+  const lockToken = await acquireAnswerLock(store, userId);
+  if (!lockToken) {
+    console.error(
+      "[line/webhook] answer lock busy: continuing without lock to avoid dropping the answer"
+    );
+  }
+
+  let syncRequest: SyncRequest;
+  try {
+    syncRequest = await processAnswer(store, accessToken, userId, replyToken, text);
+  } finally {
+    if (lockToken) {
+      try {
+        await releaseLock(store, answerLockKey(userId), lockToken);
+      } catch (error) {
+        console.error(
+          "[line/webhook] failed to release answer lock:",
+          describeError(error)
+        );
+      }
+    }
+  }
+
+  if (syncRequest === "none") {
+    return;
+  }
+  if (!sheets) {
+    console.error("[line/webhook] sheets endpoint is not configured");
+    return;
+  }
+  await syncLeadToSheets(
+    store,
+    sheets,
+    accessToken,
+    channelSecret,
+    userId,
+    syncRequest === "final",
+    true
+  );
+}
+
+/**
+ * 回答1件の状態遷移とLINE返信を行う（回答処理ロックの内側で呼ぶ）。
+ * ヒアリング進行状態を更新するのはここだけ。戻り値は、ロック解放後に行う台帳同期の種類。
+ */
+async function processAnswer(
+  store: StateStore,
+  accessToken: string,
+  userId: string,
+  replyToken: string,
+  text: string
+): Promise<SyncRequest> {
   // 開始トリガーはいつ送られても最初からやり直す
   if (isStartTrigger(text)) {
     const now = new Date().toISOString();
@@ -875,7 +1193,7 @@ async function handleTextMessage(
     });
 
     await askQuestion(accessToken, replyToken, firstQuestion);
-    return;
+    return "none";
   }
 
   const state = await loadState(store, userId);
@@ -883,44 +1201,38 @@ async function handleTextMessage(
   // 進行中のヒアリングが無い場合と、完了済みの場合は自動返信しない
   if (!state || state.step === DONE_STEP) {
     // 台帳への保存が終わっていないリードがあれば、この機会に再試行する
-    if (state && state.sheetStatus !== "saved" && sheets) {
-      await syncLeadToSheets(
-        store,
-        sheets,
-        accessToken,
-        channelSecret,
-        userId,
-        state,
-        "Q10完了",
-        true
-      );
+    if (state) {
+      const meta = await loadMeta(store, userId, state);
+      if (meta.sheetStatus !== "saved") {
+        return "final";
+      }
     }
-    return;
+    return "none";
   }
 
   const question = findQuestion(state.step);
   if (!question) {
     console.error("[line/webhook] unknown step in stored state");
-    return;
+    return "none";
   }
 
   // Quick Reply の質問は想定された選択肢のみ受理し、
   // それ以外は同じ質問を出し直して回答を待つ
   if (question.choices && !question.choices.includes(text)) {
     await askQuestion(accessToken, replyToken, question);
-    return;
+    return "none";
   }
 
   // 自由入力の検証（Q9 電話番号など）
   if (!question.choices) {
     if (text.length === 0) {
       await askQuestion(accessToken, replyToken, question);
-      return;
+      return "none";
     }
     const result = question.validate?.(text);
     if (result && !result.ok) {
       await replyMessage(accessToken, replyToken, result.message);
-      return;
+      return "none";
     }
   }
 
@@ -931,62 +1243,38 @@ async function handleTextMessage(
     step,
     answers: { ...state.answers, [question.answerKey]: text },
     updatedAt: now,
-    ...(step === DONE_STEP
-      ? { completedAt: now, sheetStatus: "pending" as const }
-      : {}),
+    ...(step === DONE_STEP ? { completedAt: now } : {}),
   };
 
   // 先に回答完了状態を確定させる。
   // これにより Q10 を重複受信しても以降の処理には入らない。
   await saveState(store, userId, updated);
 
-  const progress = progressLabel(question.step, updated.step);
-
   if (updated.step === DONE_STEP) {
-    if (sheets) {
-      await syncLeadToSheets(
-        store,
-        sheets,
-        accessToken,
-        channelSecret,
-        userId,
-        updated,
-        progress,
-        true
-      );
-    } else {
-      console.error("[line/webhook] sheets endpoint is not configured");
-    }
-
-    // 台帳保存の成否にかかわらず、ユーザーには完了メッセージを返す
+    // 台帳保存の成否・所要時間にかかわらず、ユーザーには先に完了メッセージを返す。
+    // 最終保存はロック解放後に行い、未保存(pending)のうちは何度でも再試行される。
     await replyMessage(accessToken, replyToken, COMPLETION_TEXT);
-    return;
+    return "final";
   }
 
   const following = findQuestion(updated.step);
   if (!following) {
     console.error("[line/webhook] next step not found");
-    return;
+    return "none";
   }
 
   // 先に次の質問を返信し、回答テンポを変えないようにする。
   // 台帳への途中経過の同期はその後に行う（Q1回答時点で行を作成、以降は同じ行を更新）。
   await askQuestion(accessToken, replyToken, following);
+  return "progress";
+}
 
-  if (sheets) {
-    await syncLeadToSheets(
-      store,
-      sheets,
-      accessToken,
-      channelSecret,
-      userId,
-      updated,
-      progress,
-      false
-    );
-  } else {
-    console.error("[line/webhook] sheets endpoint is not configured");
+/** Webhookイベントを1回だけ処理するためのID。webhookEventIdを優先し、無ければmessage.idを使う */
+function eventIdOf(event: LineWebhookEvent): string | null {
+  if (event.webhookEventId) {
+    return event.webhookEventId;
   }
+  return event.message?.id ? `message:${event.message.id}` : null;
 }
 
 export default async function handler(
@@ -1074,6 +1362,28 @@ export default async function handler(
       continue;
     }
 
+    // 同じWebhookイベントは1回だけ処理する（LINEの再送による二重保存・step二重進行・質問の二重送信を防ぐ）
+    const eventId = eventIdOf(event);
+    let claimed = false;
+    if (eventId) {
+      try {
+        if (!(await claimEvent(store, eventId))) {
+          console.warn(
+            "[line/webhook] duplicate webhook event skipped",
+            event.deliveryContext?.isRedelivery ? "(redelivery)" : ""
+          );
+          continue;
+        }
+        claimed = true;
+      } catch (error) {
+        // 判定できない場合は、回答を取りこぼさないよう通常どおり処理する
+        console.error(
+          "[line/webhook] event dedupe unavailable:",
+          describeError(error)
+        );
+      }
+    }
+
     try {
       await handleTextMessage(
         store,
@@ -1090,6 +1400,17 @@ export default async function handler(
         "[line/webhook] failed to handle message:",
         describeError(error)
       );
+      // 処理できなかったイベントは、再送されたときに処理し直せるよう処理済みマークを外す
+      if (eventId && claimed) {
+        try {
+          await releaseEventClaim(store, eventId);
+        } catch (releaseError) {
+          console.error(
+            "[line/webhook] failed to release event claim:",
+            describeError(releaseError)
+          );
+        }
+      }
     }
   }
 

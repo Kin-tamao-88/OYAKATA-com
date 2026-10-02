@@ -59,6 +59,8 @@ const EXTRA_HEADERS = [
 ];
 
 const CORE_COLUMN_COUNT = HEADERS.length; // 15（A〜O）
+const COLUMN_COMPLETED = 14; // 14（N 回答完了）。完了済み行の判定に使う
+const COMPLETED_LABEL = '完了';
 const COLUMN_REMARKS = CORE_COLUMN_COUNT + 1; // 16（P）※書き込み禁止・営業担当の手入力専用
 const COLUMN_PROGRESS = CORE_COLUMN_COUNT + 2; // 17（Q）
 const COLUMN_ROWKEY = CORE_COLUMN_COUNT + 3; // 18（R）
@@ -132,7 +134,7 @@ function doPost(e) {
       sanitize(data.q8ContactName), // K 担当者名
       sanitize(data.q9Phone), // L 電話番号
       sanitize(data.q10CallTime), // M 電話希望時間
-      isFinal ? '完了' : '', // N 回答完了
+      isFinal ? COMPLETED_LABEL : '', // N 回答完了
       sanitize(data.cr) || '不明', // O 流入CR（Meta広告クリエイティブ識別子）
     ];
 
@@ -159,6 +161,11 @@ function doPost(e) {
 
       var existingRow = findRowByKey(sheet, rowKey);
       if (existingRow > 0) {
+        // 完了済みの行は、遅れて届いた途中経過(非最終)の保存で未完了状態へ戻さない。
+        // 最終状態は常に途中状態より優先する（A登録日時・M電話希望時間・N回答完了・Q進捗を保護）
+        if (!isFinal && isRowCompleted(sheet, existingRow)) {
+          return jsonResponse({ success: true, duplicate: true, row: existingRow });
+        }
         // A〜O列を更新。P列(備考)は範囲に含めない＝一切触れない。
         // 開始日時のS列は初回のみのため触れない＝以降変更しない
         writeRow(sheet, existingRow, coreValues);
@@ -243,6 +250,11 @@ function findRowByKey(sheet, rowKey) {
     }
   }
   return 0;
+}
+
+/** 対象行の「回答完了」(N列)が完了になっているか */
+function isRowCompleted(sheet, rowIndex) {
+  return sanitize(sheet.getRange(rowIndex, COLUMN_COMPLETED).getValue()) === COMPLETED_LABEL;
 }
 
 /** ISO日時文字列をシート表示用ラベルへ変換する。不正・空なら空文字 */
