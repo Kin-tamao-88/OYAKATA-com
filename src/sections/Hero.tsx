@@ -106,7 +106,8 @@ export default function Hero() {
               すべての工事業者様のために
             </div>
 
-            {/* H1：1行目 */}
+            {/* H1 */}
+            <h1 className="contents">
             <div
               className="relative font-black text-white leading-none"
               style={{
@@ -129,6 +130,7 @@ export default function Hero() {
               className="relative block"
               style={{ width: "260px", height: "auto", marginLeft: "-4px", marginTop: "7px", zIndex: 2, transform: "translate(-6px, -21.5px)", clipPath: "inset(0 5% 0 0)" }}
             />
+            </h1>
 
           </div>
 
@@ -292,6 +294,7 @@ export default function Hero() {
               すべての工事業者様のために
             </div>
 
+            <h1 className="contents">
             <div
               className="relative font-black text-white leading-none"
               style={{ fontSize: "78px", letterSpacing: "-0.04em", marginTop: "8px", marginBottom: "-32px", zIndex: 10, transform: "translateY(49px) rotate(-6deg)", transformOrigin: "left center", whiteSpace: "nowrap" }}
@@ -322,6 +325,7 @@ export default function Hero() {
               className="relative block"
               style={{ width: "580px", height: "auto", marginLeft: "-12px", marginTop: "18px", zIndex: 2 }}
             />
+            </h1>
 
           </div>
 
