@@ -30,8 +30,38 @@ function useSeo() {
     }
     canonical.setAttribute("href", CANONICAL_URL);
 
+    // index.htmlにはトップページ用のJSON-LDが静的に入っているため、
+    // /privacyではOrganization・WebSiteを残し、WebPageをプライバシーポリシー用に差し替える(Serviceは出さない)
+    const ld = document.getElementById("ld-json");
+    const prevLd = ld?.textContent ?? null;
+    if (ld && prevLd) {
+      try {
+        const data = JSON.parse(prevLd) as { "@graph": { "@type": string }[] };
+        const common = data["@graph"].filter((n) => n["@type"] === "Organization" || n["@type"] === "WebSite");
+        ld.textContent = JSON.stringify({
+          ...data,
+          "@graph": [
+            ...common,
+            {
+              "@type": "WebPage",
+              "@id": CANONICAL_URL + "#webpage",
+              url: CANONICAL_URL,
+              name: PAGE_TITLE,
+              description: PAGE_DESCRIPTION,
+              inLanguage: "ja",
+              isPartOf: { "@id": "https://oyakata-com.jp/#website" },
+              publisher: { "@id": "https://oyakata-com.jp/#organization" },
+            },
+          ],
+        });
+      } catch {
+        // JSON-LDの解析に失敗した場合は静的な内容のままにする
+      }
+    }
+
     return () => {
       document.title = prevTitle;
+      if (ld && prevLd) ld.textContent = prevLd;
     };
   }, []);
 }
