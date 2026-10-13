@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/privacy", "destination": "/index.html" }
   ],
   "functions": {
     "api/line/webhook.ts": { "maxDuration": 30 }
