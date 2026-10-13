@@ -8,9 +8,10 @@ import {
   STATIC_ROUTES,
   absoluteUrl,
 } from "./site";
+import { getIndexablePaths } from "../contractors/seo";
 import type { SeoPageDef } from "./types";
 
-function escapeHtml(value: string): string {
+export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -18,7 +19,7 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function jsonLdScript(id: string, data: unknown): string {
+export function jsonLdScript(id: string, data: unknown): string {
   // </script> でタグが閉じないよう "<" をエスケープする
   const json = JSON.stringify(data, null, 2).replace(/</g, "\\u003c");
   return `<script id="${id}" type="application/ld+json">\n${json}\n</script>`;
@@ -110,6 +111,8 @@ export function buildSitemap(): string {
       loc: absoluteUrl(pagePath(p)),
       lastmod: p.dateModified,
     })),
+    // 親方ドットコム パートナーズ(index可能なページのみ。サンプルの間は空)
+    ...getIndexablePaths().map((path) => ({ loc: absoluteUrl(path), lastmod: undefined as string | undefined })),
   ];
   const urls = entries
     .map(
