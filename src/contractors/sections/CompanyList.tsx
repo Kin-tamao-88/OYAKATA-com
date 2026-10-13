@@ -1,4 +1,4 @@
-import { COMPANIES, EMPTY_FILTER, HAS_SAMPLE_DATA, filterCompanies, getCategoryLabel } from "../data";
+import { COMPANIES, EMPTY_FILTER, filterCompanies, getCategoryLabel } from "../data";
 import type { CompanyFilter } from "../data";
 import CompanyCard from "./CompanyCard";
 import FilterSelects from "./FilterSelects";
@@ -74,11 +74,6 @@ export default function CompanyList({ filter, onFilterChange }: Props) {
           </div>
         )}
 
-        {HAS_SAMPLE_DATA && (
-          <p className="mt-8 text-[#555] text-[14px] leading-[1.8]">
-            ※ 現在表示している企業情報・写真は、デザイン確認用のサンプルです。実在の企業とは関係ありません。
-          </p>
-        )}
       </div>
     </section>
   );

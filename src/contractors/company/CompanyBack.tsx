@@ -1,4 +1,4 @@
-import { COMPANIES, HAS_SAMPLE_DATA, getCategoryLabel } from "../data";
+import { COMPANIES, getCategoryLabel } from "../data";
 import { getCompanyDetail } from "../companyDetails";
 import { ArrowIcon } from "../icons";
 
@@ -50,11 +50,6 @@ export default function CompanyBack({ currentSlug }: Props) {
           ほかのパートナー工事会社を探す
           <ArrowIcon className="w-5 h-5" />
         </a>
-        {HAS_SAMPLE_DATA && (
-          <p className="mt-8 text-[#555] text-[14px] leading-[1.8] text-balance [word-break:auto-phrase]">
-            ※ 現在表示している企業情報・写真・連絡先は、デザイン確認用のサンプルです。実在の企業とは関係ありません。
-          </p>
-        )}
       </div>
     </section>
   );
