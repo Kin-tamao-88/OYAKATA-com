@@ -13,6 +13,7 @@ import CompanyServices from "./company/CompanyServices";
 import CompanyStrengths from "./company/CompanyStrengths";
 import CompanyWorks from "./company/CompanyWorks";
 import Footer from "./sections/Footer";
+import ListingConsult from "./sections/ListingConsult";
 import Header from "./sections/Header";
 
 type Props = {
@@ -39,6 +40,7 @@ export default function CompanyPage({ company, detail }: Props) {
         <CompanyProfile company={company} detail={detail} theme={theme} />
         <CompanyContact companyName={company.name} contact={detail.contact} theme={theme} />
         <CompanyBack currentSlug={company.slug} />
+        <ListingConsult />
       </main>
       <Footer base="/contractors" />
     </div>

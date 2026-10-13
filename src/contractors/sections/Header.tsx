@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { MailIcon, ArrowIcon } from "../icons";
+import { trackLineClick } from "../../lib/analytics";
+import { buildLineCtaHref } from "../../lib/line";
+import { ArrowIcon, LineIcon } from "../icons";
 import logoMark from "../../assets/images/logos/logo-mark2.webp";
 
 const NAV_ITEMS = [
@@ -58,10 +60,15 @@ export default function Header({ base = "" }: Props) {
           ))}
         </nav>
         <a
-          href={base + "#listing"}
+          href={buildLineCtaHref()}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={trackLineClick}
           className="hidden lg:flex items-center gap-3 bg-[#FFD000] text-[#1a1a1a] font-black text-[16px] no-underline px-5 xl:px-8 hover:brightness-95 transition-all whitespace-nowrap"
         >
-          <MailIcon className="w-6 h-6" />
+          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white shrink-0">
+            <LineIcon className="w-[18px] h-[18px]" />
+          </span>
           パートナー掲載について
           <ArrowIcon className="w-5 h-5" />
         </a>
@@ -107,6 +114,23 @@ export default function Header({ base = "" }: Props) {
               </a>
             ))}
           </nav>
+          <div className="px-5 pb-5">
+            <a
+              href={buildLineCtaHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackLineClick();
+                setIsOpen(false);
+              }}
+              className="flex items-center justify-center gap-3 h-[60px] bg-[#FFD000] text-[#1a1a1a] font-black text-[17px] no-underline"
+            >
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white shrink-0">
+                <LineIcon className="w-[18px] h-[18px]" />
+              </span>
+              パートナー掲載について
+            </a>
+          </div>
         </div>
       )}
     </header>

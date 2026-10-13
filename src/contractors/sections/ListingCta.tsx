@@ -3,7 +3,7 @@ import { trackLineClick } from "../../lib/analytics";
 import { buildLineCtaHref } from "../../lib/line";
 import { COMPANIES, getCategoryLabel } from "../data";
 import { getCompanyDetail } from "../companyDetails";
-import { ArrowIcon, CheckIcon } from "../icons";
+import { ArrowIcon, CheckIcon, LineIcon } from "../icons";
 
 const POINTS = [
   "自社の強みや施工実績を、写真とともに紹介",
@@ -55,20 +55,23 @@ export default function ListingCta() {
 
             <div className="mt-9 lg:mt-12 flex flex-col gap-4 lg:max-w-[460px]">
               <a
-                href="/#contact"
-                className="inline-flex items-center justify-center gap-3 h-[64px] lg:h-[68px] px-4 sm:px-6 bg-[#FFD000] whitespace-nowrap text-[#1a1a1a] font-black text-[16px] sm:text-[18px] lg:text-[19px] no-underline hover:brightness-95 transition-all"
-              >
-                パートナー掲載について問い合わせる
-                <ArrowIcon className="hidden sm:block w-6 h-6" />
-              </a>
-              <a
                 href={buildLineCtaHref()}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={trackLineClick}
+                className="inline-flex items-center justify-center gap-3 h-[64px] lg:h-[68px] px-4 sm:px-6 bg-[#FFD000] whitespace-nowrap text-[#1a1a1a] font-black text-[16px] sm:text-[18px] lg:text-[19px] no-underline hover:brightness-95 transition-all"
+              >
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white shrink-0">
+                  <LineIcon className="w-[18px] h-[18px]" />
+                </span>
+                パートナー掲載について問い合わせる
+                <ArrowIcon className="hidden sm:block w-6 h-6" />
+              </a>
+              <a
+                href="/#contact"
                 className="inline-flex items-center justify-center h-[64px] lg:h-[68px] px-8 border-2 border-white text-white font-bold text-[16px] lg:text-[17px] no-underline hover:bg-white hover:text-[#1a1a1a] transition-colors"
               >
-                LINEで問い合わせる
+                フォームで問い合わせる
               </a>
             </div>
           </div>
