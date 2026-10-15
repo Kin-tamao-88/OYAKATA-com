@@ -139,21 +139,24 @@ export default function Header() {
           style={{ maxWidth: "1280px", marginLeft: "auto", marginRight: "auto" }}
         >
 
-          {/* ロゴ */}
-          <div className="flex items-center flex-shrink-0" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
-            <div style={{ overflow: "hidden", height: "88px", width: "320px", display: "flex", alignItems: "center", justifyContent: "center", marginTop: "9px" }}>
+          {/* ロゴ（2xl未満は縮小して横幅に収める） */}
+          <div className="flex items-center flex-shrink-0 px-4 2xl:px-10">
+            <div className="flex items-center justify-center overflow-hidden mt-[7px] h-[66px] w-[240px] 2xl:mt-[9px] 2xl:h-[88px] 2xl:w-[320px]">
               <img
                 src={logoMark}
                 alt="親方ドットコム ｜ 工事業者専門の集客支援サービス"
-                style={{ height: "280px", width: "auto", maxWidth: "none" }}
+                className="h-[210px] w-auto max-w-none 2xl:h-[280px]"
               />
             </div>
           </div>
 
-          {/* PCナビメニュー */}
-          <nav className="flex items-center flex-1 justify-center gap-4">
+          {/* lgではナビを非表示にし、電話・LINE CTAを右寄せにする */}
+          <div className="flex-1 xl:hidden" />
+
+          {/* PCナビメニュー（xl以上） */}
+          <nav className="hidden xl:flex items-center flex-1 justify-center gap-3 2xl:gap-4">
             {pcNavItems.map((item, i) => (
-              <div key={i} className="flex items-center gap-4">
+              <div key={i} className="flex items-center gap-3 2xl:gap-4">
                 {i > 0 && <span className="text-[#ddd] text-[14px]">|</span>}
                 <a
                   href={item.href}
@@ -169,7 +172,7 @@ export default function Header() {
           {isPhoneShown ? (
             <a
               href="tel:08047729896"
-              className="group flex items-center flex-shrink-0 no-underline px-5"
+              className="group flex items-center flex-shrink-0 no-underline px-3 2xl:px-5"
             >
               {phoneInner}
             </a>
@@ -178,7 +181,7 @@ export default function Header() {
               type="button"
               onClick={() => setIsPhoneShown(true)}
               aria-label="お電話でのご相談はこちらをクリック。電話番号を表示します"
-              className="group flex items-center flex-shrink-0 cursor-pointer px-5 text-left"
+              className="group flex items-center flex-shrink-0 cursor-pointer px-3 2xl:px-5 text-left"
             >
               {phoneInner}
             </button>
@@ -193,14 +196,10 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={trackLineClick}
-            className="relative flex flex-col items-center justify-center flex-shrink-0 self-stretch no-underline hover:bg-gray-50 transition-colors"
-            style={{ paddingLeft: "36px", paddingRight: "36px", textDecoration: "none" }}
+            className="relative flex flex-col items-center justify-center flex-shrink-0 self-stretch no-underline hover:bg-gray-50 transition-colors px-5 2xl:px-9"
           >
             {/* CTAボタン */}
-            <div
-              className="flex items-center bg-[#FFCC00] hover:brightness-95 transition-all"
-              style={{ gap: "10px", borderRadius: "6px", padding: "11px 22px", whiteSpace: "nowrap" }}
-            >
+            <div className="flex items-center gap-2.5 rounded-md bg-[#FFCC00] hover:brightness-95 transition-all whitespace-nowrap py-[11px] px-4 2xl:px-[22px]">
               <span
                 className="flex items-center justify-center flex-shrink-0 rounded-full"
                 style={{ width: "26px", height: "26px", backgroundColor: "#fff" }}
