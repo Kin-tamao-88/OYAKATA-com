@@ -35,7 +35,7 @@ const cards = [
 
 export default function Section03() {
   return (
-    <section className="bg-gradient-to-b from-white via-white to-[#FFF9E6] pt-8 lg:pt-[80px]">
+    <section className="bg-gradient-to-b from-white via-white to-[#FFF9E6] pt-8 lg:pt-[96px]">
       <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px]">
 
         {/* ── Section Header ── */}
@@ -47,11 +47,11 @@ export default function Section03() {
         </div>
 
         {/* ── Heading / photo / body ── */}
-        <div className="grid grid-cols-1 -mx-5 lg:mx-0 lg:grid-cols-[1fr_46%] lg:gap-x-10">
+        <div className="grid grid-cols-1 -mx-5 lg:mx-0 lg:grid-cols-[1fr_40%] lg:gap-x-12">
 
-          <h2 className="relative z-10 row-start-1 col-start-1 self-start px-5 pt-2 lg:px-0 lg:pt-0 lg:self-end lg:mb-6 text-[#171717] font-black leading-[1.3] text-[25px] lg:text-[54px] lg:leading-[1.25]">
+          <h2 className="relative z-10 row-start-1 col-start-1 self-start px-5 pt-2 lg:px-0 lg:pt-0 lg:self-end lg:mb-8 text-[#171717] font-black leading-[1.3] text-[25px] lg:text-[62px] lg:leading-[1.22] lg:tracking-[-0.01em]">
             下請けばかりの経営、<br />
-            <span className="inline-block border-b-[5px] lg:border-b-[8px] border-[#FFCC00] pb-[2px]">続けていませんか？</span>
+            <span className="inline-block border-b-[5px] lg:border-b-[10px] border-[#FFCC00] pb-[2px]">続けていませんか？</span>
           </h2>
 
           <div className="relative row-start-1 col-start-1 lg:col-start-2 lg:row-span-2 h-[150px] overflow-hidden lg:h-auto lg:overflow-visible">
@@ -63,7 +63,7 @@ export default function Section03() {
             <div className="absolute inset-y-0 left-0 w-[75%] bg-gradient-to-r from-white from-[62%] via-white/60 via-[85%] to-transparent pointer-events-none lg:w-24 lg:via-transparent" />
           </div>
 
-          <p className="row-start-2 col-start-1 px-5 pt-4 lg:px-0 lg:pt-0 lg:self-start text-[#333] text-[15px] lg:text-[16px] leading-[2]">
+          <p className="row-start-2 col-start-1 px-5 pt-4 lg:px-0 lg:pt-0 lg:self-start text-[#333] text-[15px] lg:text-[19px] leading-[2]">
             直請けを増やしたいと思いながらも、<br />
             日々の業務に追われて、なかなか前に進めない。<br />
             そんな工事業者様からのご相談が増えています。
@@ -88,23 +88,23 @@ export default function Section03() {
         </div>
 
         {/* ── Cards: PC with arrows ── */}
-        <div className="hidden lg:flex items-stretch mt-12">
+        <div className="hidden lg:flex items-stretch mt-16">
           {cards.map((c, i) => (
             <div key={i} className="contents">
               <div className="flex-1 bg-white border border-[#E3E5E8] rounded-[6px] flex flex-col overflow-hidden">
-                <div className="flex items-center justify-center gap-3 px-4 py-3 bg-[#171717] border-b-[4px] border-[#FFCC00]">
-                  <span className="text-[#FFCC00] font-black text-[26px] leading-none">{c.num}</span>
-                  <span className="w-px h-6 bg-white/40" />
-                  <p className="text-white font-black text-[19px] leading-none whitespace-nowrap">{c.title}</p>
+                <div className="flex items-center justify-center gap-2.5 px-3 py-4 bg-[#171717] border-b-[4px] border-[#FFCC00]">
+                  <span className="text-[#FFCC00] font-black text-[30px] leading-none">{c.num}</span>
+                  <span className="w-px h-7 bg-white/40" />
+                  <p className="text-white font-black text-[20px] leading-none whitespace-nowrap">{c.title}</p>
                 </div>
-                <div className="flex-1 flex flex-col items-center justify-center px-5 py-7">
-                  <img src={c.icon} alt="" aria-hidden="true" className="w-[110px] h-[110px] object-contain" />
-                  <p className="text-[#333] font-medium text-[14px] leading-[1.8] text-center [word-break:auto-phrase] mt-4">{c.body}</p>
+                <div className="flex-1 flex flex-col items-center justify-center px-5 py-9">
+                  <img src={c.icon} alt="" aria-hidden="true" className="w-[130px] h-[130px] object-contain" />
+                  <p className="text-[#333] font-medium text-[16px] leading-[1.8] text-center [word-break:auto-phrase] mt-5">{c.body}</p>
                 </div>
               </div>
               {i < 3 && (
                 <div className="flex items-center px-2">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 22 22" fill="none" aria-hidden="true">
                     <path d="M2 11 H16 M11 5 L18 11 L11 17" stroke="#FFCC00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
@@ -116,14 +116,14 @@ export default function Section03() {
       </div>
 
       {/* ── Conclusion (compact) ── */}
-      <div className="mt-5 lg:mt-10 relative overflow-hidden bg-[#171717]">
+      <div className="mt-5 lg:mt-14 relative overflow-hidden bg-[#171717]">
         <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] opacity-70 pointer-events-none" />
-        <div className="relative z-10 max-w-[1280px] mx-auto px-5 py-5 lg:px-[68px] lg:py-8 flex items-start lg:items-center lg:justify-center gap-3 lg:gap-5">
-          <span className="block w-8 lg:w-14 h-[2px] bg-[#FFCC00] mt-[13px] lg:mt-0 shrink-0" />
-          <p className="text-white font-black text-[14px] lg:text-[20px] leading-[1.6]">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-5 py-5 lg:px-[68px] lg:py-12 flex items-start lg:items-center lg:justify-center gap-3 lg:gap-5">
+          <span className="block w-8 lg:w-20 h-[2px] lg:h-[3px] bg-[#FFCC00] mt-[13px] lg:mt-0 shrink-0" />
+          <p className="text-white font-black text-[14px] lg:text-[26px] leading-[1.6]">
             負の連鎖から抜け出し、<br />
-            <span className="text-[#FFCC00] text-[21px] lg:text-[34px] leading-[1.4]">直請け案件を増やす仕組み</span>
-            <span className="text-white text-[21px] lg:text-[34px] leading-[1.4]">が<br className="lg:hidden" />必要です。</span>
+            <span className="text-[#FFCC00] text-[21px] lg:text-[48px] leading-[1.4]">直請け案件を増やす仕組み</span>
+            <span className="text-white text-[21px] lg:text-[48px] leading-[1.4]">が<br className="lg:hidden" />必要です。</span>
           </p>
         </div>
       </div>

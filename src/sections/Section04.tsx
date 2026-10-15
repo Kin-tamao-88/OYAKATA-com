@@ -94,9 +94,9 @@ export default function Section05() {
           {/* Left: bad panel */}
           <div className="flex-1 bg-[#171717] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
             <div className="border border-[#555] text-center py-2 mb-5">
-              <span className="text-white font-bold text-[14px] lg:text-[15px]">一般的な集客代行会社</span>
+              <span className="text-white font-bold text-[14px] lg:text-[17px]">一般的な集客代行会社</span>
             </div>
-            <p className="text-white font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
+            <p className="text-white font-black text-[18px] lg:text-[26px] leading-[1.4] mb-6 text-center">
               バラバラの施策で、<br />一時的に集客して終わり…
             </p>
             <div className="flex flex-col gap-0 flex-1 items-center">
@@ -105,8 +105,8 @@ export default function Section05() {
                   <div key={i} className="flex items-center gap-3 py-3">
                     <div className="shrink-0">{item.icon}</div>
                     <div>
-                      <p className="text-white font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                      <p className="text-[#c8c8c8] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                      <p className="text-white font-bold text-[14px] lg:text-[17px]">{item.text}</p>
+                      <p className="text-[#c8c8c8] text-[12px] lg:text-[15px] mt-0.5">{item.sub}</p>
                     </div>
                   </div>
                 ))}
@@ -118,7 +118,7 @@ export default function Section05() {
                 <line x1="10" y1="7" x2="10" y2="11" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                 <circle cx="10" cy="13.5" r="0.9" fill="white" />
               </svg>
-              <span className="text-white font-bold text-[13px] lg:text-[14px]">これらの施策では、<br className="lg:hidden" />安定した集客は実現できません。</span>
+              <span className="text-white font-bold text-[13px] lg:text-[15px]">これらの施策では、<br className="lg:hidden" />安定した集客は実現できません。</span>
             </div>
           </div>
 
@@ -145,7 +145,7 @@ export default function Section05() {
             <div className="flex justify-center mb-5 overflow-hidden h-[52px]">
               <img src={logoMark2} alt="親方ドットコム" className="h-[160px] w-auto -mt-[42px]" />
             </div>
-            <p className="text-[#171717] font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
+            <p className="text-[#171717] font-black text-[18px] lg:text-[26px] leading-[1.4] mb-6 text-center">
               仕組みで集客を生み出し、<br />安定した売上につなげます。
             </p>
             <div className="flex flex-col gap-0 flex-1 items-center">
@@ -154,8 +154,8 @@ export default function Section05() {
                   <div key={i} className="flex items-center gap-3 py-3">
                     <img src={item.icon} alt="" aria-hidden="true" className="w-[48px] h-[48px] object-contain shrink-0" />
                     <div>
-                      <p className="text-[#171717] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                      <p className="text-[#333] text-[14px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                      <p className="text-[#171717] font-bold text-[14px] lg:text-[17px]">{item.text}</p>
+                      <p className="text-[#333] text-[14px] lg:text-[15px] mt-0.5">{item.sub}</p>
                     </div>
                   </div>
                 ))}
@@ -166,7 +166,7 @@ export default function Section05() {
                 <circle cx="9" cy="9" r="8" fill="#06C755" />
                 <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="text-[#171717] font-bold text-[14px] lg:text-[15px] text-center">仕組みで回るから、<br className="lg:hidden" />安定して売上と利益が伸びる！</span>
+              <span className="text-[#171717] font-bold text-[14px] lg:text-[17px] text-center">仕組みで回るから、<br className="lg:hidden" />安定して売上と利益が伸びる！</span>
             </div>
           </div>
 
@@ -175,8 +175,8 @@ export default function Section05() {
         {/* ── Bottom statement ── */}
         <div className="relative mt-10 overflow-hidden">
           <img src={brushYellow} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
-          <div className="relative bg-[#171717] px-6 py-4 lg:px-10 lg:py-5 text-center">
-            <p className="text-white font-black text-[16px] lg:text-[20px]">
+          <div className="relative bg-[#171717] px-6 py-4 lg:px-10 lg:py-7 text-center">
+            <p className="text-white font-black text-[16px] lg:text-[26px]">
               親方ドットコムは、<br className="lg:hidden" /><span className="text-[#FFCC00]">直請け案件が自然と集まる<br className="lg:hidden" />仕組みづくり</span>を支援します。
             </p>
           </div>

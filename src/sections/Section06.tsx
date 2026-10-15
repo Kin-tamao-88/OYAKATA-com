@@ -97,10 +97,10 @@ export default function Section07() {
                 </div>
                 <div className={`flex-1 flex flex-col justify-center py-14 ${r.imgLeft ? "pl-14 pr-10" : "pr-14 pl-10"} ${i % 2 !== 0 ? "bg-[#171717]" : "bg-white"} relative overflow-hidden`}>
                   <ReasonLabel num={r.num} dark={i % 2 !== 0} />
-                  <h3 className={`font-black leading-[1.3] mb-4 text-[34px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#171717]"}`}>
+                  <h3 className={`font-black leading-[1.3] mb-4 text-[38px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#171717]"}`}>
                     {r.title.split("\n").map((line, j) => <span key={j}>{line}{j === 0 && <br />}</span>)}
                   </h3>
-                  <p className={`text-[15px] leading-[2] mb-6 ${i % 2 !== 0 ? "text-white/80" : "text-[#171717]"}`}>{r.body}</p>
+                  <p className={`text-[17px] leading-[2] mb-6 text-pretty [word-break:auto-phrase] ${i % 2 !== 0 ? "text-white/90" : "text-[#171717]"}`}>{r.body}</p>
                   <CheckList checks={r.checks} dark={i % 2 !== 0} />
                 </div>
               </div>
@@ -164,8 +164,8 @@ function ReasonLabel({ num, dark }: { num: string; dark: boolean }) {
     <div className="relative inline-flex items-center mb-4">
       <img
         src={dark
-          ? "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='36'%3E%3Crect width='120' height='36' rx='2' fill='%23D4A820'/%3E%3C/svg%3E"
-          : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='36'%3E%3Crect width='120' height='36' rx='2' fill='%231a1a1a'/%3E%3C/svg%3E"
+          ? "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='36'%3E%3Crect width='120' height='36' rx='2' fill='%23FFCC00'/%3E%3C/svg%3E"
+          : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='36'%3E%3Crect width='120' height='36' rx='2' fill='%23171717'/%3E%3C/svg%3E"
         }
         alt=""
         aria-hidden="true"
@@ -186,7 +186,7 @@ function CheckList({ checks, dark }: { checks: string[]; dark: boolean }) {
             <circle cx="9" cy="9" r="8" fill="#FFCC00" />
             <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className={`text-[13px] lg:text-[14px] leading-[1.7] ${dark ? "text-white/80" : "text-[#171717]"}`}>{c}</span>
+          <span className={`text-[13px] lg:text-[16px] leading-[1.7] ${dark ? "text-white/80 lg:text-white/90" : "text-[#171717]"}`}>{c}</span>
         </li>
       ))}
     </ul>

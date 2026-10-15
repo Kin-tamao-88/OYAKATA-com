@@ -65,7 +65,7 @@ export default function Section08() {
                 経営はここまで変わります。
               </h2>
             </div>
-            <p className="text-[#333] text-[13px] lg:text-[15px]">
+            <p className="text-[#333] text-[13px] lg:text-[17px]">
               問い合わせが増えるだけではなく、<br className="lg:hidden" /><span className="text-[#171717] bg-[linear-gradient(transparent_62%,#FFCC00_62%)] font-bold">継続的な直請け受注と売上アップ</span>を<br className="lg:hidden" />実現した事例をご紹介します。
             </p>
           </div>

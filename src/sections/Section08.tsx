@@ -137,9 +137,9 @@ export default function Section09() {
                 <line x1="7" y1="14" x2="7" y2="17" stroke="#FFCC00" strokeWidth="1.5" strokeLinecap="round" />
                 <line x1="4" y1="17" x2="10" y2="17" stroke="#FFCC00" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
-              <p className="text-[#171717] font-bold text-[14px] lg:text-[16px]">親方ドットコムご利用企業様の<br className="lg:hidden" />社員さんにインタビューしました！</p>
+              <p className="text-[#171717] font-bold text-[14px] lg:text-[18px]">親方ドットコムご利用企業様の<br className="lg:hidden" />社員さんにインタビューしました！</p>
             </div>
-            <p className="text-[#333] text-[13px] lg:text-[14px]">直請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
+            <p className="text-[#333] text-[13px] lg:text-[16px]">直請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
           </div>
 
           {/* ── Cards ── */}
