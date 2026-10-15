@@ -48,25 +48,25 @@ export default function Section10() {
   }
 
   return (
-    <section className="bg-[#f5f5f5] py-16 lg:py-24">
+    <section className="bg-[#F7F8FA] py-16 lg:py-24">
       <div className="max-w-[960px] mx-auto px-5 lg:px-8">
 
         {/* ── カード ── */}
         <div className="bg-white border border-[#e0e0e0] rounded-2xl overflow-hidden">
 
           {/* ── カードヘッダー（黒帯） ── */}
-          <div className="bg-[#1a1a1a] px-7 lg:px-12 py-6 lg:py-7 flex items-center justify-between gap-4">
+          <div className="bg-[#171717] px-7 lg:px-12 py-6 lg:py-7 flex items-center justify-between gap-4">
             <div className="flex items-center gap-4 lg:gap-5 min-w-0 w-full lg:w-auto">
               <div className="min-w-0 text-center lg:text-left w-full lg:w-auto">
                 <h2 className="text-white font-black leading-none text-[24px] lg:text-[36px] whitespace-nowrap">
                   無料診断フォーム
                 </h2>
-                <p className="text-[#aaaaaa] text-[11px] lg:text-[13px] mt-1.5 leading-none">
+                <p className="text-[#c8c8c8] text-[11px] lg:text-[13px] mt-1.5 leading-none">
                   直請け案件を増やすための第一歩です。
                 </p>
               </div>
             </div>
-            <span className="hidden lg:block text-[#D4A820] font-medium text-[13px] whitespace-nowrap shrink-0">
+            <span className="hidden lg:block text-[#FFCC00] font-medium text-[13px] whitespace-nowrap shrink-0">
               Marketing Consultation
             </span>
           </div>
@@ -76,15 +76,15 @@ export default function Section10() {
 
             {isSubmitted ? (
               <div className="py-10 lg:py-14 text-center">
-                <div className="mx-auto mb-5 w-14 h-14 rounded-full bg-[#FFD000]/15 flex items-center justify-center">
+                <div className="mx-auto mb-5 w-14 h-14 rounded-full bg-[#FFCC00]/15 flex items-center justify-center">
                   <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-                    <path d="M5 13.5l5.5 5.5L21 8" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 13.5l5.5 5.5L21 8" stroke="#171717" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <p className="text-[#1a1a1a] font-black text-[20px] lg:text-[22px] mb-3">
+                <p className="text-[#171717] font-black text-[20px] lg:text-[22px] mb-3">
                   送信が完了しました
                 </p>
-                <p className="text-[#1a1a1a] text-[14px] lg:text-[15px] leading-[1.85]">
+                <p className="text-[#171717] text-[14px] lg:text-[15px] leading-[1.85]">
                   お問い合わせいただきありがとうございます。<br />
                   1営業日以内に担当者よりご連絡いたします。
                 </p>
@@ -93,7 +93,7 @@ export default function Section10() {
             <form onSubmit={handleSubmit}>
 
             {/* リードテキスト */}
-            <p className="text-[#1a1a1a] text-[14px] lg:text-[15px] leading-[1.85] mb-8 lg:mb-10">
+            <p className="text-[#171717] text-[14px] lg:text-[15px] leading-[1.85] mb-8 lg:mb-10">
               現在の集客状況やお悩みをお聞かせください。<br />
               直請け案件を増やすための改善ポイントを無料でご提案いたします。
             </p>
@@ -104,8 +104,8 @@ export default function Section10() {
               {/* 会社名 */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">会社名</label>
-                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <label className="text-[#171717] font-bold text-[14px] lg:text-[15px]">会社名</label>
+                  <span className="bg-[#FFCC00] text-[#171717] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -123,7 +123,7 @@ export default function Section10() {
                     placeholder="株式会社○○建設"
                     value={form.company}
                     onChange={(e) => updateField("company", e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
+                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#171717] placeholder-[#999] focus:outline-none focus:border-[#FFCC00]"
                   />
                 </div>
               </div>
@@ -131,8 +131,8 @@ export default function Section10() {
               {/* ご担当者名 */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">ご担当者名</label>
-                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <label className="text-[#171717] font-bold text-[14px] lg:text-[15px]">ご担当者名</label>
+                  <span className="bg-[#FFCC00] text-[#171717] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -147,7 +147,7 @@ export default function Section10() {
                     placeholder="例）山田 太郎"
                     value={form.name}
                     onChange={(e) => updateField("name", e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
+                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#171717] placeholder-[#999] focus:outline-none focus:border-[#FFCC00]"
                   />
                 </div>
               </div>
@@ -155,8 +155,8 @@ export default function Section10() {
               {/* 電話番号 */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">電話番号</label>
-                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <label className="text-[#171717] font-bold text-[14px] lg:text-[15px]">電話番号</label>
+                  <span className="bg-[#FFCC00] text-[#171717] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -170,7 +170,7 @@ export default function Section10() {
                     placeholder="例）090-1234-5678"
                     value={form.phone}
                     onChange={(e) => updateField("phone", e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
+                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#171717] placeholder-[#999] focus:outline-none focus:border-[#FFCC00]"
                   />
                 </div>
               </div>
@@ -178,8 +178,8 @@ export default function Section10() {
               {/* メールアドレス */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">メールアドレス</label>
-                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <label className="text-[#171717] font-bold text-[14px] lg:text-[15px]">メールアドレス</label>
+                  <span className="bg-[#FFCC00] text-[#171717] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -194,7 +194,7 @@ export default function Section10() {
                     placeholder="例）info@example.com"
                     value={form.email}
                     onChange={(e) => updateField("email", e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] focus:outline-none focus:border-[#D4A820]"
+                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#171717] placeholder-[#999] focus:outline-none focus:border-[#FFCC00]"
                   />
                 </div>
               </div>
@@ -202,8 +202,8 @@ export default function Section10() {
               {/* お住まいの地域 */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">お住まいの地域</label>
-                  <span className="bg-[#FFD000] text-[#1a1a1a] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
+                  <label className="text-[#171717] font-bold text-[14px] lg:text-[15px]">お住まいの地域</label>
+                  <span className="bg-[#FFCC00] text-[#171717] text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">必須</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#c0c0c0] pointer-events-none">
@@ -216,11 +216,11 @@ export default function Section10() {
                     required
                     value={form.area}
                     onChange={(e) => updateField("area", e.target.value)}
-                    className={`w-full pl-10 pr-10 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] appearance-none bg-white focus:outline-none focus:border-[#D4A820] ${form.area ? "text-[#1a1a1a]" : "text-[#c0c0c0]"}`}
+                    className={`w-full pl-10 pr-10 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] appearance-none bg-white focus:outline-none focus:border-[#FFCC00] ${form.area ? "text-[#171717]" : "text-[#c0c0c0]"}`}
                   >
                     <option value="" disabled>選択してください</option>
                     {AREA_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value} className="text-[#1a1a1a]">
+                      <option key={option.value} value={option.value} className="text-[#171717]">
                         {option.label}
                       </option>
                     ))}
@@ -236,8 +236,8 @@ export default function Section10() {
               {/* ご相談内容 */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <label className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">ご相談内容</label>
-                  <span className="bg-[#999999] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">任意</span>
+                  <label className="text-[#171717] font-bold text-[14px] lg:text-[15px]">ご相談内容</label>
+                  <span className="bg-[#666] text-white text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">任意</span>
                 </div>
                 <div className="relative">
                   <span className="absolute left-3.5 top-3.5 text-[#c0c0c0] pointer-events-none">
@@ -251,7 +251,7 @@ export default function Section10() {
                     placeholder={"現在の集客状況やお悩み、\nご相談したい内容をご自由にご記入ください。"}
                     value={form.message}
                     onChange={(e) => updateField("message", e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#1a1a1a] placeholder-[#c0c0c0] resize-none focus:outline-none focus:border-[#D4A820]"
+                    className="w-full pl-10 pr-4 py-3 border border-[#ddd] rounded-lg text-[14px] lg:text-[15px] text-[#171717] placeholder-[#999] resize-none focus:outline-none focus:border-[#FFCC00]"
                   />
                 </div>
               </div>
@@ -266,15 +266,15 @@ export default function Section10() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full max-w-[600px] bg-[#FFD000] hover:brightness-95 transition-all text-[#1a1a1a] font-black text-[19px] lg:text-[22px] py-5 rounded-xl flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full max-w-[600px] bg-[#FFCC00] hover:brightness-95 transition-all text-[#171717] font-black text-[19px] lg:text-[22px] py-5 rounded-xl flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   "送信中…"
                 ) : (
                   <>
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                      <rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1a1a" strokeWidth="1.8" />
-                      <path d="M1 7.5l10 7 10-7" stroke="#1a1a1a" strokeWidth="1.8" />
+                      <rect x="1" y="4" width="20" height="14" rx="2" stroke="#171717" strokeWidth="1.8" />
+                      <path d="M1 7.5l10 7 10-7" stroke="#171717" strokeWidth="1.8" />
                     </svg>
                     無料診断を申し込む
                     <span className="text-[22px] leading-none">›</span>
@@ -284,7 +284,7 @@ export default function Section10() {
             </div>
 
             {/* サブテキスト */}
-            <p className="text-center text-[#999] text-[12px] lg:text-[13px] mt-3">1営業日以内にご連絡します。</p>
+            <p className="text-center text-[#666] text-[12px] lg:text-[13px] mt-3">1営業日以内にご連絡します。</p>
 
             {errorMessage && (
               <p className="text-center text-[#c0392b] text-[13px] lg:text-[14px] mt-4">
@@ -305,7 +305,7 @@ export default function Section10() {
           </p>
           <a
             href="/privacy"
-            className="inline-block mt-2 text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#1a1a1a] transition-colors"
+            className="inline-block mt-2 text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#171717] transition-colors"
           >
             プライバシーポリシー
           </a>

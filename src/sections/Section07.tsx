@@ -42,7 +42,7 @@ const cases = [
 export default function Section08() {
   return (
     <>
-      <section className="bg-white pt-14 pb-4 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
+      <section className="bg-[#F7F8FA] pt-14 pb-4 lg:pt-[70px] lg:pb-[60px] relative overflow-hidden">
 
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] relative z-10">
 
@@ -51,22 +51,22 @@ export default function Section08() {
             <div className="flex items-center justify-center gap-4 mb-4">
               <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
               <div>
-                <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">07</span>
-                <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+                <span className="block text-[#FFCC00] font-black leading-none text-[36px] lg:text-[52px]">07</span>
+                <div className="w-8 h-[3px] bg-[#FFCC00] mt-1" />
               </div>
-              <div className="w-px h-10 bg-[#1a1a1a]" />
-              <span className="text-[#1a1a1a] font-bold text-[16px] lg:text-[22px]">導入実績・成果</span>
+              <div className="w-px h-10 bg-[#171717]" />
+              <span className="text-[#171717] font-bold text-[16px] lg:text-[22px]">導入実績・成果</span>
             </div>
-            <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+            <div className="h-[2px] bg-gradient-to-r from-[#FFCC00] to-[#171717] mt-3 mb-5" />
             <div className="relative overflow-hidden mb-4">
               <img src={brushYellow} alt="" aria-hidden="true" className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[300%] object-cover pointer-events-none opacity-60" />
-              <h2 className="relative z-10 text-[#1a1a1a] font-black leading-[1.2] text-[22px] lg:text-[46px]">
+              <h2 className="relative z-10 text-[#171717] font-black leading-[1.2] text-[22px] lg:text-[46px]">
                 直請け受注が安定すると、<br />
                 経営はここまで変わります。
               </h2>
             </div>
             <p className="text-[#333] text-[13px] lg:text-[15px]">
-              問い合わせが増えるだけではなく、<br className="lg:hidden" /><span className="text-[#D4A820] font-bold">継続的な直請け受注と売上アップ</span>を<br className="lg:hidden" />実現した事例をご紹介します。
+              問い合わせが増えるだけではなく、<br className="lg:hidden" /><span className="text-[#171717] bg-[linear-gradient(transparent_62%,#FFCC00_62%)] font-bold">継続的な直請け受注と売上アップ</span>を<br className="lg:hidden" />実現した事例をご紹介します。
             </p>
           </div>
 
@@ -90,29 +90,29 @@ export default function Section08() {
 
                     {/* Card header (shared) */}
                     <div className="flex items-center gap-3 mb-1">
-                      <div className="bg-[#1a1a1a] px-2 py-0.5">
+                      <div className="bg-[#171717] px-2 py-0.5">
                         <span className="text-white font-black text-[10px]">case{c.num}</span>
                       </div>
-                      <span className="text-[#1a1a1a] font-black text-[16px] lg:text-[18px]">{c.type}</span>
+                      <span className="text-[#171717] font-black text-[16px] lg:text-[18px]">{c.type}</span>
                     </div>
                     <p className="text-[#333] font-bold text-[12px] lg:text-[13px] mb-4">{c.location}　{c.company} 様</p>
 
                     {/* ── SP metrics: big red numbers ── */}
                     <div className="lg:hidden">
                       <div className="border border-[#e0e0e0] overflow-hidden mb-3">
-                        <div className="bg-[#1a1a1a] flex items-center gap-1.5 px-3 py-2">
+                        <div className="bg-[#171717] flex items-center gap-1.5 px-3 py-2">
                           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="8" cy="6" r="3" stroke="#D4A820" strokeWidth="1.3" />
-                            <path d="M2 14 C2 10 4 9 8 9 C12 9 14 10 14 14" stroke="#D4A820" strokeWidth="1.3" fill="none" />
+                            <circle cx="8" cy="6" r="3" stroke="#FFCC00" strokeWidth="1.3" />
+                            <path d="M2 14 C2 10 4 9 8 9 C12 9 14 10 14 14" stroke="#FFCC00" strokeWidth="1.3" fill="none" />
                           </svg>
-                          <span className="text-[#D4A820] font-bold text-[11px]">問い合わせ数</span>
+                          <span className="text-[#FFCC00] font-bold text-[11px]">問い合わせ数</span>
                         </div>
                         <div className="px-4 py-3 flex items-end gap-3">
                           <div>
-                            <p className="text-[#777] text-[12px] font-bold mb-0.5">導入前</p>
-                            <p className="text-[#aaa] font-black text-[18px] leading-none">{c.inquiryBefore}<span className="text-[11px] ml-0.5">件</span></p>
+                            <p className="text-[#555] text-[12px] font-bold mb-0.5">導入前</p>
+                            <p className="text-[#888] font-black text-[18px] leading-none">{c.inquiryBefore}<span className="text-[11px] ml-0.5">件</span></p>
                           </div>
-                          <span className="text-[#D4A820] font-black text-[20px] mb-1">→</span>
+                          <span className="text-[#FFCC00] font-black text-[20px] mb-1">→</span>
                           <div>
                             <p className="text-[#e33] text-[14px] font-bold mb-0.5">導入後</p>
                             <p className="text-[#e33] font-black text-[42px] leading-none">{c.inquiryAfter}<span className="text-[13px] ml-1">件</span></p>
@@ -121,19 +121,19 @@ export default function Section08() {
                       </div>
 
                       <div className="border border-[#e0e0e0] overflow-hidden mb-3">
-                        <div className="bg-[#1a1a1a] flex items-center gap-1.5 px-3 py-2">
+                        <div className="bg-[#171717] flex items-center gap-1.5 px-3 py-2">
                           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="8" cy="8" r="6" stroke="#D4A820" strokeWidth="1.3" />
-                            <path d="M4 8 L7 11 L12 5" stroke="#D4A820" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                            <circle cx="8" cy="8" r="6" stroke="#FFCC00" strokeWidth="1.3" />
+                            <path d="M4 8 L7 11 L12 5" stroke="#FFCC00" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
-                          <span className="text-[#D4A820] font-bold text-[11px]">月商</span>
+                          <span className="text-[#FFCC00] font-bold text-[11px]">月商</span>
                         </div>
                         <div className="px-4 py-3 flex items-end gap-3">
                           <div>
-                            <p className="text-[#777] text-[12px] font-bold mb-0.5">導入前</p>
-                            <p className="text-[#aaa] font-black text-[18px] leading-none">{c.salesBefore}<span className="text-[11px] ml-0.5">万円</span></p>
+                            <p className="text-[#555] text-[12px] font-bold mb-0.5">導入前</p>
+                            <p className="text-[#888] font-black text-[18px] leading-none">{c.salesBefore}<span className="text-[11px] ml-0.5">万円</span></p>
                           </div>
-                          <span className="text-[#D4A820] font-black text-[20px] mb-1">→</span>
+                          <span className="text-[#FFCC00] font-black text-[20px] mb-1">→</span>
                           <div>
                             <p className="text-[#e33] text-[14px] font-bold mb-0.5">導入後</p>
                             <p className="text-[#e33] font-black text-[42px] leading-none">{c.salesAfter}<span className="text-[13px] ml-1">万円</span></p>
@@ -141,8 +141,8 @@ export default function Section08() {
                         </div>
                       </div>
 
-                      <p className="text-[#555] text-[12px] font-bold text-right mb-3">
-                        導入から <span className="text-[#D4A820] font-black text-[14px]">{c.period}</span> で達成
+                      <p className="text-[#333] text-[12px] font-bold text-right mb-3">
+                        導入から <span className="text-[#171717] bg-[linear-gradient(transparent_62%,#FFCC00_62%)] font-black text-[14px]">{c.period}</span> で達成
                       </p>
                     </div>
 
@@ -151,17 +151,17 @@ export default function Section08() {
                       <div className="border border-[#e0e0e0] p-3 lg:p-4 mb-3">
                         <div className="flex items-center gap-2 mb-2">
                           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="8" cy="6" r="3" stroke="#1a1a1a" strokeWidth="1.3" />
-                            <path d="M2 14 C2 10 4 9 8 9 C12 9 14 10 14 14" stroke="#1a1a1a" strokeWidth="1.3" fill="none" />
+                            <circle cx="8" cy="6" r="3" stroke="#171717" strokeWidth="1.3" />
+                            <path d="M2 14 C2 10 4 9 8 9 C12 9 14 10 14 14" stroke="#171717" strokeWidth="1.3" fill="none" />
                           </svg>
-                          <span className="text-[#1a1a1a] font-bold text-[12px]">問い合わせ数</span>
+                          <span className="text-[#171717] font-bold text-[12px]">問い合わせ数</span>
                         </div>
                         <div className="flex items-end gap-2">
                           <div>
                             <p className="text-[#333] text-[13px] font-bold">導入前</p>
-                            <p className="text-[#1a1a1a] font-black text-[22px] lg:text-[26px]">{c.inquiryBefore}<span className="text-[12px] ml-1">件</span></p>
+                            <p className="text-[#171717] font-black text-[22px] lg:text-[26px]">{c.inquiryBefore}<span className="text-[12px] ml-1">件</span></p>
                           </div>
-                          <span className="text-[#D4A820] font-black text-[18px] mb-1">→</span>
+                          <span className="text-[#FFCC00] font-black text-[18px] mb-1">→</span>
                           <div>
                             <p className="text-[#e33] text-[15px] font-bold">導入後</p>
                             <p className="text-[#e33] font-black text-[30px] lg:text-[36px]">{c.inquiryAfter}<span className="text-[13px] ml-1">件</span></p>
@@ -172,17 +172,17 @@ export default function Section08() {
                       <div className="border border-[#e0e0e0] p-3 lg:p-4 mb-4">
                         <div className="flex items-center gap-2 mb-2">
                           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="8" cy="8" r="6" stroke="#1a1a1a" strokeWidth="1.3" />
-                            <path d="M4 8 L7 11 L12 5" stroke="#1a1a1a" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                            <circle cx="8" cy="8" r="6" stroke="#171717" strokeWidth="1.3" />
+                            <path d="M4 8 L7 11 L12 5" stroke="#171717" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
-                          <span className="text-[#1a1a1a] font-bold text-[12px]">月商</span>
+                          <span className="text-[#171717] font-bold text-[12px]">月商</span>
                         </div>
                         <div className="flex items-end gap-2">
                           <div>
                             <p className="text-[#333] text-[13px] font-bold">導入前</p>
-                            <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px]">{c.salesBefore}<span className="text-[12px] ml-0.5">万円</span></p>
+                            <p className="text-[#171717] font-black text-[18px] lg:text-[22px]">{c.salesBefore}<span className="text-[12px] ml-0.5">万円</span></p>
                           </div>
-                          <span className="text-[#D4A820] font-black text-[18px] mb-1">→</span>
+                          <span className="text-[#FFCC00] font-black text-[18px] mb-1">→</span>
                           <div>
                             <p className="text-[#e33] text-[15px] font-bold">導入後</p>
                             <p className="text-[#e33] font-black text-[30px] lg:text-[40px]">{c.salesAfter}<span className="text-[14px] ml-0.5">万円</span></p>
@@ -192,9 +192,9 @@ export default function Section08() {
                     </div>
 
                     {/* Comment (shared) */}
-                    <p className="text-[#1a1a1a] text-[13px] leading-[1.8]">
+                    <p className="text-[#171717] text-[13px] leading-[1.8]">
                       {c.comment}
-                      <span className="border-b-2 border-[#D4A820]">{c.commentUnderline}</span>
+                      <span className="border-b-2 border-[#FFCC00]">{c.commentUnderline}</span>
                     </p>
 
                   </div>
@@ -207,21 +207,21 @@ export default function Section08() {
       </section>
 
       {/* ── Bottom Bar ── */}
-      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
+      <div className="bg-[#171717] max-w-[1280px] mx-auto">
         {/* SP */}
         <div className="lg:hidden relative overflow-hidden -mx-0 px-5 py-5 text-center">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <p className="relative z-10 text-white font-black text-[14px] leading-[2]">
-            親方ドットコムにご相談いただいた多くの<br />事業者様が<span className="text-[#D4A820]">大幅な業績改善を達成</span>しています！
+            親方ドットコムにご相談いただいた多くの<br />事業者様が<span className="text-[#FFCC00]">大幅な業績改善を達成</span>しています！
           </p>
         </div>
         {/* PC */}
-        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#D4A820] min-h-[108px]">
+        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#FFCC00] min-h-[108px]">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <div className="flex-1 py-7" />
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
             <p className="text-white font-black text-[18px] leading-[2] text-center">
-              親方ドットコムにご相談いただいた多くの事業者様が<span className="text-[#D4A820]">大幅な業績改善を達成</span>しています！
+              親方ドットコムにご相談いただいた多くの事業者様が<span className="text-[#FFCC00]">大幅な業績改善を達成</span>しています！
             </p>
           </div>
           <a
@@ -234,7 +234,7 @@ export default function Section08() {
           >
             <div className="relative">
               <div style={{ backgroundColor: "#252525", color: "#fff", fontSize: "11px", fontWeight: 500, padding: "4px 14px", borderRadius: "4px", whiteSpace: "nowrap", lineHeight: 1.4 }}>
-                無料診断はカンタン&thinsp;<span style={{ color: "#D4A820", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
+                無料診断はカンタン&thinsp;<span style={{ color: "#FFCC00", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
               </div>
               <div className="absolute left-1/2" style={{ bottom: "-7px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: "7px solid #252525" }} />
             </div>

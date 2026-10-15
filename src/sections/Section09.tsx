@@ -3,10 +3,10 @@ const consultItems = [
     label: "直請け案件が\n増えない原因",
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <circle cx="20" cy="20" r="12" stroke="#D4A820" strokeWidth="2.5" />
-        <line x1="29" y1="29" x2="41" y2="41" stroke="#D4A820" strokeWidth="2.8" strokeLinecap="round" />
-        <line x1="15" y1="20" x2="25" y2="20" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" />
-        <line x1="20" y1="15" x2="20" y2="25" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="20" cy="20" r="12" stroke="#FFCC00" strokeWidth="2.5" />
+        <line x1="29" y1="29" x2="41" y2="41" stroke="#FFCC00" strokeWidth="2.8" strokeLinecap="round" />
+        <line x1="15" y1="20" x2="25" y2="20" stroke="#FFCC00" strokeWidth="2" strokeLinecap="round" />
+        <line x1="20" y1="15" x2="20" y2="25" stroke="#FFCC00" strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -14,11 +14,11 @@ const consultItems = [
     label: "地域・競合の\n集客状況",
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <rect x="6" y="30" width="8" height="12" fill="#D4A820" />
-        <rect x="20" y="22" width="8" height="20" fill="#D4A820" />
-        <rect x="34" y="14" width="8" height="28" fill="#D4A820" />
-        <path d="M10 30 L24 22 L38 14" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" />
-        <path d="M36 10 L42 6 M39 10 L42 6 L42 13" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="6" y="30" width="8" height="12" fill="#FFCC00" />
+        <rect x="20" y="22" width="8" height="20" fill="#FFCC00" />
+        <rect x="34" y="14" width="8" height="28" fill="#FFCC00" />
+        <path d="M10 30 L24 22 L38 14" stroke="#FFCC00" strokeWidth="2" strokeLinecap="round" />
+        <path d="M36 10 L42 6 M39 10 L42 6 L42 13" stroke="#FFCC00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -26,12 +26,12 @@ const consultItems = [
     label: "優先して取り組む\nべき施策",
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <rect x="8" y="10" width="32" height="22" rx="2" stroke="#D4A820" strokeWidth="2.5" />
-        <line x1="20" y1="32" x2="28" y2="32" stroke="#D4A820" strokeWidth="2.5" />
-        <line x1="24" y1="32" x2="24" y2="38" stroke="#D4A820" strokeWidth="2.5" />
-        <rect x="14" y="17" width="5" height="10" rx="1" fill="#D4A820" opacity="0.6" />
-        <rect x="21" y="21" width="5" height="6" rx="1" fill="#D4A820" opacity="0.7" />
-        <rect x="28" y="14" width="5" height="13" rx="1" fill="#D4A820" />
+        <rect x="8" y="10" width="32" height="22" rx="2" stroke="#FFCC00" strokeWidth="2.5" />
+        <line x1="20" y1="32" x2="28" y2="32" stroke="#FFCC00" strokeWidth="2.5" />
+        <line x1="24" y1="32" x2="24" y2="38" stroke="#FFCC00" strokeWidth="2.5" />
+        <rect x="14" y="17" width="5" height="10" rx="1" fill="#FFCC00" opacity="0.6" />
+        <rect x="21" y="21" width="5" height="6" rx="1" fill="#FFCC00" opacity="0.7" />
+        <rect x="28" y="14" width="5" height="13" rx="1" fill="#FFCC00" />
       </svg>
     ),
   },
@@ -39,11 +39,11 @@ const consultItems = [
     label: "今後の集客戦略の\n方向性",
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <circle cx="24" cy="24" r="15" stroke="#D4A820" strokeWidth="2.5" />
-        <circle cx="24" cy="24" r="9" stroke="#D4A820" strokeWidth="1.5" opacity="0.55" />
-        <circle cx="24" cy="24" r="3.5" fill="#D4A820" />
-        <path d="M30 14 L37 8" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" />
-        <path d="M33 8 L37 8 L37 12" stroke="#D4A820" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="24" cy="24" r="15" stroke="#FFCC00" strokeWidth="2.5" />
+        <circle cx="24" cy="24" r="9" stroke="#FFCC00" strokeWidth="1.5" opacity="0.55" />
+        <circle cx="24" cy="24" r="3.5" fill="#FFCC00" />
+        <path d="M30 14 L37 8" stroke="#FFCC00" strokeWidth="2" strokeLinecap="round" />
+        <path d="M33 8 L37 8 L37 12" stroke="#FFCC00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -120,22 +120,22 @@ export default function Section09() {
                 className="h-[44px] lg:h-[56px] w-auto object-contain mix-blend-multiply shrink-0"
               />
               <div>
-                <span className="block text-[#D4A820] font-black leading-none text-[30px] lg:text-[44px]">09</span>
-                <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+                <span className="block text-[#FFCC00] font-black leading-none text-[30px] lg:text-[44px]">09</span>
+                <div className="w-8 h-[3px] bg-[#FFCC00] mt-1" />
               </div>
-              <div className="w-px h-9 bg-[#1a1a1a]" />
-              <span className="text-[#1a1a1a] font-bold text-[13px] lg:text-[15px]">ご相談後のサポート体制</span>
+              <div className="w-px h-9 bg-[#171717]" />
+              <span className="text-[#171717] font-bold text-[13px] lg:text-[15px]">ご相談後のサポート体制</span>
             </div>
-            <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
+            <div className="h-[2px] bg-gradient-to-r from-[#FFCC00] to-[#171717] mt-3 mb-5" />
 
             {/* H2 */}
-            <h2 className="text-[#1a1a1a] font-black leading-[1.25] mb-6 text-[22px] lg:text-[42px]">
+            <h2 className="text-[#171717] font-black leading-[1.25] mb-6 text-[22px] lg:text-[42px]">
               何から始めるべきか<br />
-              <span className="text-[#D4A820] border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">無料でご提案</span>します。
+              <span className="text-[#171717] border-b-[4px] lg:border-b-[6px] border-[#FFCC00] pb-[2px]">無料でご提案</span>します。
             </h2>
 
             {/* ボディ */}
-            <p className="text-[#1a1a1a] text-[13px] lg:text-[16px] leading-[1.9]">
+            <p className="text-[#171717] text-[13px] lg:text-[16px] leading-[1.9]">
               現在抱える貴社の課題、集客状況や地域性を確認し、<br />
               受注を増やすための改善策をご提案します。
             </p>
@@ -146,7 +146,7 @@ export default function Section09() {
       </div>
 
       {/* ── 無料診断で分かること ── */}
-      <div className="bg-[#1a1a1a] relative">
+      <div className="bg-[#171717] relative">
         <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px] py-10 lg:py-14">
 
           {/* 上端ゴールドライン */}
@@ -156,9 +156,9 @@ export default function Section09() {
 
           {/* ヘッダー */}
           <div className="flex items-center gap-4 mb-10">
-            <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
+            <div className="flex-1 h-px bg-[#FFCC00] opacity-50" />
             <span className="text-white font-bold text-[14px] lg:text-[16px] whitespace-nowrap">無料診断で分かること</span>
-            <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
+            <div className="flex-1 h-px bg-[#FFCC00] opacity-50" />
           </div>
 
           {/* 4カラム */}
@@ -166,7 +166,7 @@ export default function Section09() {
             {consultItems.map((item, i) => (
               <div key={i} className="flex flex-col items-center gap-5 px-4 py-8 lg:px-8 lg:py-2">
                 <div>{item.icon}</div>
-                <p className="text-white text-[13px] lg:text-[14px] text-center leading-[1.85] whitespace-pre-line">
+                <p className="text-white font-bold text-[13px] lg:text-[14px] text-center leading-[1.85] whitespace-pre-line">
                   {item.label}
                 </p>
               </div>
@@ -182,21 +182,21 @@ export default function Section09() {
 
           {/* ヘッダー */}
           <div className="flex items-center gap-4 mb-6 lg:mb-8">
-            <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
-            <span className="text-[#D4A820] font-bold text-[14px] lg:text-[16px] whitespace-nowrap">安心してご相談ください</span>
-            <div className="flex-1 h-px bg-[#D4A820] opacity-50" />
+            <div className="flex-1 h-px bg-[#FFCC00] opacity-50" />
+            <span className="text-[#171717] font-bold text-[14px] lg:text-[16px] whitespace-nowrap">安心してご相談ください</span>
+            <div className="flex-1 h-px bg-[#FFCC00] opacity-50" />
           </div>
 
           {/* 3アイテム */}
           <div className="flex flex-col lg:flex-row divide-y divide-[#e8e8e8] lg:divide-y-0 lg:divide-x lg:divide-[#e8e8e8]">
             {trustItems.map((item, i) => (
               <div key={i} className="flex items-center gap-5 py-5 lg:flex-col lg:items-center lg:text-center lg:px-10 lg:py-3 flex-1">
-                <div className="w-[52px] h-[52px] bg-[#1a1a1a] rounded-full border-2 border-[#D4A820] flex items-center justify-center shrink-0">
+                <div className="w-[52px] h-[52px] bg-[#171717] rounded-full border-2 border-[#FFCC00] flex items-center justify-center shrink-0">
                   {item.icon}
                 </div>
                 <div>
-                  <p className={`${i === 2 ? "text-[#1a1a1a]" : "text-[#e33]"} font-black text-[15px] lg:text-[16px] leading-[1.6]`}>{item.title}</p>
-                  <p className="text-[#1a1a1a] font-black text-[14px] lg:text-[15px] mt-1 leading-[1.6]">{item.detail}</p>
+                  <p className={`${i === 2 ? "text-[#171717]" : "text-[#e33]"} font-black text-[15px] lg:text-[16px] leading-[1.6]`}>{item.title}</p>
+                  <p className="text-[#171717] font-black text-[14px] lg:text-[15px] mt-1 leading-[1.6]">{item.detail}</p>
                 </div>
               </div>
             ))}

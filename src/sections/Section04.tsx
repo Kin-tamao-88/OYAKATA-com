@@ -5,41 +5,41 @@ import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp"
 function IconMonitor() {
   return (
     <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <rect x="2" y="3" width="18" height="13" rx="1.5" stroke="#888" strokeWidth="1.5" />
-      <line x1="7" y1="19" x2="15" y2="19" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="11" y1="16" x2="11" y2="19" stroke="#888" strokeWidth="1.5" />
+      <rect x="2" y="3" width="18" height="13" rx="1.5" stroke="#bbb" strokeWidth="1.5" />
+      <line x1="7" y1="19" x2="15" y2="19" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="11" y1="16" x2="11" y2="19" stroke="#bbb" strokeWidth="1.5" />
     </svg>
   );
 }
 function IconMegaphone() {
   return (
     <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M4 8 H8 L16 4 L16 18 L8 14 H4 Z" stroke="#888" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
-      <path d="M8 14 L8 19" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M4 8 H8 L16 4 L16 18 L8 14 H4 Z" stroke="#bbb" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+      <path d="M8 14 L8 19" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
 function IconSearch() {
   return (
     <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <circle cx="9.5" cy="9.5" r="6.5" stroke="#888" strokeWidth="1.5" />
-      <line x1="14" y1="14" x2="20" y2="20" stroke="#888" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="9.5" cy="9.5" r="6.5" stroke="#bbb" strokeWidth="1.5" />
+      <line x1="14" y1="14" x2="20" y2="20" stroke="#bbb" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
 function IconChat() {
   return (
     <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M3 4 H19 Q20 4 20 5 L20 14 Q20 15 19 15 H7 L3 19 L3 5 Q3 4 3 4 Z" stroke="#888" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+      <path d="M3 4 H19 Q20 4 20 5 L20 14 Q20 15 19 15 H7 L3 19 L3 5 Q3 4 3 4 Z" stroke="#bbb" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
     </svg>
   );
 }
 function IconChart() {
   return (
     <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <rect x="2" y="12" width="4" height="8" fill="#888" />
-      <rect x="9" y="8" width="4" height="12" fill="#888" />
-      <rect x="16" y="4" width="4" height="16" fill="#888" />
+      <rect x="2" y="12" width="4" height="8" fill="#bbb" />
+      <rect x="9" y="8" width="4" height="12" fill="#bbb" />
+      <rect x="16" y="4" width="4" height="16" fill="#bbb" />
     </svg>
   );
 }
@@ -75,16 +75,16 @@ export default function Section05() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
             <div>
-              <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">04</span>
-              <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+              <span className="block text-[#FFCC00] font-black leading-none text-[36px] lg:text-[52px]">04</span>
+              <div className="w-8 h-[3px] bg-[#FFCC00] mt-1" />
             </div>
-            <div className="w-px h-10 bg-[#1a1a1a]" />
-            <span className="text-[#1a1a1a] font-bold text-[16px] lg:text-[22px]">他社サービスとの違い</span>
+            <div className="w-px h-10 bg-[#171717]" />
+            <span className="text-[#171717] font-bold text-[16px] lg:text-[22px]">他社サービスとの違い</span>
           </div>
-          <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
-          <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-4 text-[24px] lg:text-[50px]">
+          <div className="h-[2px] bg-gradient-to-r from-[#FFCC00] to-[#171717] mt-3 mb-5" />
+          <h2 className="text-[#171717] font-black leading-[1.2] mb-4 text-[24px] lg:text-[50px]">
             集客のやり方で、<br className="lg:hidden" />
-            <span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">結果は大きく変わります。</span>
+            <span className="border-b-[4px] lg:border-b-[6px] border-[#FFCC00] pb-[2px]">結果は大きく変わります。</span>
           </h2>
         </div>
 
@@ -92,7 +92,7 @@ export default function Section05() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-0">
 
           {/* Left: bad panel */}
-          <div className="flex-1 bg-[#1a1a1a] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
+          <div className="flex-1 bg-[#171717] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
             <div className="border border-[#555] text-center py-2 mb-5">
               <span className="text-white font-bold text-[14px] lg:text-[15px]">一般的な集客代行会社</span>
             </div>
@@ -106,7 +106,7 @@ export default function Section05() {
                     <div className="shrink-0">{item.icon}</div>
                     <div>
                       <p className="text-white font-bold text-[14px] lg:text-[15px]">{item.text}</p>
-                      <p className="text-[#aaa] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
+                      <p className="text-[#c8c8c8] text-[12px] lg:text-[13px] mt-0.5">{item.sub}</p>
                     </div>
                   </div>
                 ))}
@@ -127,25 +127,25 @@ export default function Section05() {
             {/* SP: downward arrow */}
             <div className="flex flex-col items-center lg:hidden">
               <svg width="36" height="40" viewBox="0 0 36 40" fill="none" aria-hidden="true">
-                <path d="M4 4 L18 16 L32 4" stroke="#D4A820" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M4 18 L18 30 L32 18" stroke="#D4A820" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 4 L18 16 L32 4" stroke="#FFCC00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 18 L18 30 L32 18" stroke="#FFCC00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <p className="bg-[#1a1a1a] text-[#D4A820] font-black text-[16px] text-center mt-2 px-5 py-2">集客は「仕組み」で変わる！</p>
+              <p className="bg-[#171717] text-[#FFCC00] font-black text-[16px] text-center mt-2 px-5 py-2">集客は「仕組み」で変わる！</p>
             </div>
             {/* PC: black arrow badge, contained within the gap between panels */}
-            <div className="hidden lg:flex items-center justify-center bg-[#3a3a3a] [clip-path:polygon(0_0,72%_0,100%_50%,72%_100%,0_100%)] w-[140px] h-[90px] pl-5 pr-9">
-              <p className="text-[#D4A820] font-black text-[16px] leading-tight whitespace-nowrap">
+            <div className="hidden lg:flex items-center justify-center bg-[#171717] [clip-path:polygon(0_0,72%_0,100%_50%,72%_100%,0_100%)] w-[140px] h-[90px] pl-5 pr-9">
+              <p className="text-[#FFCC00] font-black text-[16px] leading-tight whitespace-nowrap">
                 集客は<br />仕組みで<br />変わる！
               </p>
             </div>
           </div>
 
           {/* Right: good panel */}
-          <div className="flex-1 border-2 border-[#D4A820] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
+          <div className="flex-1 border-2 border-[#FFCC00] flex flex-col px-6 py-7 lg:px-8 lg:py-8">
             <div className="flex justify-center mb-5 overflow-hidden h-[52px]">
               <img src={logoMark2} alt="親方ドットコム" className="h-[160px] w-auto -mt-[42px]" />
             </div>
-            <p className="text-[#1a1a1a] font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
+            <p className="text-[#171717] font-black text-[18px] lg:text-[22px] leading-[1.4] mb-6 text-center">
               仕組みで集客を生み出し、<br />安定した売上につなげます。
             </p>
             <div className="flex flex-col gap-0 flex-1 items-center">
@@ -154,19 +154,19 @@ export default function Section05() {
                   <div key={i} className="flex items-center gap-3 py-3">
                     <img src={item.icon} alt="" aria-hidden="true" className="w-[48px] h-[48px] object-contain shrink-0" />
                     <div>
-                      <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
+                      <p className="text-[#171717] font-bold text-[14px] lg:text-[15px]">{item.text}</p>
                       <p className="text-[#333] text-[14px] lg:text-[13px] mt-0.5">{item.sub}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="mt-5 pt-4 border-t border-[#D4A820] flex items-center gap-2">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <circle cx="9" cy="9" r="8" fill="#D4A820" />
+            <div className="mt-5 pt-4 border-t border-[#FFCC00] flex items-center justify-center gap-2">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" aria-hidden="true" className="shrink-0">
+                <circle cx="9" cy="9" r="8" fill="#06C755" />
                 <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="text-[#1a1a1a] font-bold text-[12px] lg:text-[13px]">仕組みで回るから、<br className="lg:hidden" />安定して売上と利益が伸びる！</span>
+              <span className="text-[#171717] font-bold text-[14px] lg:text-[15px] text-center">仕組みで回るから、<br className="lg:hidden" />安定して売上と利益が伸びる！</span>
             </div>
           </div>
 
@@ -175,9 +175,9 @@ export default function Section05() {
         {/* ── Bottom statement ── */}
         <div className="relative mt-10 overflow-hidden">
           <img src={brushYellow} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
-          <div className="relative bg-[#1a1a1a] px-6 py-4 lg:px-10 lg:py-5 text-center">
+          <div className="relative bg-[#171717] px-6 py-4 lg:px-10 lg:py-5 text-center">
             <p className="text-white font-black text-[16px] lg:text-[20px]">
-              親方ドットコムは、<br className="lg:hidden" /><span className="text-[#D4A820]">直請け案件が自然と集まる<br className="lg:hidden" />仕組みづくり</span>を支援します。
+              親方ドットコムは、<br className="lg:hidden" /><span className="text-[#FFCC00]">直請け案件が自然と集まる<br className="lg:hidden" />仕組みづくり</span>を支援します。
             </p>
           </div>
         </div>

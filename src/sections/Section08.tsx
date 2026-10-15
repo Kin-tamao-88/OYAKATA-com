@@ -54,15 +54,15 @@ const voices = [
       <>親方ドットコムを始めたと聞いてから、<br className="lg:hidden" />ボーナスも増えて嬉しいです。</>,
     ],
     afterHighlight: 2,
-    quoteNode: <>会社の未来が明るくなって、自分の未来にも<br className="lg:hidden" /><span className="border-b-[2px] border-[#D4A820]">希望が持てる</span>ようになりました。<br className="lg:hidden" />ボーナスも増えて、もっと頑張りたいです！</>,
+    quoteNode: <>会社の未来が明るくなって、自分の未来にも<br className="lg:hidden" /><span className="border-b-[2px] border-[#FFCC00]">希望が持てる</span>ようになりました。<br className="lg:hidden" />ボーナスも増えて、もっと頑張りたいです！</>,
     attribution: "（設備工事スタッフ・20代）",
   },
 ];
 
 function BeforeBox({ items }: { items: string[] }) {
   return (
-    <div className="border border-[#1a1a1a]">
-      <div className="bg-[#1a1a1a] px-4 py-2">
+    <div className="border border-[#171717]">
+      <div className="bg-[#171717] px-4 py-2">
         <span className="text-white font-black text-[13px] tracking-wide">導入前</span>
       </div>
       <ul className="px-4 py-3 flex flex-col gap-2">
@@ -81,17 +81,17 @@ function BeforeBox({ items }: { items: string[] }) {
 
 function AfterBox({ items, highlight }: { items: React.ReactNode[]; highlight: number }) {
   return (
-    <div className="border border-[#D4A820]">
-      <div className="bg-[#D4A820] px-4 py-2">
-        <span className="text-[#1a1a1a] font-black text-[13px] tracking-wide">導入後</span>
+    <div className="border border-[#FFCC00]">
+      <div className="bg-[#FFCC00] px-4 py-2">
+        <span className="text-[#171717] font-black text-[13px] tracking-wide">導入後</span>
       </div>
       <ul className="bg-[#FFF8E7] px-4 py-3 flex flex-col gap-2">
         {items.map((a, j) => (
           <li key={j} className="flex items-start gap-2">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0 mt-[4px]">
-              <path d="M3 8 L6.5 11.5 L13 5" stroke="#D4A820" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M3 8 L6.5 11.5 L13 5" stroke="#FFCC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className={`text-[#1a1a1a] text-[13px] lg:text-[14px] font-bold leading-[1.7]${highlight === j ? " border-b-[2px] border-[#D4A820]" : ""}`}>{a}</span>
+            <span className={`text-[#171717] text-[13px] lg:text-[14px] font-bold leading-[1.7]${highlight === j ? " border-b-[2px] border-[#FFCC00]" : ""}`}>{a}</span>
           </li>
         ))}
       </ul>
@@ -102,8 +102,8 @@ function AfterBox({ items, highlight }: { items: React.ReactNode[]; highlight: n
 const DoubleChevron = () => (
   <div className="flex justify-center py-1">
     <svg width="22" height="18" viewBox="0 0 22 18" fill="none" aria-hidden="true">
-      <path d="M4 2 L11 7 L18 2" stroke="#D4A820" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4 10 L11 15 L18 10" stroke="#D4A820" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 2 L11 7 L18 2" stroke="#FFCC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 10 L11 15 L18 10" stroke="#FFCC00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   </div>
 );
@@ -119,27 +119,27 @@ export default function Section09() {
             <div className="flex items-center justify-center gap-4 mb-4">
               <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
               <div>
-                <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">08</span>
-                <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+                <span className="block text-[#FFCC00] font-black leading-none text-[36px] lg:text-[52px]">08</span>
+                <div className="w-8 h-[3px] bg-[#FFCC00] mt-1" />
               </div>
-              <div className="w-px h-10 bg-[#1a1a1a]" />
-              <span className="text-[#1a1a1a] font-bold text-[16px] lg:text-[22px]">導入後の変化・現場の声</span>
+              <div className="w-px h-10 bg-[#171717]" />
+              <span className="text-[#171717] font-bold text-[16px] lg:text-[22px]">導入後の変化・現場の声</span>
             </div>
-            <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
-            <h2 className="text-[#1a1a1a] font-black leading-[1.2] mb-5 text-[24px] lg:text-[50px]">
+            <div className="h-[2px] bg-gradient-to-r from-[#FFCC00] to-[#171717] mt-3 mb-5" />
+            <h2 className="text-[#171717] font-black leading-[1.2] mb-5 text-[24px] lg:text-[50px]">
               会社が変わると、<br className="lg:hidden" />
-              <span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]">働く人も変わります。</span>
+              <span className="border-b-[4px] lg:border-b-[6px] border-[#FFCC00] pb-[2px]">働く人も変わります。</span>
             </h2>
             <div className="flex items-center justify-center gap-2 mb-2">
               <svg width="14" height="20" viewBox="0 0 14 20" fill="none" aria-hidden="true">
-                <rect x="4" y="1" width="6" height="9" rx="3" fill="#D4A820" />
-                <path d="M1 9 C1 14 13 14 13 9" stroke="#D4A820" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <line x1="7" y1="14" x2="7" y2="17" stroke="#D4A820" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="4" y1="17" x2="10" y2="17" stroke="#D4A820" strokeWidth="1.5" strokeLinecap="round" />
+                <rect x="4" y="1" width="6" height="9" rx="3" fill="#FFCC00" />
+                <path d="M1 9 C1 14 13 14 13 9" stroke="#FFCC00" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                <line x1="7" y1="14" x2="7" y2="17" stroke="#FFCC00" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="4" y1="17" x2="10" y2="17" stroke="#FFCC00" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
-              <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[16px]">親方ドットコムご利用企業様の<br className="lg:hidden" />社員さんにインタビューしました！</p>
+              <p className="text-[#171717] font-bold text-[14px] lg:text-[16px]">親方ドットコムご利用企業様の<br className="lg:hidden" />社員さんにインタビューしました！</p>
             </div>
-            <p className="text-[#555] text-[13px] lg:text-[14px]">直請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
+            <p className="text-[#333] text-[13px] lg:text-[14px]">直請け受注が安定すると、現場の働きやすさや、<br className="lg:hidden" />若手の未来にも変化が生まれます。</p>
           </div>
 
           {/* ── Cards ── */}
@@ -154,13 +154,13 @@ export default function Section09() {
 
                 {/* Label + subtitle */}
                 <div className="px-5 pt-5 pb-4 lg:px-6 border-b border-[#ddd]">
-                  <div className="bg-[#1a1a1a] inline-flex items-center gap-2 px-3 py-2 mb-3">
+                  <div className="bg-[#171717] inline-flex items-center gap-2 px-3 py-2 mb-3">
                     {v.labelIcon}
                     <span className="text-white font-black text-[13px]">
-                      <span className="text-[#D4A820]">{v.labelColor.slice(0, 2)}</span>{v.labelColor.slice(2)}の声
+                      <span className="text-[#FFCC00]">{v.labelColor.slice(0, 2)}</span>{v.labelColor.slice(2)}の声
                     </span>
                   </div>
-                  <p className="text-[#1a1a1a] font-bold text-[13px] lg:text-[14px] leading-[1.7] italic">{v.subTitle}</p>
+                  <p className="text-[#171717] font-bold text-[13px] lg:text-[14px] leading-[1.7] italic">{v.subTitle}</p>
                 </div>
 
                 {/* Before / After */}
@@ -171,15 +171,15 @@ export default function Section09() {
                 </div>
 
                 {/* Quote */}
-                <div className="bg-[#f7f7f7] border-t border-[#ddd] px-5 py-4 lg:px-6">
-                  <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px] leading-[1.9] mb-2">
+                <div className="bg-[#F7F8FA] border-t border-[#ddd] px-5 py-4 lg:px-6">
+                  <p className="text-[#171717] font-bold text-[14px] lg:text-[15px] leading-[1.9] mb-2">
                     {v.quoteNode}
                   </p>
                   <div className="flex items-center justify-end gap-1.5">
                     <svg width="16" height="16" viewBox="0 0 24 22" fill="none" aria-hidden="true">
-                      <path d="M3 1 H21 Q23 1 23 3 V13 Q23 15 21 15 H13 L8 21 V15 H3 Q1 15 1 13 V3 Q1 1 3 1 Z" fill="#D4A820" fillOpacity="0.15" stroke="#D4A820" strokeWidth="1.5" strokeLinejoin="round" />
+                      <path d="M3 1 H21 Q23 1 23 3 V13 Q23 15 21 15 H13 L8 21 V15 H3 Q1 15 1 13 V3 Q1 1 3 1 Z" fill="#FFCC00" fillOpacity="0.15" stroke="#FFCC00" strokeWidth="1.5" strokeLinejoin="round" />
                     </svg>
-                    <p className="text-[#888] text-[12px]">{v.attribution}</p>
+                    <p className="text-[#666] text-[12px]">{v.attribution}</p>
                   </div>
                 </div>
 
@@ -191,21 +191,21 @@ export default function Section09() {
       </section>
 
       {/* ── Bottom Bar ── */}
-      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
+      <div className="bg-[#171717] max-w-[1280px] mx-auto">
         {/* SP */}
         <div className="lg:hidden relative overflow-hidden -mx-0 px-5 py-5 text-center">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <p className="relative z-10 text-white font-black text-[14px] leading-[2]">
-            2000社を超える支援実績で<br />あなたの会社に<span className="text-[#D4A820]">"何が必要か"</span>ご提案します！
+            2000社を超える支援実績で<br />あなたの会社に<span className="text-[#FFCC00]">"何が必要か"</span>ご提案します！
           </p>
         </div>
         {/* PC */}
-        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#D4A820] min-h-[108px]">
+        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#FFCC00] min-h-[108px]">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <div className="flex-1 py-7" />
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
             <p className="text-white font-black text-[18px] leading-[2] text-center">
-              2000社を超える支援実績で、あなたの会社に<span className="text-[#D4A820]">"何が必要か"</span>ご提案します！
+              2000社を超える支援実績で、あなたの会社に<span className="text-[#FFCC00]">"何が必要か"</span>ご提案します！
             </p>
           </div>
           <a
@@ -218,7 +218,7 @@ export default function Section09() {
           >
             <div className="relative">
               <div style={{ backgroundColor: "#252525", color: "#fff", fontSize: "11px", fontWeight: 500, padding: "4px 14px", borderRadius: "4px", whiteSpace: "nowrap", lineHeight: 1.4 }}>
-                無料診断はカンタン&thinsp;<span style={{ color: "#D4A820", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
+                無料診断はカンタン&thinsp;<span style={{ color: "#FFCC00", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
               </div>
               <div className="absolute left-1/2" style={{ bottom: "-7px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: "7px solid #252525" }} />
             </div>

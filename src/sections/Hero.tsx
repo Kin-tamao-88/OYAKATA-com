@@ -79,8 +79,8 @@ export default function Hero() {
             <div
               className="relative inline-flex items-center"
               style={{
-                backgroundColor: "#1a1a1a",
-                color: "#D4A820",
+                backgroundColor: "#171717",
+                color: "#FFCC00",
                 fontSize: "11px",
                 fontWeight: 700,
                 paddingLeft: "14px",
@@ -99,7 +99,7 @@ export default function Hero() {
                 aria-hidden="true"
                 style={{
                   position: "absolute", left: 0, top: 0, bottom: 0, width: "8px",
-                  backgroundColor: "#D4A820",
+                  backgroundColor: "#FFCC00",
                   clipPath: "polygon(0 0, 100% 0, 55% 100%, 0 100%)",
                 }}
               />
@@ -136,7 +136,7 @@ export default function Hero() {
 
           {/* サブコピー */}
           <div className="relative z-10 px-4 -mt-8 pb-[31px]">
-            <p className="inline-block font-bold text-white bg-[#1a1a1a] text-[15px] leading-snug px-2 py-1">
+            <p className="inline-block font-bold text-white bg-[#171717] text-[15px] leading-snug px-2 py-1">
               紹介・下請けに頼らず、<br />
               自社で仕事を取れる仕組みを。
             </p>
@@ -151,22 +151,22 @@ export default function Hero() {
                   className={`flex flex-1 flex-col items-center${i > 0 ? " border-l border-[#555]" : ""}`}
                 >
                   <div className="w-fit pt-[9px]">
-                    <p className="relative whitespace-nowrap text-[24px] font-black leading-[24px] text-[#1a1a1a]">
+                    <p className="relative whitespace-nowrap text-[24px] font-black leading-[24px] text-[#171717]">
                       <span aria-hidden="true" className="absolute -left-[7px] top-1/2 h-5 w-1 -translate-y-1/2 bg-[#9FC9EC]" />
                       {point.title}
                     </p>
                   </div>
                   <p className="mt-1.5 whitespace-nowrap text-center text-[12px] leading-[1.6] text-[#444]">
-                    <span className="font-bold text-[#1a1a1a]">{point.lead}</span>
+                    <span className="font-bold text-[#171717]">{point.lead}</span>
                     <br />
-                    <span className="relative inline-block text-[13px] font-black leading-[19.2px] text-[#1a1a1a]">
+                    <span className="relative inline-block text-[13px] font-black leading-[19.2px] text-[#171717]">
                       <svg
                         aria-hidden="true"
                         viewBox="0 0 100 10"
                         preserveAspectRatio="none"
                         className="absolute -bottom-px -left-1.5 -z-10 h-[11px] w-[calc(100%+12px)]"
                       >
-                        <path d={MARKER_PATH} fill="#FFD000" />
+                        <path d={MARKER_PATH} fill="#FFCC00" />
                       </svg>
                       {point.result}
                     </span>
@@ -179,15 +179,15 @@ export default function Hero() {
           {/* キャッチコピー */}
           <div className="relative z-10 px-4 pt-4 pb-[22.08px]">
             <div className="flex items-center gap-2">
-              <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
-              <p className="whitespace-nowrap text-[20px] font-black leading-[1.3] text-[#1a1a1a]">
+              <span aria-hidden="true" className="h-px flex-1 bg-[#171717]" />
+              <p className="whitespace-nowrap text-[20px] font-black leading-[1.3] text-[#171717]">
                 あなたの地域の反響を、
               </p>
-              <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
+              <span aria-hidden="true" className="h-px flex-1 bg-[#171717]" />
             </div>
-            <p className="text-center text-[28px] font-black leading-[1.2] tracking-[-0.04em] text-[#1a1a1a]">
+            <p className="text-center text-[28px] font-black leading-[1.2] tracking-[-0.04em] text-[#171717]">
               <span className="relative inline-block whitespace-nowrap">
-                <span aria-hidden="true" className="absolute -inset-x-2 -bottom-[5px] -z-10 h-[11px] -rotate-[1.5deg] bg-[#FFD000]" />
+                <span aria-hidden="true" className="absolute -inset-x-2 -bottom-[5px] -z-10 h-[11px] -rotate-[1.5deg] bg-[#FFCC00]" />
                 丸ごと自社へ。
               </span>
             </p>
@@ -196,9 +196,9 @@ export default function Hero() {
         </section>
 
         {/* SP CTA帯 */}
-        <div className="bg-[#111111] px-4 pt-[18px] pb-[18px]">
+        <div className="bg-[#171717] px-4 pt-[18px] pb-[18px]">
           <p className="text-white font-black text-[15px] leading-[1.35] mb-2.5 text-center">
-            下請けだけの経営から、<span className="text-[#D4A820] border-b-2 border-[#D4A820]">脱却</span>しませんか？
+            下請けだけの経営から、<span className="text-[#FFCC00] border-b-2 border-[#FFCC00]">脱却</span>しませんか？
           </p>
           <a
             href={buildLineCtaHref()}
@@ -206,7 +206,7 @@ export default function Hero() {
             rel="noopener noreferrer"
             aria-label="LINEで無料診断"
             onClick={trackLineClick}
-            className="flex items-center justify-center gap-2.5 bg-[#FFD000] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
+            className="flex items-center justify-center gap-2.5 bg-[#FFCC00] hover:brightness-95 active:brightness-95 transition-all no-underline rounded-lg py-3 w-full"
           >
             <span
               className="flex items-center justify-center flex-shrink-0 rounded-full"
@@ -216,7 +216,7 @@ export default function Hero() {
                 <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
               </svg>
             </span>
-            <span className="font-black text-[#1a1a1a] text-[16px]">LINEで無料診断 ›</span>
+            <span className="font-black text-[#171717] text-[16px]">LINEで無料診断 ›</span>
           </a>
         </div>
       </div>
@@ -267,8 +267,8 @@ export default function Hero() {
             <div
               className="relative inline-flex items-center"
               style={{
-                backgroundColor: "#1a1a1a",
-                color: "#D4A820",
+                backgroundColor: "#171717",
+                color: "#FFCC00",
                 fontSize: "16px",
                 fontWeight: 700,
                 paddingLeft: "28px",
@@ -287,7 +287,7 @@ export default function Hero() {
                 aria-hidden="true"
                 style={{
                   position: "absolute", left: 0, top: 0, bottom: 0, width: "14px",
-                  backgroundColor: "#D4A820",
+                  backgroundColor: "#FFCC00",
                   clipPath: "polygon(0 0, 100% 0, 55% 100%, 0 100%)",
                 }}
               />
@@ -329,7 +329,7 @@ export default function Hero() {
 
           </div>
 
-          <p className="font-bold text-[#1a1a1a] leading-snug text-[20px] mt-1 mb-[28px] whitespace-nowrap">
+          <p className="font-bold text-[#171717] leading-snug text-[20px] mt-1 mb-[28px] whitespace-nowrap">
             紹介・下請けに頼らず、自社で仕事を取れる仕組みを。
           </p>
 
@@ -341,22 +341,22 @@ export default function Hero() {
                 className={`flex flex-1 flex-col items-center${i > 0 ? " border-l border-[#555]" : ""}`}
               >
                 <div className="w-fit">
-                  <p className="relative whitespace-nowrap text-[32px] font-black leading-[33.6px] text-[#1a1a1a]">
+                  <p className="relative whitespace-nowrap text-[32px] font-black leading-[33.6px] text-[#171717]">
                     <span aria-hidden="true" className="absolute -left-[10px] top-1/2 h-7 w-[5px] -translate-y-1/2 bg-[#9FC9EC]" />
                     {point.title}
                   </p>
                 </div>
                 <p className="mt-1.5 whitespace-nowrap text-center text-[16px] leading-[1.5] text-[#444]">
-                  <span className="font-bold text-[#1a1a1a]">{point.lead}</span>
+                  <span className="font-bold text-[#171717]">{point.lead}</span>
                   <br />
-                  <span className="relative inline-block text-[17px] font-black leading-[25.5px] text-[#1a1a1a]">
+                  <span className="relative inline-block text-[17px] font-black leading-[25.5px] text-[#171717]">
                     <svg
                       aria-hidden="true"
                       viewBox="0 0 100 10"
                       preserveAspectRatio="none"
                       className="absolute -bottom-px -left-2 -z-10 h-[14px] w-[calc(100%+16px)]"
                     >
-                      <path d={MARKER_PATH} fill="#FFD000" />
+                      <path d={MARKER_PATH} fill="#FFCC00" />
                     </svg>
                     {point.result}
                   </span>
@@ -367,15 +367,15 @@ export default function Hero() {
 
           {/* キャッチコピー */}
           <div className="mt-[27.42px] flex items-center gap-3">
-            <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
-            <p className="whitespace-nowrap text-[22px] font-black leading-[1.3] text-[#1a1a1a]">
+            <span aria-hidden="true" className="h-px flex-1 bg-[#171717]" />
+            <p className="whitespace-nowrap text-[22px] font-black leading-[1.3] text-[#171717]">
               あなたの地域の反響を、
               <span className="relative inline-block text-[32px] leading-[1.2] tracking-[-0.04em]">
-                <span aria-hidden="true" className="absolute -inset-x-2 -bottom-[6px] -z-10 h-3 -rotate-[1.5deg] bg-[#FFD000]" />
+                <span aria-hidden="true" className="absolute -inset-x-2 -bottom-[6px] -z-10 h-3 -rotate-[1.5deg] bg-[#FFCC00]" />
                 丸ごと自社へ。
               </span>
             </p>
-            <span aria-hidden="true" className="h-px flex-1 bg-[#1a1a1a]" />
+            <span aria-hidden="true" className="h-px flex-1 bg-[#171717]" />
           </div>
 
         </div>
@@ -388,14 +388,14 @@ export default function Hero() {
         rel="noopener noreferrer"
         aria-label="LINEで無料診断"
         onClick={trackLineClick}
-        className="hidden lg:flex items-center justify-center gap-[180px] bg-[#111111] no-underline hover:bg-[#1a1a1a] transition-colors"
+        className="hidden lg:flex items-center justify-center gap-[180px] bg-[#171717] no-underline hover:bg-[#171717] transition-colors"
         style={{ minHeight: "120px", maxWidth: "1280px", marginLeft: "auto", marginRight: "auto", textDecoration: "none", cursor: "pointer" }}
       >
         {/* 左：テキスト */}
         <div className="flex flex-col justify-center">
           <p className="text-white font-black leading-tight m-0" style={{ fontSize: "26px" }}>
             下請けだけの経営から、
-            <span style={{ color: "#D4A820", borderBottom: "2px solid #D4A820", paddingBottom: "1px" }}>脱却</span>
+            <span style={{ color: "#FFCC00", borderBottom: "2px solid #FFCC00", paddingBottom: "1px" }}>脱却</span>
             しませんか？
           </p>
           <p className="text-white font-black m-0" style={{ fontSize: "26px", marginTop: "6px" }}>
@@ -415,7 +415,7 @@ export default function Hero() {
               style={{ backgroundColor: "#252525", fontSize: "12px", fontWeight: 500, padding: "6px 16px", borderRadius: "5px", whiteSpace: "nowrap", lineHeight: 1.4 }}
             >
               LINEならカンタン&thinsp;
-              <span style={{ color: "#f5a623", fontSize: "16px", fontWeight: 900 }}>1分</span>
+              <span style={{ color: "#FFCC00", fontSize: "16px", fontWeight: 900 }}>1分</span>
               &thinsp;で相談
             </div>
             <div
@@ -426,7 +426,7 @@ export default function Hero() {
 
           {/* CTAボタン */}
           <div
-            className="flex items-center bg-[#FFD000] hover:brightness-95 transition-all"
+            className="flex items-center bg-[#FFCC00] hover:brightness-95 transition-all"
             style={{ gap: "12px", borderRadius: "7px", padding: "15px 28px", whiteSpace: "nowrap" }}
           >
             <span
@@ -437,8 +437,8 @@ export default function Hero() {
                 <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
               </svg>
             </span>
-            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "19px" }}>LINEで無料診断</span>
-            <span className="font-black text-[#1a1a1a]" style={{ fontSize: "17px" }}>›</span>
+            <span className="font-black text-[#171717]" style={{ fontSize: "19px" }}>LINEで無料診断</span>
+            <span className="font-black text-[#171717]" style={{ fontSize: "17px" }}>›</span>
           </div>
         </div>
       </a>

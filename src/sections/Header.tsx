@@ -28,12 +28,12 @@ export default function Header() {
   const phoneInner = (
     <div
       className={`flex items-center gap-2.5 rounded-md${
-        isPhoneShown ? "" : " outline outline-[1.5px] outline-offset-[7px] outline-[#f5a623] group-hover:outline-[#D4A820]"
+        isPhoneShown ? "" : " outline outline-[1.5px] outline-offset-[7px] outline-[#FFCC00] group-hover:outline-[#FFCC00]"
       }`}
     >
       <div
         className="flex items-center justify-center flex-shrink-0 rounded-full"
-        style={{ width: "42px", height: "42px", backgroundColor: "#f5a623" }}
+        style={{ width: "42px", height: "42px", backgroundColor: "#FFCC00" }}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
@@ -45,13 +45,13 @@ export default function Header() {
       <div className="flex min-w-[122.92px] flex-col leading-tight">
         {isPhoneShown ? (
           <>
-            <span className="text-[#1a1a1a]" style={{ fontSize: "11px", fontWeight: 500 }}>お電話でのご相談</span>
-            <span className="text-[#D4A820] font-bold" style={{ fontSize: "17px" }}>080-4772-9896</span>
+            <span className="text-[#171717]" style={{ fontSize: "11px", fontWeight: 500 }}>お電話でのご相談</span>
+            <span className="text-[#171717] font-bold" style={{ fontSize: "17px" }}>080-4772-9896</span>
           </>
         ) : (
           <>
-            <span className="text-[#1a1a1a] font-bold text-[11px]">お電話でのご相談は</span>
-            <span className="text-[#D4A820] font-black text-[15px] whitespace-nowrap group-hover:underline underline-offset-2">こちらをクリック</span>
+            <span className="text-[#171717] font-bold text-[11px]">お電話でのご相談は</span>
+            <span className="text-[#171717] font-black text-[15px] whitespace-nowrap group-hover:underline decoration-[#FFCC00] decoration-2 underline-offset-2">こちらをクリック</span>
           </>
         )}
       </div>
@@ -61,7 +61,7 @@ export default function Header() {
   return (
     <>
       {/* ══ SP Header ══════════════════════════════════════════════════ */}
-      <div className="lg:hidden sticky top-0 z-40 bg-white border-b-2 border-[#f5a623]">
+      <div className="lg:hidden sticky top-0 z-40 bg-white border-b-2 border-[#FFCC00]">
         <div className="flex items-center px-3 h-[68px] gap-3">
 
           {/* 左：ロゴマーク */}
@@ -75,7 +75,7 @@ export default function Header() {
 
           {/* 右：サブコピー＋ハンバーガー */}
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-[#1a1a1a] text-[11px] font-bold leading-tight text-right">
+            <span className="text-[#171717] text-[11px] font-bold leading-tight text-right">
               工事業者専門の<br />集客支援サービス
             </span>
             <button
@@ -85,14 +85,14 @@ export default function Header() {
             >
               {isOpen ? (
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                  <line x1="3" y1="3" x2="19" y2="19" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" />
-                  <line x1="19" y1="3" x2="3" y2="19" stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round" />
+                  <line x1="3" y1="3" x2="19" y2="19" stroke="#171717" strokeWidth="2.2" strokeLinecap="round" />
+                  <line x1="19" y1="3" x2="3" y2="19" stroke="#171717" strokeWidth="2.2" strokeLinecap="round" />
                 </svg>
               ) : (
                 <>
-                  <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-                  <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
-                  <span className="block w-[22px] h-[2px] bg-[#1a1a1a]" />
+                  <span className="block w-[22px] h-[2px] bg-[#171717]" />
+                  <span className="block w-[22px] h-[2px] bg-[#171717]" />
+                  <span className="block w-[22px] h-[2px] bg-[#171717]" />
                 </>
               )}
             </button>
@@ -102,7 +102,7 @@ export default function Header() {
 
         {/* ── SP ドロップダウンメニュー ── */}
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 bg-[#1a1a1a] border-t-2 border-[#D4A820] z-50">
+          <div className="absolute top-full left-0 right-0 bg-[#171717] border-t-2 border-[#FFCC00] z-50">
             <nav className="px-5 divide-y divide-[#2a2a2a]">
               {navItems.map((item, i) => (
                 <a
@@ -111,21 +111,21 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-4 py-[14px] no-underline"
                 >
-                  <span className="text-[#D4A820] font-black text-[11px] w-5 shrink-0">
+                  <span className="text-[#FFCC00] font-black text-[11px] w-5 shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-white font-bold text-[14px] flex-1">{item.label}</span>
-                  <span className="text-[#D4A820] font-black text-[16px]">›</span>
+                  <span className="text-[#FFCC00] font-black text-[16px]">›</span>
                 </a>
               ))}
             </nav>
-            <div className="px-5 py-5 border-t-2 border-[#D4A820]">
+            <div className="px-5 py-5 border-t-2 border-[#FFCC00]">
               <a
                 href="#contact"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 bg-[#FFD000] py-4 no-underline"
+                className="flex items-center justify-center gap-2 bg-[#FFCC00] py-4 no-underline"
               >
-                <span className="font-black text-[#1a1a1a] text-[15px]">無料診断はこちら ›</span>
+                <span className="font-black text-[#171717] text-[15px]">無料診断はこちら ›</span>
               </a>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function Header() {
                 {i > 0 && <span className="text-[#ddd] text-[14px]">|</span>}
                 <a
                   href={item.href}
-                  className="text-[#1a1a1a] font-extrabold text-[14px] no-underline hover:text-[#D4A820] transition-colors whitespace-nowrap"
+                  className="text-[#171717] font-extrabold text-[14px] no-underline hover:underline decoration-[#FFCC00] decoration-2 underline-offset-4 transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </a>
@@ -198,7 +198,7 @@ export default function Header() {
           >
             {/* CTAボタン */}
             <div
-              className="flex items-center bg-[#FFD000] hover:brightness-95 transition-all"
+              className="flex items-center bg-[#FFCC00] hover:brightness-95 transition-all"
               style={{ gap: "10px", borderRadius: "6px", padding: "11px 22px", whiteSpace: "nowrap" }}
             >
               <span
@@ -209,8 +209,8 @@ export default function Header() {
                   <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
                 </svg>
               </span>
-              <span className="font-black text-[#1a1a1a]" style={{ fontSize: "15px" }}>LINEで無料診断</span>
-              <span className="font-black text-[#1a1a1a]" style={{ fontSize: "13px" }}>›</span>
+              <span className="font-black text-[#171717]" style={{ fontSize: "15px" }}>LINEで無料診断</span>
+              <span className="font-black text-[#171717]" style={{ fontSize: "13px" }}>›</span>
             </div>
           </a>
 

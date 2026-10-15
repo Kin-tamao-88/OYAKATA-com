@@ -58,21 +58,21 @@ export default function Section07() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
             <div>
-              <span className="block text-[#D4A820] font-black leading-none text-[36px] lg:text-[52px]">06</span>
-              <div className="w-8 h-[3px] bg-[#D4A820] mt-1" />
+              <span className="block text-[#FFCC00] font-black leading-none text-[36px] lg:text-[52px]">06</span>
+              <div className="w-8 h-[3px] bg-[#FFCC00] mt-1" />
             </div>
-            <div className="w-px h-10 bg-[#1a1a1a]" />
-            <span className="text-[#1a1a1a] font-bold text-[14px] lg:text-[22px]">親方ドットコムが選ばれる理由</span>
+            <div className="w-px h-10 bg-[#171717]" />
+            <span className="text-[#171717] font-bold text-[14px] lg:text-[22px]">親方ドットコムが選ばれる理由</span>
           </div>
-          <div className="h-[2px] bg-gradient-to-r from-[#D4A820] to-[#1a1a1a] mt-3 mb-5" />
-          <h2 className="text-[#1a1a1a] font-black leading-[1.15] mb-5 text-[27px] lg:text-[56px] text-balance">
-            選ばれ続けるには、<br className="lg:hidden" /><span className="border-b-[4px] lg:border-b-[6px] border-[#D4A820] pb-[2px]"><span className="text-[#D4A820]">理由</span>があります。</span>
+          <div className="h-[2px] bg-gradient-to-r from-[#FFCC00] to-[#171717] mt-3 mb-5" />
+          <h2 className="text-[#171717] font-black leading-[1.15] mb-5 text-[27px] lg:text-[56px] text-balance">
+            選ばれ続けるには、<br className="lg:hidden" /><span className="border-b-[4px] lg:border-b-[6px] border-[#FFCC00] pb-[2px]"><span>理由</span>があります。</span>
           </h2>
         </div>
 
         {/* ── Reason blocks ── */}
         {reasons.map((r, i) => (
-          <div key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#1a1a1a] lg:bg-white"}>
+          <div key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#171717] lg:bg-white"}>
             <div className="max-w-[1280px] mx-auto">
 
               {/* SP */}
@@ -82,10 +82,10 @@ export default function Section07() {
                 </div>
                 <div className="px-5 py-8">
                   <ReasonLabel num={r.num} dark={i % 2 !== 0} />
-                  <h3 className={`font-black leading-[1.3] mb-3 text-[26px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#1a1a1a]"}`}>
+                  <h3 className={`font-black leading-[1.3] mb-3 text-[26px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#171717]"}`}>
                     {r.title.split("\n").map((line, j) => <span key={j}>{line}{j === 0 && <br />}</span>)}
                   </h3>
-                  <p className={`text-[14px] leading-[1.9] mb-5 ${i % 2 !== 0 ? "text-white/80" : "text-[#1a1a1a]"}`}>{r.body}</p>
+                  <p className={`text-[14px] leading-[1.9] mb-5 ${i % 2 !== 0 ? "text-white/80" : "text-[#171717]"}`}>{r.body}</p>
                   <CheckList checks={r.checks} dark={i % 2 !== 0} />
                 </div>
               </div>
@@ -95,12 +95,12 @@ export default function Section07() {
                 <div className="w-[50%] shrink-0 overflow-hidden min-h-[420px]">
                   <img src={r.img} alt={r.imgAlt} className="w-full h-full object-cover" />
                 </div>
-                <div className={`flex-1 flex flex-col justify-center py-14 ${r.imgLeft ? "pl-14 pr-10" : "pr-14 pl-10"} ${i % 2 !== 0 ? "bg-[#1a1a1a]" : "bg-white"} relative overflow-hidden`}>
+                <div className={`flex-1 flex flex-col justify-center py-14 ${r.imgLeft ? "pl-14 pr-10" : "pr-14 pl-10"} ${i % 2 !== 0 ? "bg-[#171717]" : "bg-white"} relative overflow-hidden`}>
                   <ReasonLabel num={r.num} dark={i % 2 !== 0} />
-                  <h3 className={`font-black leading-[1.3] mb-4 text-[34px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#1a1a1a]"}`}>
+                  <h3 className={`font-black leading-[1.3] mb-4 text-[34px] text-balance ${i % 2 !== 0 ? "text-white" : "text-[#171717]"}`}>
                     {r.title.split("\n").map((line, j) => <span key={j}>{line}{j === 0 && <br />}</span>)}
                   </h3>
-                  <p className={`text-[15px] leading-[2] mb-6 ${i % 2 !== 0 ? "text-white/80" : "text-[#1a1a1a]"}`}>{r.body}</p>
+                  <p className={`text-[15px] leading-[2] mb-6 ${i % 2 !== 0 ? "text-white/80" : "text-[#171717]"}`}>{r.body}</p>
                   <CheckList checks={r.checks} dark={i % 2 !== 0} />
                 </div>
               </div>
@@ -112,21 +112,21 @@ export default function Section07() {
       </section>
 
       {/* ── Bottom Bar ── */}
-      <div className="bg-[#1a1a1a] max-w-[1280px] mx-auto">
+      <div className="bg-[#171717] max-w-[1280px] mx-auto">
         {/* SP */}
         <div className="lg:hidden relative overflow-hidden -mx-0 px-5 py-5 text-center">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <p className="relative z-10 text-white font-black text-[16px] leading-[2]">
-            すべては直請けとしての<br /><span className="text-[#D4A820]">受注を得るために。</span>
+            すべては直請けとしての<br /><span className="text-[#FFCC00]">受注を得るために。</span>
           </p>
         </div>
         {/* PC */}
-        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#D4A820] min-h-[108px]">
+        <div className="hidden lg:flex items-stretch relative overflow-hidden border-t-2 border-t-[#FFCC00] min-h-[108px]">
           <img src={paintDark} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover scale-x-[1.4] pointer-events-none" />
           <div className="flex-1 py-7" />
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
             <p className="text-white font-black text-[18px] leading-[2] text-center">
-              すべては直請けとしての<span className="text-[#D4A820]">受注を得るために。</span>
+              すべては直請けとしての<span className="text-[#FFCC00]">受注を得るために。</span>
             </p>
           </div>
           <a
@@ -139,7 +139,7 @@ export default function Section07() {
           >
             <div className="relative">
               <div style={{ backgroundColor: "#252525", color: "#fff", fontSize: "11px", fontWeight: 500, padding: "4px 14px", borderRadius: "4px", whiteSpace: "nowrap", lineHeight: 1.4 }}>
-                無料診断はカンタン&thinsp;<span style={{ color: "#D4A820", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
+                無料診断はカンタン&thinsp;<span style={{ color: "#FFCC00", fontSize: "14px", fontWeight: 900 }}>1分</span>&thinsp;で入力完了
               </div>
               <div className="absolute left-1/2" style={{ bottom: "-7px", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: "7px solid #252525" }} />
             </div>
@@ -171,8 +171,8 @@ function ReasonLabel({ num, dark }: { num: string; dark: boolean }) {
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-fill opacity-0"
       />
-      <span className={`relative font-bold text-[12px] pr-2 ${dark ? "text-[#D4A820]" : "text-[#D4A820]"}`}>Point</span>
-      <span className={`relative font-black text-[28px] leading-none ${dark ? "text-white" : "text-[#1a1a1a]"}`}>{num}</span>
+      <span className={`relative font-bold text-[12px] pr-2 ${dark ? "text-[#FFCC00]" : "text-[#171717]"}`}>Point</span>
+      <span className={`relative font-black text-[28px] leading-none ${dark ? "text-white" : "text-[#171717]"}`}>{num}</span>
     </div>
   );
 }
@@ -183,10 +183,10 @@ function CheckList({ checks, dark }: { checks: string[]; dark: boolean }) {
       {checks.map((c, i) => (
         <li key={i} className="flex items-start gap-2">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" className="shrink-0 mt-0.5">
-            <circle cx="9" cy="9" r="8" fill="#D4A820" />
+            <circle cx="9" cy="9" r="8" fill="#FFCC00" />
             <path d="M5 9 L8 12 L13 6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className={`text-[13px] lg:text-[14px] leading-[1.7] ${dark ? "text-white/80" : "text-[#1a1a1a]"}`}>{c}</span>
+          <span className={`text-[13px] lg:text-[14px] leading-[1.7] ${dark ? "text-white/80" : "text-[#171717]"}`}>{c}</span>
         </li>
       ))}
     </ul>
