@@ -309,12 +309,6 @@ export default function Section10() {
           >
             プライバシーポリシー
           </a>
-          <a
-            href="/about"
-            className="table mx-auto mt-2 text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#171717] transition-colors"
-          >
-            親方ドットコム 公式サイト
-          </a>
         </div>
       </div>
     </section>
