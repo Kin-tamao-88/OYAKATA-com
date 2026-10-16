@@ -8,6 +8,7 @@ export default function SeoApp({ pageKey }: { pageKey: string }) {
   const page = findPage(pageKey);
   if (!page) return <NotFoundView />;
   const Content = page.Component;
+  if (page.bare) return <Content />;
   return (
     <SeoLayout page={page}>
       <Content />

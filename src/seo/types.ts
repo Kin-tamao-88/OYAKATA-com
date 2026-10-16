@@ -26,5 +26,7 @@ export type SeoPageDef = {
   relatedSlugs?: string[];
   /** 絶対URLのOGP画像。未指定なら og:image を出力しない */
   ogImage?: string;
+  /** true なら共通の記事レイアウト(SeoLayout)を使わず、ページ側で全体を組む(公式HPトップなど) */
+  bare?: boolean;
   Component: ComponentType;
 };
