@@ -1,69 +1,78 @@
-import dashboardMockup from "../assets/images/OC01/OC2-dashbord2.webp";
+import visualBg from "../assets/images/OC01/oc01-visual-bg.webp";
 import logoHorizontal from "../assets/images/logos/logo-horizontal-trimmed.webp";
 
 export default function Section02B() {
   return (
     <>
       {/* ── 上段: ホワイトブロック ── */}
-      <section className="bg-white pt-8 pb-0 lg:pt-[80px] lg:pb-0 overflow-hidden">
-        <div className="max-w-[1280px] mx-auto px-5 lg:px-[68px]">
+      <section className="bg-white overflow-hidden">
+        <div className="max-w-[1280px] mx-auto lg:[container-type:inline-size] relative">
 
-          {/* Section Header */}
-          <div className="flex items-center gap-4 mb-0 lg:mb-4">
-            <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[52px] lg:h-[64px] w-auto object-contain mix-blend-multiply shrink-0" />
-            <div>
-              <span className="block text-[#FFCC00] font-black leading-none text-[36px] lg:text-[52px]">01</span>
-              <div className="w-8 h-[3px] bg-[#FFCC00] mt-1" />
-            </div>
-            <div className="w-px h-10 bg-[#171717]" />
-            <span className="text-[#171717] font-bold text-[19px] lg:text-[22px]">親方ドットコムとは？</span>
-          </div>
-          <div className="h-[2px] bg-gradient-to-r from-[#FFCC00] to-[#171717] mt-4 mb-6" />
-
-          {/* Main 2-column */}
-          <div className="flex flex-col lg:flex-row lg:items-end lg:gap-10">
-
-            <div className="w-full lg:w-[50%] lg:shrink-0 lg:pb-20 relative">
-              {/* SP右ブリード背景画像 */}
-              <div
-                className="lg:hidden absolute top-[-30px] right-[-11px] pointer-events-none"
-                style={{
-                  width: "85%",
-                  WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)",
-                  maskImage: "linear-gradient(to right, transparent 0%, black 40%, black 100%)",
-                  opacity: 0.22,
-                }}
-              >
-                <img
-                  src={dashboardMockup}
-                  alt=""
-                  aria-hidden="true"
-                  className="w-full h-auto object-contain"
-                />
+          {/* PC: 背景素材（右側ビジュアル）+ 左側HTML */}
+          <div className="hidden lg:block relative w-full aspect-[1850/850] mt-8">
+            <img
+              src={visualBg}
+              alt="親方ドットコムのダッシュボード、スマートフォン、ターゲット設計・集客戦略の提案資料"
+              className="absolute inset-0 w-full h-full [mask-image:linear-gradient(to_bottom,transparent_0%,black_9%)]"
+            />
+            <div className="absolute left-[4.5cqw] top-[5.7cqw] w-[44cqw]">
+              <div className="flex items-center h-[4.05cqw]">
+                <img src={logoHorizontal} alt="" aria-hidden="true" className="h-full w-auto object-contain mix-blend-multiply shrink-0" />
+                <span className="ml-[1.7cqw] text-[#FFCC00] font-black leading-none text-[3.8cqw]">01</span>
+                <span className="mx-[1.7cqw] w-px h-[2.9cqw] bg-[#B9BDC3]" />
+                <span className="text-[#171717] font-bold tracking-[0.08em] text-[max(16px,1.6cqw)]">親方ドットコムとは？</span>
               </div>
+              <div className="mt-[1.2cqw] w-[43.5cqw] h-[2px] bg-[#FFCC00]" />
 
-              <h2 className="relative z-10 text-[#171717] font-black leading-[1.2] mb-6 text-[27px] lg:text-[48px]">
-                <span className="bg-[#171717] text-[#FFCC00] px-1">親方ドットコム</span>は、<br />
+              <h2 className="mt-[2.9cqw] text-[#171717] font-black leading-[4.8cqw] text-[3.75cqw] whitespace-nowrap">
+                <span className="bg-[#FFD84D] -ml-[0.3cqw] pl-[0.3cqw] pr-[0.2cqw]">親方ドットコム</span>は、<br />
                 工事業者専門の<br />
-                <span className="text-[#171717] border-b-[4px] lg:border-b-[6px] border-[#FFCC00] pb-[2px]">集客支援サービス</span>です。
+                集客支援サービスです。
               </h2>
-              <p className="relative z-10 text-[#171717] text-[13px] lg:text-[16px] leading-[2] pb-8 lg:pb-0">
+              <div className="mt-[0.57cqw] w-[25.6cqw] h-[0.27cqw] min-h-[4px] bg-[#FFCC00]" />
+
+              <p className="mt-[1.3cqw] text-[#333] font-medium text-[max(16px,1.4cqw)] leading-[2.65cqw] [word-break:auto-phrase]">
                 データ分析に基づいた集客戦略の立案から、<br />
                 広告運用・改善までを一貫してサポート。<br />
                 直請け案件の獲得に特化した仕組みづくりで、<br />
                 工事業者の売上と事業成長に貢献します。
               </p>
             </div>
+          </div>
 
-            {/* PC のみ画像カラム */}
-            <div className="hidden lg:block lg:flex-1 lg:-mr-[68px] lg:scale-[1.15] lg:origin-bottom lg:-translate-x-[60px]">
+          {/* SP: ロゴ → コピー → ビジュアル → 説明文 */}
+          <div className="lg:hidden pt-8">
+            <div className="px-5">
+              <div className="flex items-center gap-3">
+                <img src={logoHorizontal} alt="" aria-hidden="true" className="h-[44px] w-auto object-contain mix-blend-multiply shrink-0" />
+                <span className="text-[#FFCC00] font-black leading-none text-[36px]">01</span>
+                <span className="w-px h-8 bg-[#B9BDC3]" />
+                <span className="text-[#171717] font-bold text-[17px] tracking-[0.04em]">親方ドットコムとは？</span>
+              </div>
+              <div className="mt-3 h-[2px] bg-[#FFCC00]" />
+
+              <h2 className="mt-6 text-[#171717] font-black leading-[1.3] text-[28px]">
+                <span className="bg-[#FFD84D] px-1 -ml-1">親方ドットコム</span>は、<br />
+                工事業者専門の<br />
+                集客支援サービスです。
+              </h2>
+              <div className="mt-2 w-[220px] h-[4px] bg-[#FFCC00]" />
+            </div>
+
+            {/* デバイス群を中心にトリミング（素材左側の余白を除外） */}
+            <div className="relative mt-4 w-full aspect-[1250/850] overflow-hidden">
               <img
-                src={dashboardMockup}
-                alt="親方ドットコム ダッシュボード画面"
-                className="block w-full"
+                src={visualBg}
+                alt="親方ドットコムのダッシュボード、スマートフォン、ターゲット設計・集客戦略の提案資料"
+                className="absolute top-0 left-[-48%] w-[148%] max-w-none h-auto"
               />
             </div>
+
+            <p className="px-5 pt-4 pb-8 text-[#333] font-medium text-[16px] leading-[1.9] [word-break:auto-phrase]">
+              データ分析に基づいた集客戦略の立案から、広告運用・改善までを一貫してサポート。直請け案件の獲得に特化した仕組みづくりで、工事業者の売上と事業成長に貢献します。
+            </p>
           </div>
+
         </div>
       </section>
 
