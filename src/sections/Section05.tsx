@@ -385,7 +385,7 @@ export default function Section05() {
           {/* CTA */}
           <a
             href="#contact"
-            aria-label="無料診断フォームへ進む"
+            aria-label="現在の広告運用について 無料診断を申し込む"
             className="mt-10 lg:mt-14 mx-auto flex items-center gap-3 lg:gap-5 bg-[#FFCC00] rounded-full no-underline text-[#171717] pl-3.5 pr-4 py-4 lg:pl-5 lg:pr-8 lg:py-5 w-full lg:w-[560px]"
           >
             <span className="flex items-center justify-center shrink-0 rounded-full bg-[#171717] text-white w-[44px] h-[44px] lg:w-[60px] lg:h-[60px]">
@@ -397,7 +397,7 @@ export default function Section05() {
             </span>
             <span className="flex-1 leading-[1.3]">
               <span className="block font-bold text-[14px] lg:text-[16px]">現在の広告運用について</span>
-              <span className="block font-black text-[18px] lg:text-[28px]">無料診断フォームへ進む</span>
+              <span className="block font-black text-[18px] lg:text-[28px]">無料診断を申し込む</span>
             </span>
             <span className="font-black text-[24px] lg:text-[28px] leading-none" aria-hidden="true">›</span>
           </a>
