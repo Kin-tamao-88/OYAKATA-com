@@ -1,6 +1,9 @@
+import { useEffect, useRef } from "react";
 import { buildLineCtaHref } from "../../../lib/line";
-import imgHero from "../../../assets/images/OC08/better08-genba.webp";
-import imgApproach from "../../../assets/images/OC06/reason-consulting.webp";
+import imgHero from "../../../assets/images/about/hero-poster.webp";
+import videoHero from "../../../assets/videos/about-hero.mp4";
+import imgIntro from "../../../assets/images/about/intro-sunset.webp";
+import imgApproach from "../../../assets/images/about/approach-meeting.webp";
 import CorporateInquiryForm from "./CorporateInquiryForm";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -29,10 +32,11 @@ function ArrowRight({ className }: { className?: string }) {
 }
 
 /** 英字の小見出し */
-function Eyebrow({ children, tone = "dark" }: { children: string; tone?: "dark" | "light" }) {
+function Eyebrow({ children, tone = "dark" }: { children: string; tone?: "dark" | "light" | "ink" }) {
+  const color = tone === "light" ? "text-white" : tone === "ink" ? "text-[#111]" : "text-[#5f6370]";
   return (
-    <p className={`flex items-center gap-3 font-black text-[16px] tracking-[0.08em] lg:tracking-[0.24em] ${tone === "light" ? "text-white" : "text-[#111]"}`}>
-      <span className="block w-8 lg:w-12 h-[4px] bg-[#FFCC00] shrink-0" aria-hidden="true" />
+    <p className={`flex items-center gap-3 font-bold text-[16px] tracking-[0.1em] lg:tracking-[0.18em] ${color}`}>
+      <span className="block w-8 lg:w-12 h-px bg-current shrink-0" aria-hidden="true" />
       {children}
     </p>
   );
@@ -64,28 +68,61 @@ function Wave({ outer, fill }: { outer: string; fill: string }) {
 
 /* ───────────────────────── HERO ───────────────────────── */
 function Hero() {
+  const mediaRef = useRef<HTMLDivElement>(null);
+
+  /* ゆっくり寄っては戻る。動きを減らす設定の端末ではズームしない */
+  useEffect(() => {
+    const el = mediaRef.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const zoom = el.animate([{ transform: "scale(1)" }, { transform: "scale(1.3)" }], {
+      duration: 20000,
+      iterations: Infinity,
+      direction: "alternate",
+      easing: "ease-in-out",
+    });
+    return () => zoom.cancel();
+  }, []);
+
   return (
     <section
-      className="relative bg-[#111] overflow-hidden flex flex-col justify-end min-h-[600px] h-[calc(100svh-64px)] max-h-[760px] lg:min-h-[680px] lg:h-[calc(100svh-80px)] lg:max-h-[900px]"
+      className="relative bg-[#111] overflow-hidden flex flex-col justify-end pt-[32vw] lg:pt-24"
       aria-labelledby="about-hero-title"
     >
-      <img
-        src={imgHero}
-        alt="工事現場で談笑する職人たち"
-        width={1536}
-        height={1024}
-        fetchPriority="high"
-        className="absolute inset-0 w-full h-full object-cover object-[46%_0%] lg:object-[50%_22%]"
-      />
-      <div className="absolute inset-0 bg-[#111]/35" aria-hidden="true" />
-      <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[#111]/85 to-transparent" aria-hidden="true" />
+      {/* SP は動画を横長の枠で上に置き、見出しを下半分に重ねる。PC は全面に敷く */}
+      <div className="absolute inset-x-0 top-0 h-[72vw] lg:inset-0 lg:h-auto overflow-hidden">
+        <div ref={mediaRef} className="absolute inset-0">
+          <img
+            src={imgHero}
+            alt="打ち合わせをする経営者と職人"
+            width={1280}
+            height={720}
+            fetchPriority="high"
+            className="absolute inset-0 w-full h-full object-cover object-[62%_50%] lg:object-[50%_22%]"
+          />
+          {/* 動きを減らす設定の端末では動画を出さず、静止画だけにする */}
+          <video
+            src={videoHero}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover object-[62%_50%] lg:object-[50%_22%] motion-reduce:hidden"
+          />
+        </div>
+        <div className="absolute inset-0 bg-[#111]/20" aria-hidden="true" />
+        <div className="absolute inset-y-0 left-0 w-[70%] bg-gradient-to-r from-[#111]/55 to-transparent" aria-hidden="true" />
+        <div className="lg:hidden absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#111] from-10% to-transparent" aria-hidden="true" />
+      </div>
+      <div className="hidden lg:block absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[#111]/85 to-transparent" aria-hidden="true" />
 
       <div className={`relative ${EDGE_L}`}>
         <div className="pr-5 lg:pr-10 pb-7 lg:pb-12">
           <Eyebrow tone="light">OYAKATA.COM</Eyebrow>
           <h1
             id="about-hero-title"
-            className="mt-5 lg:mt-7 text-white font-black leading-[1.14] tracking-[0.01em] text-[length:min(12.4vw,56px)] lg:text-[length:clamp(64px,7.2vw,116px)]"
+            className="mt-5 lg:mt-7 text-white font-black leading-[1.12] tracking-[-0.03em] text-[length:min(12.4vw,56px)] lg:text-[length:clamp(64px,7.2vw,116px)]"
           >
             工事会社の
             <br className="lg:hidden" />
@@ -127,20 +164,49 @@ function Hero() {
 /* ───────────────────────── INTRO ───────────────────────── */
 function Intro() {
   return (
-    <section id="intro" className={`${ANCHOR} bg-white pt-16 pb-20 lg:pt-32 lg:pb-36`} aria-labelledby="intro-title">
-      <div className={CONTAINER}>
-        <Eyebrow>INTRO ─ 親方ドットコムの考え方</Eyebrow>
-        <h2
-          id="intro-title"
-          className="mt-8 lg:mt-12 text-[#111] font-black leading-[1.35] tracking-[0.01em] text-[length:min(8vw,34px)] lg:text-[length:clamp(52px,6.2vw,96px)]"
-        >
-          現場の確かな仕事が、
-          <br />
-          <span className="bg-[#FFCC00] box-decoration-clone px-2 lg:px-4">選ばれる仕組みを。</span>
-        </h2>
+    <section id="intro" className={`${ANCHOR} bg-white pb-20 lg:pb-36`} aria-labelledby="intro-title">
+      {/* PC は見出しを夕景の空に重ねる。SP は見出しの下に写真の帯を置く */}
+      <div className="lg:bg-[#111]">
+      <div className="relative lg:[clip-path:polygon(0_80px,100%_0,100%_100%,0_100%)]">
+        <img
+          src={imgIntro}
+          alt=""
+          aria-hidden="true"
+          width={1672}
+          height={941}
+          loading="lazy"
+          className="hidden lg:block absolute inset-0 w-full h-full object-cover object-[50%_55%] saturate-[.85] contrast-[1.05]"
+        />
+        <div className="hidden lg:block absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#111]/60 to-transparent" aria-hidden="true" />
+        <div className="hidden lg:block absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" aria-hidden="true" />
+        <div className={`${CONTAINER} relative pt-16 lg:pt-40 lg:pb-[280px]`}>
+          <Eyebrow tone="ink">INTRO ─ 親方ドットコムの考え方</Eyebrow>
+          <h2
+            id="intro-title"
+            className="mt-8 lg:mt-12 text-[#111] font-black leading-[1.25] tracking-[-0.03em] text-[length:min(8vw,34px)] lg:text-[length:clamp(44px,4.8vw,80px)]"
+          >
+            現場の確かな仕事が、
+            <br />
+            <span className="bg-[#FFCC00] box-decoration-clone px-2 lg:px-4">選ばれる仕組みを。</span>
+          </h2>
+        </div>
+      </div>
+      </div>
+      <div className="lg:hidden relative mt-10">
+        <img
+          src={imgIntro}
+          alt="足場の上から街を見渡す職人"
+          width={1672}
+          height={941}
+          loading="lazy"
+          className="w-full h-[300px] object-cover object-[78%_50%] saturate-[.85] contrast-[1.05]"
+        />
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#111]/40 to-transparent" aria-hidden="true" />
+      </div>
 
-        <div className="mt-12 lg:mt-24 grid grid-cols-1 lg:grid-cols-12">
-          <div className="lg:col-start-6 lg:col-span-7 border-t-[3px] border-[#111] pt-8 lg:pt-10">
+      <div className={`${CONTAINER} mt-12 lg:mt-0`}>
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="lg:col-start-6 lg:col-span-7 border-t border-[#111] pt-8 lg:pt-10">
             <p className="text-[#111] font-bold text-[18px] lg:text-[22px] leading-[1.9] text-balance">
               工事会社には、確かな技術と、誠実な仕事があります。
             </p>
@@ -162,9 +228,9 @@ function Business() {
         <Eyebrow tone="light">BUSINESS ─ 提供サービス</Eyebrow>
         <h2
           id="business-title"
-          className="mt-6 lg:mt-8 text-white font-black leading-[1.4] text-[length:min(7.2vw,30px)] lg:text-[length:clamp(36px,3.6vw,52px)]"
+          className="mt-6 lg:mt-8 text-white font-black leading-[1.3] tracking-[-0.03em] text-[length:min(7.2vw,30px)] lg:text-[length:clamp(36px,3.6vw,52px)]"
         >
-          仕事が増える仕組みを、
+          受注が増える仕組みを、
           <br className="lg:hidden" />
           ひとつずつ整える。
         </h2>
@@ -176,7 +242,7 @@ function Business() {
               className={`border-t border-[#4a4a4a] py-8 lg:py-12 ${index % 2 === 1 ? "lg:pl-[8%]" : ""} ${index === SERVICES.length - 1 ? "border-b" : ""}`}
             >
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-5 lg:gap-12 lg:items-end">
-                <h3 className="text-white font-black leading-[1.15] text-[length:min(8vw,32px)] lg:text-[length:clamp(30px,4.2vw,64px)]">
+                <h3 className="text-white font-black leading-[1.15] tracking-[-0.03em] text-[length:min(8vw,32px)] lg:text-[length:clamp(30px,4.2vw,64px)]">
                   {item.title}
                 </h3>
                 <div>
@@ -201,7 +267,7 @@ function Approach() {
         <Eyebrow>APPROACH ─ 支援の進め方</Eyebrow>
         <h2
           id="approach-title"
-          className="mt-8 lg:mt-12 text-[#111] font-black leading-[1.45] text-[length:min(7vw,30px)] lg:text-[length:clamp(40px,4.6vw,72px)]"
+          className="mt-8 lg:mt-12 text-[#111] font-black leading-[1.3] tracking-[-0.03em] text-[length:min(7vw,30px)] lg:text-[length:clamp(40px,4.6vw,72px)]"
         >
           強みを整理し、伝え、
           <br />
@@ -217,10 +283,10 @@ function Approach() {
         <img
           src={imgApproach}
           alt="工事会社の担当者と打ち合わせをする様子"
-          width={1536}
-          height={1024}
+          width={1670}
+          height={906}
           loading="lazy"
-          className="w-full h-[240px] lg:h-[460px] object-cover object-[50%_42%]"
+          className="w-full h-[260px] lg:h-[460px] object-cover object-[38%_50%] lg:object-[50%_12%]"
         />
       </div>
 
@@ -245,13 +311,13 @@ function Industries() {
   return (
     <section id="industries" className={`${ANCHOR} bg-[#FFCC00] pt-4 pb-16 lg:pt-10 lg:pb-32`} aria-labelledby="industries-title">
       <div className={CONTAINER}>
-        <p className="flex items-center gap-3 font-black text-[16px] tracking-[0.08em] lg:tracking-[0.24em] text-[#111]">
-          <span className="block w-8 lg:w-12 h-[4px] bg-[#111] shrink-0" aria-hidden="true" />
+        <p className="flex items-center gap-3 font-bold text-[16px] tracking-[0.1em] lg:tracking-[0.18em] text-[#111]">
+          <span className="block w-8 lg:w-12 h-px bg-[#111] shrink-0" aria-hidden="true" />
           INDUSTRIES ─ 対応業種
         </p>
         <h2
           id="industries-title"
-          className="mt-6 lg:mt-8 text-[#111] font-black leading-[1.4] text-[length:min(7.2vw,30px)] lg:text-[length:clamp(36px,3.6vw,52px)]"
+          className="mt-6 lg:mt-8 text-[#111] font-black leading-[1.3] tracking-[-0.03em] text-[length:min(7.2vw,30px)] lg:text-[length:clamp(36px,3.6vw,52px)]"
         >
           工事の種類に合わせて、
           <br className="lg:hidden" />
@@ -265,7 +331,7 @@ function Industries() {
           {INDUSTRIES.map((item) => {
             const body = (
               <>
-                <span className="block text-[#111] font-black leading-[1.05] text-[length:min(10.5vw,44px)] lg:text-[length:clamp(48px,7.2vw,112px)]">
+                <span className="block text-[#111] font-black leading-[1.05] tracking-[-0.04em] text-[length:min(10.5vw,44px)] lg:text-[length:clamp(48px,7.2vw,112px)]">
                   {item.name}
                 </span>
                 <span className="mt-2 lg:mt-3 block text-[#111] font-bold text-[16px] leading-[1.7]">{item.note}</span>
@@ -297,7 +363,7 @@ function Journal() {
       <div className={CONTAINER}>
         <h2
           id="journal-title"
-          className="text-[#111] font-black leading-[0.95] tracking-[-0.02em] text-[length:min(17vw,72px)] lg:text-[length:clamp(96px,14vw,220px)]"
+          className="text-[#111] font-black leading-[0.95] tracking-[-0.05em] text-[length:min(17vw,72px)] lg:text-[length:clamp(96px,14vw,220px)]"
         >
           JOURNAL<span className="text-[#FFCC00]">.</span>
         </h2>
@@ -318,7 +384,7 @@ function Journal() {
           </div>
           <ul className="lg:col-span-5 lg:col-start-8 lg:pt-14">
             {rest.map((item) => (
-              <li key={item.title} className="border-t-[3px] border-[#111] py-6 lg:py-8">
+              <li key={item.title} className="border-t border-[#111] py-6 lg:py-8">
                 <h3 className="text-[#111] font-black text-[22px] lg:text-[26px] leading-[1.45] text-balance">{item.title}</h3>
                 <p className="mt-3 text-[#333] text-[16px] leading-[1.95] text-balance">{item.body}</p>
               </li>
@@ -355,7 +421,7 @@ function Contact() {
         <Eyebrow tone="light">CONTACT</Eyebrow>
         <h2
           id="contact-title"
-          className="mt-6 lg:mt-8 text-white font-black leading-[1.1] text-[length:min(13vw,52px)] lg:text-[length:clamp(64px,8vw,124px)]"
+          className="mt-6 lg:mt-8 text-white font-black leading-[1.1] tracking-[-0.03em] text-[length:min(13vw,52px)] lg:text-[length:clamp(64px,8vw,124px)]"
         >
           お問い合わせ
         </h2>
@@ -406,7 +472,9 @@ function Contact() {
 
 export default function AboutContent() {
   return (
-    <div className="bg-white text-[#111] [word-break:auto-phrase]">
+    <div className="bg-white text-[#111] [word-break:auto-phrase] [font-family:Inter,'Noto_Sans_JP',sans-serif]">
+      {/* 英字は Inter、日本語は Noto Sans JP。React が head へ移して読み込む */}
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" precedence="default" />
       <Header />
       <main>
         <Hero />
