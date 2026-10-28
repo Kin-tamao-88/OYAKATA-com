@@ -5,6 +5,7 @@ import {
   ORGANIZATION_NAME,
   SITE_NAME,
   SITE_URL,
+  CONTRACTORS_PUBLIC,
   STATIC_ROUTES,
   absoluteUrl,
 } from "./site";
@@ -112,7 +113,7 @@ export function buildSitemap(): string {
       lastmod: p.dateModified,
     })),
     // 親方ドットコム パートナーズ(index可能なページのみ。サンプルの間は空)
-    ...getIndexablePaths().map((path) => ({ loc: absoluteUrl(path), lastmod: undefined as string | undefined })),
+    ...(CONTRACTORS_PUBLIC ? getIndexablePaths() : []).map((path) => ({ loc: absoluteUrl(path), lastmod: undefined as string | undefined })),
   ];
   const urls = entries
     .map(

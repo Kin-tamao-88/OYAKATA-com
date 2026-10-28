@@ -13,6 +13,15 @@ export const STATIC_ROUTES: { path: string; lastmod?: string }[] = [
   { path: "/privacy" },
 ];
 
+/**
+ * 親方ドットコム パートナーズ(/contractors 配下)を一般公開するか。
+ * 既定は非公開: ビルド時にHTMLを出力せず、公開用JSにもパートナーズのコード・データを含めない。
+ * 本番では /contractors 配下が404になり、sitemapにも載らない。
+ * データ(src/contractors/*)は削除しない。公開を再開するときは、ビルド環境に
+ * VITE_CONTRACTORS_PUBLIC=true を設定して再デプロイする(Vercelの環境変数。Previewだけに設定すれば確認用にも使える)。
+ */
+export const CONTRACTORS_PUBLIC = import.meta.env.VITE_CONTRACTORS_PUBLIC === "true";
+
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path}`;
 }
