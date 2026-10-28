@@ -1,5 +1,6 @@
 import type { SeoPageDef } from "./types";
 import { about } from "./pages/about";
+import { corporate } from "./pages/corporate";
 import { constructionMarketing } from "./pages/construction-marketing";
 
 /**
@@ -8,7 +9,7 @@ import { constructionMarketing } from "./pages/construction-marketing";
  * 2) ここの配列に追加する。
  * プリレンダー・sitemap.xml・パンくず・関連リンクは、この配列から自動生成される。
  */
-export const SEO_PAGES: SeoPageDef[] = [about, constructionMarketing];
+export const SEO_PAGES: SeoPageDef[] = [about, corporate, constructionMarketing];
 
 export function findPage(slug: string): SeoPageDef | undefined {
   return SEO_PAGES.find((page) => page.slug === slug);
