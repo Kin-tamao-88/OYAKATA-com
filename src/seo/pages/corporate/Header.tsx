@@ -9,7 +9,7 @@ const NAV_ITEMS = [
 ];
 
 /** ロゴ(横組み・余白付き画像)を本体部分だけ切り出して表示する */
-function Logo() {
+export function Logo() {
   return (
     <a href="/corporate" className="block relative h-[40px] w-[157px] lg:h-[46px] lg:w-[181px] overflow-hidden shrink-0" aria-label="親方ドットコム">
       <img

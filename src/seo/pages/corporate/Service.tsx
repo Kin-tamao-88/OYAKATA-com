@@ -1,3 +1,4 @@
+import { CONTRACTORS_PUBLIC } from "../../site";
 import { IMG } from "./assets";
 import { ArrowRight, ChartIcon, HandshakeIcon, PeopleIcon } from "./icons";
 import { SectionLabel } from "./Mission";
@@ -28,7 +29,7 @@ const SERVICES = [
     body: "工事を依頼したいお客様と、施工を担う事業者をつなぐサービス。工事会社の新たな受注機会を広げます。",
     img: IMG.service3,
     Icon: HandshakeIcon,
-    href: "/contractors",
+    href: CONTRACTORS_PUBLIC ? "/contractors" : undefined,
   },
 ];
 

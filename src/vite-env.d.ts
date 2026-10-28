@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly VITE_CONTACT_API_URL: string;
   readonly VITE_LIFF_ID: string;
+  readonly VITE_CONTRACTORS_PUBLIC?: string;
 }
 
 interface ImportMeta {

@@ -1,5 +1,6 @@
 import "./corporate.css";
 import Contact from "./Contact";
+import Footer from "./Footer";
 import Fv from "./Fv";
 import Header from "./Header";
 import Mission from "./Mission";
@@ -20,6 +21,7 @@ export default function CorporateContent() {
         <Partners />
         <Contact />
       </main>
+      <Footer />
     </div>
   );
 }

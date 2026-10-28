@@ -10,7 +10,8 @@ captureUtmParams();
 const path = window.location.pathname.replace(/\/+$/, "") || "/";
 const rootEl = document.getElementById("root")!;
 
-if (path === "/contractors" || path.startsWith("/contractors/")) {
+// 非公開の間は条件がビルド時にfalseへ確定し、パートナーズのチャンクはビルドに含まれない(site.ts の CONTRACTORS_PUBLIC と同じ条件)
+if (import.meta.env.VITE_CONTRACTORS_PUBLIC === "true" && (path === "/contractors" || path.startsWith("/contractors/"))) {
   // 親方ドットコム パートナーズは別チャンクにして、トップLPの読み込みサイズに影響させない。
   // プリレンダー済みHTMLがある場合はハイドレートし、ない場合は通常描画する。
   const { default: ContractorsRoute } = await import("./contractors/ContractorsRoute");

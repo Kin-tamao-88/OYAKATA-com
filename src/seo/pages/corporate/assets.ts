@@ -10,7 +10,9 @@ import missionPhoto from "../../../assets/images/hero/hero-new-background.webp";
 import service1 from "../../../assets/images/OC05/hero-pc.webp";
 import service2 from "../../../assets/images/about/approach-meeting.webp";
 import housesPhoto from "../../../assets/images/contractors/fv-background.webp";
+import strengthPhoto from "../../../assets/images/OC06/reason-industry-marketing.webp";
 import contactPhoto from "../../../assets/images/OC05/band-pc.webp";
+import partnersScreen from "../../../assets/images/corporate/partners-screen.webp";
 
 export const IMG = {
   logo,
@@ -20,7 +22,8 @@ export const IMG = {
   service1,
   service2,
   service3: housesPhoto,
-  strength: missionPhoto,
+  strength: strengthPhoto,
   partners: housesPhoto,
+  partnersScreen,
   contact: contactPhoto,
 } as const;
