@@ -12,7 +12,6 @@ export default function Strength() {
   return (
     <section id="strength" className="scroll-mt-[64px] lg:scroll-mt-[76px] relative overflow-hidden bg-[#fafafa]" aria-labelledby="strength-title">
       <img src={IMG.strength} alt="" className="absolute right-0 top-0 h-full w-[48%] object-cover object-[85%_30%] [mask-image:linear-gradient(90deg,transparent,#000_30%)] hidden lg:block" />
-      <img src={IMG.brush} alt="" className="pointer-events-none absolute -right-[14%] -top-[8%] w-[42%] lg:right-[-4%] lg:-top-[16%] lg:w-[22%] rotate-[-24deg]" aria-hidden="true" />
 
       <div className="relative px-5 py-14 lg:py-[56px] lg:px-[max(40px,calc((100vw-1320px)/2))]">
         <SectionLabel en="OUR STRENGTHS" ja="" />
