@@ -123,13 +123,18 @@ function fetchCombinedReach_(config, campaignIds, dateStr, oldReach, v2Reach, to
 /**
  * 日次集計。
  * ・広告費/Imp/クリック/LPV/CPM は 旧+Ver2 の合算
- * ・結果(I/J)は旧キャンペーン行のみ（META_RESULT_ACTION_TYPE）。Ver2のLeadは混ぜない
- * ・Ver2のLeadは values.v2 に分けて返す（T/U列用）。action_type未登録・開始日前は null
+ * ・結果(I/J)は 旧+Ver2 の合算。キャンペーンごとに成果のaction_typeを1種類だけ使う
+ *   （旧: META_RESULT_ACTION_TYPE / Ver2: META_V2_RESULT_ACTION_TYPE。広告マネージャの「結果」と同じ定義）
+ * ・Ver2のLeadは values.v2 にも分けて返す（T/U列用）。開始日前は null
+ * ・Ver2配信日にaction_type未登録なら、0と誤記録しないようエラーで止める
  * ・Reach/Frequency: Ver2配信日は合算ユニーク値が取れた場合のみ値を返し、
  *   取れない場合は null（= 日次シートの既存値を更新しない）。Ver2が無い日は従来どおり
  */
 function fetchMetaDailyInsights_(config, dateStr) {
   var v2 = getActiveV2_(dateStr);
+  if (v2 && !v2.actionType) {
+    throw new Error('META_V2_RESULT_ACTION_TYPE is missing in Script Properties.');
+  }
   var ids = v2 ? config.campaignIds.concat([v2.campaignId]) : config.campaignIds;
   var fields = 'campaign_id,campaign_name,spend,impressions,inline_link_clicks,actions,cost_per_action_type,reach,frequency';
   var rows = fetchInsightsRows_(config, 'campaign', fields, ids, dateStr);
@@ -172,12 +177,11 @@ function fetchMetaDailyInsights_(config, dateStr) {
       var foundCost = findActionValue_(row.cost_per_action_type, actionType);
       unitCost = (foundCost !== null) ? foundCost : (spend / result);
     }
+    totalResult += result;
+    if (result > 0) totalResultCost += unitCost * result;
     if (isV2) {
       v2Leads += result;
       if (result > 0) v2LeadCostSum += unitCost * result;
-    } else {
-      totalResult += result;
-      if (result > 0) totalResultCost += unitCost * result;
     }
     breakdown.push({
       date: dateStr,
@@ -221,7 +225,7 @@ function fetchMetaDailyInsights_(config, dateStr) {
     reach: reachOut,
     frequency: frequencyOut,
     cpm: totalImpressions > 0 ? ((totalSpend / totalImpressions) * 1000) : 0,
-    v2: (v2 && v2.actionType) ? { leads: v2Leads, leadCost: v2Leads > 0 ? (v2LeadCostSum / v2Leads) : '' } : null,
+    v2: v2 ? { leads: v2Leads, leadCost: v2Leads > 0 ? (v2LeadCostSum / v2Leads) : '' } : null,
     breakdown: breakdown
   };
 }
