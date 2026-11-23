@@ -8,17 +8,32 @@ type Props = {
   company: Company;
   /** 先頭の数枚だけ即時読み込みにする */
   eager?: boolean;
+  /** 1社だけ掲載するとき、PCで画像を左・本文を右に並べる */
+  wide?: boolean;
 };
 
-export default function CompanyCard({ company, eager = false }: Props) {
+export default function CompanyCard({ company, eager = false, wide = false }: Props) {
   const works = company.categories.map(getCategoryLabel).join("／");
+  // 狭い幅で折り返すときは、都道府県と市区町村の間で改行する(市名の途中で切らない)
+  const locationParts = company.location.match(/^(.+?[都道府県])(.+)$/);
 
   return (
-    <article className="bg-white border border-[#d8d4ca] flex flex-col h-full">
+    <article
+      className={`bg-white border border-[#d8d4ca] flex flex-col h-full ${wide ? "lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:h-auto" : ""}`}
+    >
       {/* バッジと所在地は画像の外に置く(FV画像のロゴ・電話番号に重ねない) */}
-      <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[#e8e4da]">
+      <div className={`flex items-center justify-between gap-3 px-4 py-3 border-b border-[#e8e4da] ${wide ? "lg:col-span-2" : ""}`}>
         <PartnerBadge />
-        <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px] text-right">{company.location}</p>
+        <p className="text-[#1a1a1a] font-bold text-[14px] lg:text-[15px] text-right">
+          {locationParts ? (
+            <>
+              <span className="inline-block">{locationParts[1]}</span>
+              <span className="inline-block">{locationParts[2]}</span>
+            </>
+          ) : (
+            company.location
+          )}
+        </p>
       </div>
       <div className="relative">
         <img
@@ -28,7 +43,7 @@ export default function CompanyCard({ company, eager = false }: Props) {
           height={1024}
           loading={eager ? "eager" : "lazy"}
           decoding="async"
-          className="w-full aspect-[3/2] object-cover"
+          className={`w-full aspect-[3/2] object-cover ${wide ? "lg:h-full lg:aspect-auto" : ""}`}
         />
       </div>
 
@@ -50,7 +65,19 @@ export default function CompanyCard({ company, eager = false }: Props) {
         </dl>
 
         <div className="mt-auto pt-6">
-          {getCompanyDetail(company.slug) ? (
+          {company.externalUrl ? (
+            <a
+              href={company.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-3 h-[60px] px-8 bg-[#FFD000] text-[#1a1a1a] font-black text-[17px] no-underline hover:brightness-95 transition-all"
+            >
+              <span className="sm:hidden">サイトを見る</span>
+              <span className="hidden sm:inline">{company.name}のサイトを見る</span>
+              <ArrowIcon className="w-5 h-5" />
+              <span className="sr-only">(別のウィンドウで開きます)</span>
+            </a>
+          ) : getCompanyDetail(company.slug) ? (
             <a
               href={`/contractors/${company.slug}`}
               className="inline-flex items-center gap-2 text-[#1a1a1a] font-black text-[17px] no-underline border-b-[3px] border-[#FFD000] pb-1 hover:gap-3 transition-all"

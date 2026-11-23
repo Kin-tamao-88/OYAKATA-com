@@ -1,4 +1,4 @@
-import { COMPANIES, EMPTY_FILTER, HAS_COMPANIES, filterCompanies, getCategoryLabel } from "../data";
+import { COMPANIES, EMPTY_FILTER, HAS_COMPANIES, SHOW_FILTERS, filterCompanies, getCategoryLabel } from "../data";
 import type { CompanyFilter } from "../data";
 import CompanyCard from "./CompanyCard";
 import FilterSelects from "./FilterSelects";
@@ -30,8 +30,36 @@ function ComingNotice() {
   );
 }
 
+/** 掲載が1社だけの間の表示。絞り込み・件数は出さず、カードを1枚、横長で見せる。 */
+function SingleListing() {
+  return (
+    <section id="companies" className="scroll-mt-[72px] lg:scroll-mt-[90px] bg-[#f4f1ea] py-16 lg:py-24">
+      <div className="max-w-[1240px] mx-auto px-5 lg:px-10">
+        <div className="mb-8 lg:mb-10">
+          <p className="flex items-center gap-3 mb-3 text-[#1a1a1a] font-bold text-[15px]">
+            <span className="block w-8 h-[3px] bg-[#FFD000]" />
+            Contractors
+          </p>
+          <h2 className="text-[#1a1a1a] font-black leading-[1.35] text-[28px] lg:text-[44px]">掲載パートナー</h2>
+          <p className="mt-3 text-[#333] text-[16px] lg:text-[18px] font-medium leading-[1.8] text-balance [word-break:auto-phrase]">
+            親方ドットコム パートナーズに掲載している企業です。
+          </p>
+        </div>
+        <ul>
+          {COMPANIES.map((c) => (
+            <li key={c.slug}>
+              <CompanyCard company={c} eager wide />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 export default function CompanyList({ filter, onFilterChange }: Props) {
   if (!HAS_COMPANIES) return <ComingNotice />;
+  if (!SHOW_FILTERS) return <SingleListing />;
 
   const results = filterCompanies(COMPANIES, filter);
   const isFiltered = Boolean(filter.area || filter.category);

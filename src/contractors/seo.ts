@@ -12,7 +12,10 @@ const WEBSITE_ID = `${SITE_ORIGIN}/#website`;
 
 export const CONTRACTORS_TITLE = "親方ドットコム パートナーズ｜地域の頼れる工事会社を探す";
 export const CONTRACTORS_DESCRIPTION =
-  "親方ドットコム パートナーズは、親方ドットコムが紹介する地域の工事会社ネットワークです。電気工事・外壁塗装・リフォーム・外構工事など、地域と工事内容から頼れる工事会社を探せます。";
+  "親方ドットコム パートナーズは、親方ドットコムが紹介する、地域の工事会社・サービス会社のネットワークです。ハウスクリーニングなど、地域と工事内容から頼れる会社を探せます。";
+
+/** 一覧ページのOGP画像(既存素材。専用画像ができたら差し替える) */
+const LIST_OG_IMAGE = SITE_ORIGIN + "/og/about.jpg";
 
 const ROBOTS_INDEX = "index, follow, max-image-preview:large";
 const ROBOTS_NOINDEX = "noindex, nofollow";
@@ -51,6 +54,12 @@ function breadcrumbNode(url: string, items: { name: string; url: string }[]): Ld
   };
 }
 
+/** 一覧から遷移する先のURL。外部LPがあればそれ、なければ公開済みの個別ページ。どちらもなければ undefined */
+function listingUrl(company: Company): string | undefined {
+  if (company.externalUrl) return company.externalUrl;
+  return getCompanyDetail(company.slug) ? `${CONTRACTORS_URL}/${company.slug}` : undefined;
+}
+
 /** 一覧ページ /contractors */
 export function getListSeo(): PageSeo {
   const graph: LdNode[] = [
@@ -71,8 +80,9 @@ export function getListSeo(): PageSeo {
     ]),
   ];
 
-  // 0件、またはサンプル企業の間は ItemList を出さない(空のリスト・実在企業との誤認を避ける)
-  const listed = COMPANIES.filter((c) => getCompanyDetail(c.slug));
+  // 0件、またはサンプル企業の間は ItemList を出さない(空のリスト・実在企業との誤認を避ける)。
+  // 各企業のURLは、実在するページ(外部LP、または公開済みの個別ページ)だけを使う。
+  const listed = COMPANIES.filter((c) => !c.isSample && listingUrl(c));
   if (!HAS_SAMPLE_DATA && listed.length > 0) {
     graph.push({
       "@type": "ItemList",
@@ -80,8 +90,24 @@ export function getListSeo(): PageSeo {
       itemListElement: listed.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        name: c.name,
-        url: `${CONTRACTORS_URL}/${c.slug}`,
+        item: {
+          "@type": "LocalBusiness",
+          name: c.name,
+          url: listingUrl(c),
+          ...(c.schema
+            ? {
+                address: {
+                  "@type": "PostalAddress",
+                  addressCountry: "JP",
+                  postalCode: c.schema.postalCode,
+                  addressRegion: c.schema.region,
+                  addressLocality: c.schema.locality,
+                  streetAddress: c.schema.streetAddress,
+                },
+              }
+            : {}),
+          areaServed: c.areas,
+        },
       })),
     });
   }
@@ -90,6 +116,7 @@ export function getListSeo(): PageSeo {
     title: CONTRACTORS_TITLE,
     description: CONTRACTORS_DESCRIPTION,
     url: CONTRACTORS_URL,
+    ogImage: LIST_OG_IMAGE,
     // 掲載0件、または開発用サンプルが含まれる間は検索エンジンにインデックスさせない。
     robots: !HAS_COMPANIES || HAS_SAMPLE_DATA || listed.length === 0 ? ROBOTS_NOINDEX : ROBOTS_INDEX,
     graph,
