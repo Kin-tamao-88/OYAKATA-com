@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EMPTY_FILTER } from "./data";
+import { EMPTY_FILTER, HAS_COMPANIES } from "./data";
 import type { CategoryId, CompanyFilter } from "./data";
 import { usePageSeo } from "./useSeo";
 import { getListSeo } from "./seo";
@@ -37,9 +37,9 @@ export default function ContractorsPage() {
       <Header />
       <main>
         <Hero filter={filter} onFilterChange={setFilter} onSearch={scrollToCompanies} />
-        <Categories filter={filter} onSelect={selectCategory} />
+        {HAS_COMPANIES && <Categories filter={filter} onSelect={selectCategory} />}
         <CompanyList filter={filter} onFilterChange={setFilter} />
-        <Areas filter={filter} onSelect={selectArea} />
+        {HAS_COMPANIES && <Areas filter={filter} onSelect={selectArea} />}
         <Guide />
         <ListingCta />
       </main>

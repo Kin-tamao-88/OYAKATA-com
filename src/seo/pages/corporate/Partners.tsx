@@ -33,14 +33,7 @@ export default function Partners() {
         </div>
 
         <div className="mt-10 lg:mt-0">
-          <div className="border border-[#d9d9d9] bg-white overflow-hidden">
-            <div className="h-[28px] bg-[#f0f0f0] border-b border-[#d9d9d9] flex items-center gap-[6px] px-3" aria-hidden="true">
-              <span className="w-[9px] h-[9px] rounded-full bg-[#c9c9c9]" />
-              <span className="w-[9px] h-[9px] rounded-full bg-[#c9c9c9]" />
-              <span className="w-[9px] h-[9px] rounded-full bg-[#c9c9c9]" />
-            </div>
-            <img src={IMG.partnersScreen} alt="親方ドットコム パートナーズのサイト画面" className="w-full h-auto block" loading="lazy" />
-          </div>
+          <img src={IMG.partners} alt="住宅が並ぶ街並み" className="w-full h-auto lg:h-[420px] object-cover block" width={900} height={600} loading="lazy" />
         </div>
 
         <div className="mt-10 lg:mt-12 lg:col-span-2 lg:text-center">

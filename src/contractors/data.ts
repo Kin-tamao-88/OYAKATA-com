@@ -1,7 +1,3 @@
-import fvMaruesu from "../assets/images/contractors/fv-maruesu.webp";
-import fvTakumi from "../assets/images/contractors/fv-takumi.webp";
-import fvKodensetsu from "../assets/images/contractors/fv-kodensetsu.webp";
-import fvKiyomirai from "../assets/images/contractors/fv-kiyomirai.webp";
 
 /* ────────────────────────────────────────────────
  * 親方ドットコム パートナーズ データ定義
@@ -78,59 +74,13 @@ export function getCategoryLabel(id: CategoryId): string {
   return categoryLabelMap.get(id) ?? "";
 }
 
-/* ※ 以下は開発・営業デモ用のサンプルデータです。実在の企業とは関係ありません。
- *   先頭4社は、パートナーズ掲載後の企業紹介ページのイメージ(FV画像つき)です。
- *   本番公開時は実在企業のデータに差し替え、isSample を false にしてください。 */
-export const COMPANIES: Company[] = [
-  {
-    slug: "maruesu-reform",
-    name: "マルエスリフォーム",
-    location: "大阪府 大阪市",
-    categories: ["exterior"],
-    areas: ["大阪府", "兵庫県", "京都府"],
-    areaLabel: "大阪府・兵庫県・京都府",
-    summary: "外壁塗装・屋根工事・雨漏り修理を、住まいの状態に合わせてご提案。安心の施工保証と、地域密着の丁寧な対応が強みです。",
-    image: fvMaruesu,
-    imageAlt: "マルエスリフォームの紹介ページのファーストビュー。外壁塗装の職人と、外壁塗装・屋根工事・雨漏り修理のメニュー",
-    isSample: true,
-  },
-  {
-    slug: "takumi-naisou",
-    name: "匠内装",
-    location: "大阪府 大阪市",
-    categories: ["interior", "reform"],
-    areas: ["大阪府", "兵庫県", "京都府"],
-    areaLabel: "大阪府・兵庫県・京都府",
-    summary: "店舗・オフィス・住宅の内装工事とリフォームを、企画から施工までワンストップで対応。確かな技術で理想の空間をカタチにします。",
-    image: fvTakumi,
-    imageAlt: "匠内装の紹介ページのファーストビュー。内装工事をする職人と、店舗・オフィス・住宅のメニュー",
-    isSample: true,
-  },
-  {
-    slug: "kodensetsu",
-    name: "光電設",
-    location: "大阪府 大阪市",
-    categories: ["electric"],
-    areas: ["大阪府", "兵庫県", "京都府"],
-    areaLabel: "大阪府・兵庫県・京都府",
-    summary: "住宅から店舗・オフィス・工場まで、経験豊富な職人が確かな技術で電気設備を施工。EV充電設備の設置にも対応します。",
-    image: fvKodensetsu,
-    imageAlt: "光電設の紹介ページのファーストビュー。電気工事をする職人と、住宅・店舗・工場・EV充電のメニュー",
-    isSample: true,
-  },
-  {
-    slug: "kiyomirai",
-    name: "きよみらい",
-    location: "大阪府 大阪市",
-    categories: ["cleaning"],
-    areas: ["大阪府", "兵庫県", "京都府"],
-    areaLabel: "大阪府・兵庫県・京都府",
-    summary: "キッチン・浴室・エアコンなど、頑固な汚れを徹底洗浄するハウスクリーニング専門店。暮らしに気持ちいい毎日をお届けします。",
-    image: fvKiyomirai,
-    imageAlt: "きよみらいの紹介ページのファーストビュー。清掃をするスタッフと、キッチン・浴室・エアコンのメニュー",
-    isSample: true,
-  },
-];
+/* 掲載企業。実在のパートナーのみ追加する(ダミー・架空の企業は載せない)。
+ * 0件の間は一覧が「提携パートナーを順次ご紹介します」の案内になり、絞り込みや件数は表示されない。
+ * 追加するときは companyDetails.ts の COMPANY_DETAILS にも同じ slug で詳細を足す。 */
+export const COMPANIES: Company[] = [];
+
+/** 掲載企業が1社以上あるか。0件のときは一覧・絞り込み・件数を出さない。 */
+export const HAS_COMPANIES = COMPANIES.length > 0;
 
 export const HAS_SAMPLE_DATA = COMPANIES.some((c) => c.isSample);
 

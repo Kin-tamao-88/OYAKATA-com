@@ -1,4 +1,4 @@
-import { COMPANIES, HAS_SAMPLE_DATA } from "./data";
+import { COMPANIES, HAS_COMPANIES, HAS_SAMPLE_DATA } from "./data";
 import type { Company } from "./data";
 import { COMPANY_DETAILS, getCompanyDetail } from "./companyDetails";
 import type { CompanyDetail } from "./companyDetails";
@@ -71,12 +71,13 @@ export function getListSeo(): PageSeo {
     ]),
   ];
 
-  // サンプル企業を構造化データに出さない(実在企業と誤認されないため)
-  if (!HAS_SAMPLE_DATA) {
+  // 0件、またはサンプル企業の間は ItemList を出さない(空のリスト・実在企業との誤認を避ける)
+  const listed = COMPANIES.filter((c) => getCompanyDetail(c.slug));
+  if (!HAS_SAMPLE_DATA && listed.length > 0) {
     graph.push({
       "@type": "ItemList",
       "@id": `${CONTRACTORS_URL}#list`,
-      itemListElement: COMPANIES.filter((c) => getCompanyDetail(c.slug)).map((c, i) => ({
+      itemListElement: listed.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
         name: c.name,
@@ -89,8 +90,8 @@ export function getListSeo(): PageSeo {
     title: CONTRACTORS_TITLE,
     description: CONTRACTORS_DESCRIPTION,
     url: CONTRACTORS_URL,
-    // 開発用サンプルデータが含まれる間は検索エンジンにインデックスさせない。
-    robots: HAS_SAMPLE_DATA ? ROBOTS_NOINDEX : ROBOTS_INDEX,
+    // 掲載0件、または開発用サンプルが含まれる間は検索エンジンにインデックスさせない。
+    robots: !HAS_COMPANIES || HAS_SAMPLE_DATA || listed.length === 0 ? ROBOTS_NOINDEX : ROBOTS_INDEX,
     graph,
   };
 }
@@ -169,7 +170,7 @@ export function getCompanySeo(company: Company, detail: CompanyDetail): PageSeo 
 /** sitemap対象(index可能な)個別企業ページのパス。サンプルの間は空。 */
 export function getIndexablePaths(): string[] {
   const paths: string[] = [];
-  if (!HAS_SAMPLE_DATA) paths.push(CONTRACTORS_PATH);
+  if (HAS_COMPANIES && !HAS_SAMPLE_DATA) paths.push(CONTRACTORS_PATH);
   for (const company of COMPANIES) {
     const detail = getCompanyDetail(company.slug);
     if (detail && isCompanyIndexable(company, detail)) paths.push(companyPath(company.slug));

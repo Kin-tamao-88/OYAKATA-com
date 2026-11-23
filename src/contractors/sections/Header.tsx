@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { trackLineClick } from "../../lib/analytics";
 import { buildLineCtaHref } from "../../lib/line";
+import { HAS_COMPANIES } from "../data";
 import { ArrowIcon, LineIcon } from "../icons";
 import logoMark from "../../assets/images/logos/logo-mark2.webp";
 
-const NAV_ITEMS = [
+const ALL_NAV_ITEMS = [
   { label: "工事会社を探す", href: "#companies" },
   { label: "工事の種類から探す", href: "#categories" },
   { label: "エリアから探す", href: "#areas" },
   { label: "掲載について", href: "#listing" },
 ];
+// 0件の間は、存在しない絞り込みセクションへのリンクを出さない
+const NAV_ITEMS = HAS_COMPANIES ? ALL_NAV_ITEMS : ALL_NAV_ITEMS.filter((i) => i.href === "#companies" || i.href === "#listing");
 
 function BrandLockup() {
   return (

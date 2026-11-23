@@ -1,6 +1,7 @@
+import { HAS_COMPANIES } from "../data";
 import logoMark from "../../assets/images/logos/logo-mark2.webp";
 
-const LINKS = [
+const ALL_LINKS = [
   { label: "親方ドットコム", href: "/" },
   { label: "親方ドットコム パートナーズ", href: "/contractors" },
   { label: "工事内容から探す", href: "#categories" },
@@ -8,6 +9,7 @@ const LINKS = [
   { label: "掲載について", href: "#listing" },
   { label: "プライバシーポリシー", href: "/privacy" },
 ];
+const LINKS = HAS_COMPANIES ? ALL_LINKS : ALL_LINKS.filter((l) => l.href !== "#categories" && l.href !== "#areas");
 
 type Props = {
   /** 一覧ページ以外から使うときのアンカー用ベースパス(例: /contractors) */
