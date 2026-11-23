@@ -1,4 +1,3 @@
-
 /* ────────────────────────────────────────────────
  * 親方ドットコム パートナーズ データ定義
  * 掲載企業は COMPANIES 配列に追加するだけで一覧・絞り込みに反映される。
@@ -62,8 +61,21 @@ export type Company = {
   areaLabel: string;
   /** 企業の特徴を伝える短い紹介文 */
   summary: string;
-  image: string;
-  imageAlt: string;
+  /** 使用許可を確認できた画像だけを設定する。未設定なら、カードは写真なしの文字だけのレイアウトになる */
+  image?: string;
+  imageAlt?: string;
+  /**
+   * 一覧のカードから直接遷移する外部サイト(掲載企業のLP)のURL。
+   * 指定した企業は個別ページ(/contractors/<slug>)を作らず、カードのボタンがこのURLへ遷移する。
+   */
+  externalUrl?: string;
+  /** 構造化データ(LocalBusiness)用。確認できた事実だけを入れる */
+  schema?: {
+    postalCode: string;
+    region: string;
+    locality: string;
+    streetAddress: string;
+  };
   /** 開発用サンプルなら true。本番データに差し替える際は false にする。 */
   isSample: boolean;
 };
@@ -77,10 +89,31 @@ export function getCategoryLabel(id: CategoryId): string {
 /* 掲載企業。実在のパートナーのみ追加する(ダミー・架空の企業は載せない)。
  * 0件の間は一覧が「提携パートナーを順次ご紹介します」の案内になり、絞り込みや件数は表示されない。
  * 追加するときは companyDetails.ts の COMPANY_DETAILS にも同じ slug で詳細を足す。 */
-export const COMPANIES: Company[] = [];
+export const COMPANIES: Company[] = [
+  {
+    // 第1号パートナー。個別ページは作らず、一覧のカードから企業のLPへ直接遷移する。
+    // 掲載内容は、クライアント現行サイト(https://www.tcp-2011.com 事業所概要・事業案内)で確認できた事実のみ。
+    slug: "total-cleanpro",
+    name: "トータルクリーンプロ",
+    location: "埼玉県さいたま市西区",
+    categories: ["cleaning"],
+    areas: ["埼玉県", "東京都", "神奈川県", "千葉県"],
+    areaLabel: "埼玉県・東京都・神奈川県・千葉県(一部エリアを除く)",
+    summary:
+      "さいたま市に拠点を置く清掃業者です。住まいのハウスクリーニングやエアコンクリーニングのほか、定期清掃・新築清掃にも対応しています。年中無休で、ご相談を受け付けています。",
+    // 写真は、使用許可を確認できてから設定する(現在は写真なしで掲載)。
+    // 遷移先はクライアントの公式サイト。LPは未公開のため、LPが正式公開されたらここを差し替える。
+    externalUrl: "https://www.tcp-2011.com",
+    schema: { postalCode: "331-0047", region: "埼玉県", locality: "さいたま市西区", streetAddress: "指扇3555-1" },
+    isSample: false,
+  },
+];
 
 /** 掲載企業が1社以上あるか。0件のときは一覧・絞り込み・件数を出さない。 */
 export const HAS_COMPANIES = COMPANIES.length > 0;
+
+/** 検索・絞り込みUI(FVの検索、工事種類、エリア)を出すか。比べる相手がいない1社以下の間は出さない。 */
+export const SHOW_FILTERS = COMPANIES.length >= 2;
 
 export const HAS_SAMPLE_DATA = COMPANIES.some((c) => c.isSample);
 

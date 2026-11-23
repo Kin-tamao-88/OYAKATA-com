@@ -1,4 +1,4 @@
-import { HAS_COMPANIES } from "../data";
+import { SHOW_FILTERS } from "../data";
 import type { CompanyFilter } from "../data";
 import { CircleScene, MapPin, NeighborhoodScene, YellowBlob, BrushMarker } from "../art";
 import { FV_BACKGROUND_PHOTO, FV_CIRCLES, FV_MAP } from "../fvAssets";
@@ -129,7 +129,7 @@ export default function Hero({ filter, onFilterChange, onSearch }: Props) {
         </div>
 
         {/* 検索フォーム：FV下部に重ねて配置 */}
-        {HAS_COMPANIES && (
+        {SHOW_FILTERS && (
         <form
           role="search"
           aria-label="工事会社を探す"

@@ -21,15 +21,17 @@ export default function CompanyBack({ currentSlug }: Props) {
               {others.map((c) => (
                 <li key={c.slug}>
                   <a href={`/contractors/${c.slug}`} className="group block no-underline border border-[#d8d4ca] bg-white hover:border-[#1a1a1a] transition-colors">
-                    <img
-                      src={c.image}
-                      alt={c.imageAlt}
-                      width={1536}
-                      height={1024}
-                      loading="lazy"
-                      decoding="async"
-                      className="block w-full aspect-[3/2] object-cover"
-                    />
+                    {c.image && (
+                      <img
+                        src={c.image}
+                        alt={c.imageAlt ?? ""}
+                        width={1536}
+                        height={1024}
+                        loading="lazy"
+                        decoding="async"
+                        className="block w-full aspect-[3/2] object-cover"
+                      />
+                    )}
                     <span className="block px-3 py-3 lg:px-4 lg:py-4">
                       <span className="block font-black text-[#1a1a1a] text-[16px] lg:text-[18px] leading-[1.4]">{c.name}</span>
                       <span className="block mt-1 text-[#555] text-[14px] leading-[1.6]">
