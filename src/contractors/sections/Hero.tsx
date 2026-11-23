@@ -86,7 +86,7 @@ export default function Hero({ filter, onFilterChange, onSearch }: Props) {
             </span>
           </h1>
 
-          <p className="mt-5 lg:mt-8 text-[#1a1a1a] text-[16px] lg:text-[18px] leading-[1.9] font-medium text-balance [word-break:auto-phrase] lg:text-left">
+          <p className="mt-5 lg:mt-8 max-lg:bg-white/90 max-lg:px-3 max-lg:py-2 max-lg:w-fit text-[#1a1a1a] text-[16px] lg:text-[18px] leading-[1.9] font-medium text-balance [word-break:auto-phrase] lg:text-left">
             外壁塗装・リフォーム・水道・電気・外構など
             <br className="hidden lg:block" />
             地域で活躍する工事会社を、エリアや工事内容から

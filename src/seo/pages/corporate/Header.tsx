@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { IMG } from "./assets";
-import { ArrowRight } from "./icons";
+import { Arrow } from "./icons";
 
 const NAV_ITEMS = [
   { label: "私たちについて", href: "#mission" },
@@ -21,64 +20,76 @@ export function Logo() {
   );
 }
 
-export default function Header() {
-  const [open, setOpen] = useState(false);
+type Props = {
+  /** SPメニューの開閉。SP固定CTAと重ならないよう、状態は親(Content)が持つ */
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
 
+export default function Header({ open, onOpenChange }: Props) {
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#e8e8e8]">
-      <div className="flex items-center justify-between h-[64px] lg:h-[76px] px-5 lg:px-[max(40px,calc((100vw-1320px)/2))]">
+    <header className="sticky top-0 z-50 bg-white border-b border-[#111]">
+      <div className="flex items-center justify-between h-[64px] lg:h-[76px] pl-5 lg:pl-[max(40px,calc((100vw-1280px)/2))]">
         <Logo />
 
-        <nav className="hidden lg:flex items-center gap-10" aria-label="メインメニュー">
+        <nav className="hidden lg:flex items-center gap-11" aria-label="メインメニュー">
           {NAV_ITEMS.map((item) => (
-            <a key={item.href} href={item.href} className="text-[#111] font-bold text-[16px] hover:text-[#b88700] transition-colors">
+            <a
+              key={item.href}
+              href={item.href}
+              className="py-1 text-[#111] font-bold text-[16px] border-b-[3px] border-transparent hover:border-[#ffd400] transition-colors"
+            >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
-          <a
-            href="#contact"
-            className="hidden lg:flex items-center gap-3 h-[48px] px-7 rounded-full bg-[#ffd400] text-[#111] font-black text-[16px] hover:brightness-95 transition"
-          >
-            お問い合わせ
-            <ArrowRight />
-          </a>
-          <button
-            type="button"
-            onClick={() => setOpen(!open)}
-            aria-expanded={open}
-            aria-label={open ? "メニューを閉じる" : "メニューを開く"}
-            className="lg:hidden flex flex-col items-center justify-center gap-[6px] w-10 h-10"
-          >
-            <span className={`block w-6 h-[2px] bg-[#111] transition-transform ${open ? "translate-y-[8px] rotate-45" : ""}`} />
-            <span className={`block w-6 h-[2px] bg-[#111] transition-opacity ${open ? "opacity-0" : ""}`} />
-            <span className={`block w-6 h-[2px] bg-[#111] transition-transform ${open ? "-translate-y-[8px] -rotate-45" : ""}`} />
-          </button>
-        </div>
+        <a
+          href="#contact"
+          className="hidden lg:flex self-stretch items-center gap-5 px-9 bg-[#111] text-white font-black text-[16px] hover:bg-[#ffd400] hover:text-[#111] transition-colors"
+        >
+          お問い合わせ
+          <Arrow className="w-5" />
+        </a>
+
+        <button
+          type="button"
+          onClick={() => onOpenChange(!open)}
+          aria-expanded={open}
+          aria-controls="corp-sp-menu"
+          aria-label={open ? "メニューを閉じる" : "メニューを開く"}
+          className="lg:hidden flex flex-col items-stretch justify-center gap-[6px] w-16 h-16 px-5 bg-[#111]"
+        >
+          <span className={`block h-[2px] bg-white transition-transform ${open ? "translate-y-[8px] rotate-45" : ""}`} />
+          <span className={`block h-[2px] bg-white transition-opacity ${open ? "opacity-0" : ""}`} />
+          <span className={`block h-[2px] bg-white transition-transform ${open ? "-translate-y-[8px] -rotate-45" : ""}`} />
+        </button>
       </div>
 
       {open && (
-        <nav className="lg:hidden bg-white border-t border-[#e8e8e8] px-5 pb-5" aria-label="モバイルメニュー">
+        <nav
+          id="corp-sp-menu"
+          className="lg:hidden absolute top-full inset-x-0 max-h-[calc(100vh-64px)] overflow-y-auto bg-[#111] px-5 pt-2 pb-7"
+          aria-label="モバイルメニュー"
+        >
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-between py-4 border-b border-[#eee] text-[#111] font-bold text-[16px]"
+              onClick={() => onOpenChange(false)}
+              className="flex items-center justify-between min-h-[60px] border-b border-[#555] text-white font-black text-[18px]"
             >
               {item.label}
-              <ArrowRight className="text-[#e0a800]" />
+              <Arrow className="text-[#ffd400]" />
             </a>
           ))}
           <a
             href="#contact"
-            onClick={() => setOpen(false)}
-            className="mt-5 flex items-center justify-center gap-3 h-[52px] rounded-full bg-[#ffd400] text-[#111] font-black text-[16px]"
+            onClick={() => onOpenChange(false)}
+            className="mt-6 flex items-center justify-between h-[58px] px-7 bg-[#ffd400] text-[#111] font-black text-[16px]"
           >
             お問い合わせ
-            <ArrowRight />
+            <Arrow />
           </a>
         </nav>
       )}

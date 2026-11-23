@@ -303,12 +303,20 @@ export default function Section10() {
           <p className="text-[#666] text-[13px] lg:text-[14px] leading-relaxed">
             運営会社：アイブレ株式会社
           </p>
-          <a
-            href="/privacy"
-            className="inline-block mt-2 text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#171717] transition-colors"
-          >
-            プライバシーポリシー
-          </a>
+          <div className="mt-2 flex items-center justify-center gap-x-5">
+            <a
+              href="/corporate"
+              className="text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#171717] transition-colors"
+            >
+              運営会社
+            </a>
+            <a
+              href="/privacy"
+              className="text-[#666] text-[13px] lg:text-[14px] underline underline-offset-2 hover:text-[#171717] transition-colors"
+            >
+              プライバシーポリシー
+            </a>
+          </div>
         </div>
       </div>
     </section>

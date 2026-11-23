@@ -1,38 +1,21 @@
 import CorporateInquiryForm from "../about/CorporateInquiryForm";
-import { IMG } from "./assets";
-import { ArrowRight, MailIcon } from "./icons";
 
 export default function Contact() {
   return (
-    <section id="contact" className="scroll-mt-[64px] lg:scroll-mt-[76px] relative overflow-hidden bg-[#161616]" aria-labelledby="contact-title">
-      <img src={IMG.contact} alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
-      <div className="absolute inset-0 bg-[#161616]/70" aria-hidden="true" />
-
-      <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7 lg:gap-10 px-5 py-12 lg:py-14 lg:px-[max(40px,calc((100vw-1320px)/2))]">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-14">
-          <div className="leading-[1.4]">
-            <p className="font-['Montserrat'] font-bold text-[#ffd400] text-[13px] tracking-[0.12em]">CONTACT</p>
-            <h2 id="contact-title" className="text-white font-black text-[30px] lg:text-[32px]">お問い合わせ</h2>
-          </div>
-          <p className="text-white text-[16px] leading-[1.95]">
-            法人・企業の皆さまからのご相談・お問い合わせを承っております。<br />
-            お気軽にご連絡ください。
-          </p>
-        </div>
-        <a
-          href="#contact-form"
-          className="flex items-center justify-center gap-4 shrink-0 h-[56px] lg:h-[60px] lg:px-10 rounded-full bg-[#f5b800] text-[#111] font-black text-[16px] hover:brightness-95 transition"
-        >
-          <MailIcon />
-          お問い合わせフォームへ
-          <ArrowRight />
-        </a>
+    <section id="contact" className="scroll-mt-[64px] lg:scroll-mt-[76px] bg-[#111] text-white px-5 pt-[72px] pb-20 grid gap-9 lg:py-32 lg:px-[max(40px,calc((100vw-1280px)/2))] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20 lg:items-start" aria-labelledby="contact-title">
+      <div className="lg:sticky lg:top-[120px]">
+        <p className="font-['Montserrat'] font-extrabold text-[#ffd400] text-[clamp(52px,15vw,62px)] lg:text-[clamp(56px,7.2vw,108px)] leading-none tracking-[-0.01em]" aria-hidden="true">
+          CONTACT
+        </p>
+        <h2 id="contact-title" className="mt-[14px] lg:mt-[22px] text-white font-black text-[27px] lg:text-[34px]">お問い合わせ</h2>
+        <p className="mt-4 lg:mt-[22px] text-[#f1f1f1] text-[16px] lg:text-[17px] leading-[1.95] lg:leading-[2.05]">
+          法人・企業の皆さまからのご相談・お問い合わせを承っております。<br />
+          お気軽にご連絡ください。
+        </p>
       </div>
 
-      <div id="contact-form" className="relative scroll-mt-[64px] lg:scroll-mt-[76px] px-5 pb-16 pt-2 lg:pb-[110px] lg:pt-4">
-        <div className="mx-auto max-w-[720px] border-t border-[#555] pt-10 lg:pt-14">
-          <CorporateInquiryForm />
-        </div>
+      <div id="contact-form" className="scroll-mt-[76px] lg:scroll-mt-[96px] bg-white text-[#111] -mx-2 px-5 pt-8 pb-9 lg:mx-0 lg:px-14 lg:pt-14 lg:pb-[60px]">
+        <CorporateInquiryForm tone="light" />
       </div>
     </section>
   );
