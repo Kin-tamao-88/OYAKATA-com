@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>【デザイン案】親方ドットコム 法人公式サイト リデザイン</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+JP:wght@500;700;900&family=Noto+Serif+JP:wght@700;900&family=Zen+Kurenaido&display=swap" />
+<style>
+/* ===== デザイン案モック(本実装ではない)。写真はすべてリポジトリ内の既存素材を仮置き ===== */
+:root{
+  --ink:#111; --paper:#fff; --warm:#f4f2ec; --yellow:#ffd400; --ochre:#8a6400; --line:#111; --soft:#d9d5cb;
+  --pad:max(40px,calc((100vw - 1280px)/2));
+  --sans:'Noto Sans JP',sans-serif; --serif:'Noto Serif JP',serif; --en:'Montserrat',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:16px;line-height:1.9;font-weight:500;word-break:auto-phrase;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+p{text-wrap:pretty}
+.en{font-family:var(--en);letter-spacing:.14em;font-weight:700}
+.mark{background:linear-gradient(transparent 68%,var(--yellow) 68%,var(--yellow) 94%,transparent 94%)}
+.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:28px;height:60px;padding:0 28px;font-weight:900;font-size:16px;border:2px solid var(--ink);transition:background .2s,color .2s}
+.btn::after{content:"";width:22px;height:10px;flex:none;background:currentColor;clip-path:polygon(0 42%,72% 42%,72% 0,100% 50%,72% 100%,72% 58%,0 58%)}
+.btn-y{background:var(--yellow)} .btn-y:hover{background:var(--ink);color:#fff}
+.btn-k{background:var(--ink);color:#fff} .btn-k:hover{background:#fff;color:var(--ink)}
+.btn-o{background:transparent} .btn-o:hover{background:var(--ink);color:#fff}
+.label{display:flex;align-items:baseline;gap:14px;font-size:14px;font-weight:700}
+.label .en{font-size:13px}
+.label::before{content:"";width:36px;height:3px;background:var(--yellow);align-self:center}
+
+/* ---------- Header ---------- */
+.hd{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--ink);height:76px;display:flex;align-items:center;justify-content:space-between;padding-left:var(--pad)}
+.logo{position:relative;display:block;width:181px;height:46px;overflow:hidden;flex:none}
+.logo img{position:absolute;max-width:none;width:270px;left:-43px;top:-59px}
+.hd nav{display:flex;gap:44px;font-weight:700}
+.hd nav a:hover{box-shadow:0 3px 0 var(--yellow)}
+.hd .cta{align-self:stretch;display:flex;align-items:center;gap:20px;padding:0 36px;background:var(--ink);color:#fff;font-weight:900}
+.hd .cta:hover{background:var(--yellow);color:var(--ink)}
+.hd .cta::after{content:"";width:20px;height:10px;background:currentColor;clip-path:polygon(0 42%,72% 42%,72% 0,100% 50%,72% 100%,72% 58%,0 58%)}
+.burger{display:none}
+
+/* ---------- FV (A: 白地×縦長写真) ---------- */
+.fv{position:relative;overflow:hidden;background:#fff}
+.fv-main{position:relative;min-height:clamp(600px,calc(100vh - 174px),760px);padding:44px var(--pad) 60px;display:flex;flex-direction:column;justify-content:center}
+.fv-photo{position:absolute;top:0;right:0;bottom:0;width:41%;overflow:hidden}
+.fv-photo img{width:100%;height:100%;object-fit:cover;object-position:72% 35%}
+.fv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,0) 45%)}
+.fv-tate{position:absolute;top:44px;left:40px;z-index:2;writing-mode:vertical-rl;font-family:var(--serif);font-weight:700;color:#fff;font-size:26px;line-height:1.9;letter-spacing:.12em;text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.fv-en{font-size:13px;line-height:1.9;position:relative;z-index:2}
+.fv h1{position:relative;z-index:2;margin-top:20px;font-weight:900;font-size:clamp(64px,7vw,106px);line-height:1.14;letter-spacing:.005em}
+.fv h1 span{display:block;width:fit-content}
+.fv-lead{position:relative;z-index:2;margin-top:28px;max-width:680px;font-size:17px;line-height:2}
+.fv-cta{position:relative;z-index:2;margin-top:30px;display:flex;gap:16px}
+.fv-cta .btn{min-width:240px}
+.fv-scroll{position:absolute;left:calc(var(--pad) - 30px);bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;font-size:11px;writing-mode:vertical-rl}
+.fv-scroll i{display:block;width:2px;height:64px;background:linear-gradient(var(--ink) 50%,var(--soft) 50%);background-size:100% 200%;animation:sc 2s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes sc{0%{background-position:0 100%}100%{background-position:0 -100%}}
+/* FV下端の事業インデックス(次セクションへの橋渡し) */
+.fv-index{position:relative;z-index:3;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink);background:#fff;padding:0 var(--pad)}
+.fv-index a{display:flex;align-items:center;gap:20px;padding:26px 28px 26px 0;font-weight:900;font-size:18px;line-height:1.5}
+.fv-index a+a{border-left:1px solid var(--ink);padding-left:28px}
+.fv-index b{font-family:var(--en);font-weight:800;font-size:30px;letter-spacing:0;line-height:1}
+.fv-index a::after{content:"";margin-left:auto;width:12px;height:12px;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg) translate(-3px,-3px);transition:transform .2s}
+.fv-index a:hover{background:var(--yellow);box-shadow:-28px 0 0 var(--yellow)}
+.fv-index a:first-child:hover{box-shadow:-40px 0 0 var(--yellow)}
+.fv-index a:hover::after{transform:rotate(45deg) translate(1px,1px)}
+
+/* FV (B: 全面写真×白抜き文字) */
+body.fvb .fv-main{justify-content:flex-end;padding-bottom:64px;color:#fff}
+body.fvb .fv-tate{left:54%}
+body.fvb .fv-photo{width:100%}
+body.fvb .fv-photo img{object-position:60% 30%}
+body.fvb .fv-photo::after{background:linear-gradient(90deg,rgba(10,10,10,.86) 0%,rgba(10,10,10,.62) 42%,rgba(10,10,10,.08) 78%),linear-gradient(0deg,rgba(10,10,10,.5),rgba(10,10,10,0) 40%)}
+body.fvb .mark{background:linear-gradient(transparent 70%,rgba(255,212,0,.95) 70%,rgba(255,212,0,.95) 94%,transparent 94%)}
+
+body.fvb .btn-o{border-color:#fff} body.fvb .btn-o:hover{background:#fff;color:var(--ink)}
+body.fvb .btn-y{border-color:var(--yellow);color:var(--ink)}
+body.fvb .fv-scroll{color:#fff} body.fvb .fv-scroll i{background-image:linear-gradient(#fff 50%,rgba(255,255,255,.3) 50%)}
+
+/* ---------- Mission(黒地・明朝の理念) ---------- */
+.ms{background:var(--ink);color:#fff;padding:132px 0 0}
+.ms-in{padding:0 var(--pad);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:72px;align-items:end}
+.ms .label{color:#fff}
+.ms h2{margin-top:30px;font-family:var(--serif);font-weight:900;font-size:clamp(48px,5.3vw,82px);line-height:1.3;white-space:nowrap}
+.ms h2 em{font-style:normal;color:var(--yellow);display:block}
+.ms-body{font-size:17px;line-height:2.1;color:#f1f1f1}
+.ms-body p+p{margin-top:16px}
+.ms-body strong{color:#fff;font-weight:900;box-shadow:inset 0 -3px 0 var(--yellow)}
+.ms-photo{position:relative;margin-top:96px;height:480px;margin-left:var(--pad);overflow:hidden}
+.ms-photo img{width:100%;height:100%;object-fit:cover;object-position:70% 22%}
+.ms-hand{position:absolute;left:56px;bottom:44px;font-weight:700;font-family:'Zen Kurenaido',sans-serif;font-size:40px;line-height:1.5;color:#fff;transform:rotate(-5deg);text-shadow:0 2px 4px rgba(0,0,0,.55),0 2px 22px rgba(0,0,0,.7)}
+.ms-values{display:grid;grid-template-columns:repeat(3,1fr);padding:0 var(--pad)}
+.ms-values li{padding:44px 32px 52px 0;display:flex;gap:20px;align-items:baseline;font-weight:900;font-size:22px;line-height:1.55}
+.ms-values li+li{border-left:1px solid #555;padding-left:32px}
+.ms-values b{font-family:var(--en);font-weight:700;color:var(--yellow);font-size:15px;letter-spacing:.1em}
+
+/* ---------- Service(罫線の行組み+成長の流れ) ---------- */
+.sv{padding:136px var(--pad) 120px;background:#fff}
+.sv-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:72px;align-items:end}
+.sv h2{margin-top:26px;font-weight:900;font-size:clamp(44px,5vw,74px);line-height:1.28}
+.sv-lead{font-size:17px;line-height:2.05;padding-bottom:10px}
+.flow{margin-top:68px;display:flex;align-items:center;gap:28px}
+.flow li{display:flex;align-items:center;gap:28px;font-weight:900;font-size:clamp(22px,2vw,29px);line-height:1.4;white-space:nowrap}
+.flow li+li{flex:1}
+.flow li+li::before{content:"";flex:1;min-width:48px;height:13px;background:var(--ink);clip-path:polygon(0 5.5px,calc(100% - 13px) 5.5px,calc(100% - 13px) 0,100% 50%,calc(100% - 13px) 100%,calc(100% - 13px) 7.5px,0 7.5px)}
+.flow li:last-child span{background:linear-gradient(transparent 62%,var(--yellow) 62%,var(--yellow) 94%,transparent 94%)}
+.sv-rows{margin-top:64px;border-top:2px solid var(--ink)}
+.sv-row{display:grid;grid-template-columns:150px minmax(0,5fr) minmax(0,5fr) 320px;gap:40px;align-items:center;padding:44px 0;border-bottom:1px solid var(--ink)}
+.sv-no{font-family:var(--en);font-weight:800;font-size:92px;line-height:.9;letter-spacing:-.02em;color:var(--ink)}
+.sv-no::after{content:"";display:block;width:44px;height:6px;background:var(--yellow);margin-top:16px}
+.sv-row .en{font-size:12px;color:var(--ochre)}
+.sv-row h3{margin-top:8px;font-weight:900;font-size:30px;line-height:1.45}
+.sv-row p{font-size:16px;line-height:2}
+.sv-row img{width:320px;height:200px;object-fit:cover}
+
+/* ---------- Strength(写真の帯+縦罫3段) ---------- */
+
+/* ---------- Strength(左に裁ち落とし写真、右に罫線の行) ---------- */
+.st{background:var(--warm);display:grid;grid-template-columns:44% minmax(0,1fr)}
+.st-photo{position:relative;min-height:780px}
+.st-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 30%}
+.st-photo::after{content:"";position:absolute;right:-24px;bottom:96px;width:48px;height:200px;background:var(--yellow)}
+.st-body{padding:124px var(--pad) 124px 104px}
+.st-body h2{margin-top:24px;font-family:var(--serif);font-weight:900;font-size:clamp(40px,4.3vw,62px);line-height:1.3}
+.st-list{margin-top:52px;border-top:2px solid var(--ink)}
+.st-list li{display:grid;grid-template-columns:104px minmax(0,1fr);column-gap:20px;row-gap:8px;padding:34px 0 36px;border-bottom:1px solid var(--ink)}
+.st-list b{grid-row:1/3;font-family:var(--en);font-weight:800;font-size:56px;line-height:1;letter-spacing:0}
+.st-list h3{font-weight:900;font-size:26px;line-height:1.5}
+.st-list p{font-size:16px;line-height:2}
+
+/* ---------- Partners(黄色の色面) ---------- */
+.pt{position:relative;background:var(--yellow);padding:128px var(--pad) 120px;overflow:hidden}
+.pt-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:80px;align-items:center}
+.pt .label::before{background:var(--ink)}
+.pt h2{margin-top:26px;font-family:var(--serif);font-weight:900;font-size:clamp(44px,4.9vw,72px);line-height:1.32}
+.pt-sub{margin-top:30px;font-weight:900;font-size:24px;line-height:1.7}
+.pt-body{margin-top:20px;font-size:17px;line-height:2.05;max-width:600px}
+.pt-body p+p{margin-top:14px}
+.pt-points{margin-top:32px;display:flex;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.pt-points li{flex:1;text-align:center;padding:16px 8px;font-weight:900;font-size:17px}
+.pt-points li+li{border-left:2px solid var(--ink)}
+.pt-fig{position:relative;margin-right:calc(var(--pad) * -1)}
+.pt-fig img{position:relative;width:100%;height:520px;object-fit:cover}
+.pt-fig::before{content:"";position:absolute;left:-24px;bottom:-24px;width:70%;height:70%;background:var(--ink)}
+.pt-close{margin-top:88px;padding-top:44px;border-top:2px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:40px}
+.pt-close p{font-weight:900;font-size:30px;line-height:1.6}
+.pt-close div{display:flex;gap:16px;flex:none}
+.pt-close .btn{min-width:280px}
+.pt .btn-o:hover{background:#fff;color:var(--ink)}
+
+/* ---------- Contact ---------- */
+.ct{background:var(--ink);color:#fff;padding:128px var(--pad);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:80px;align-items:start}
+.ct-head{position:sticky;top:120px}
+.ct-head .ct-big{margin-top:0;font-family:var(--en);font-weight:800;font-size:clamp(64px,7.2vw,108px);line-height:1;letter-spacing:-.01em;color:var(--yellow)}
+.ct h2{margin-top:22px;font-weight:900;font-size:34px}
+.ct-head p{margin-top:22px;font-size:17px;line-height:2.05;color:#f1f1f1}
+.form{background:#fff;color:var(--ink);padding:56px 56px 60px}
+.fld+.fld{margin-top:28px}
+.fld label{display:flex;align-items:center;gap:12px;font-weight:700;font-size:16px;margin-bottom:10px}
+.req,.opt{font-size:13px;font-weight:700;padding:1px 8px;line-height:1.6}
+.req{background:var(--ink);color:#fff}.opt{border:1px solid var(--ink)}
+.fld input,.fld textarea{width:100%;font:inherit;font-size:16px;border:0;border-bottom:2px solid var(--ink);background:var(--warm);padding:14px 16px;min-height:56px;border-radius:0}
+.fld textarea{min-height:170px;resize:vertical}
+.fld input:focus,.fld textarea:focus{outline:3px solid var(--yellow);outline-offset:0}
+.consent{margin-top:28px;display:flex;gap:12px;align-items:center;font-size:16px}
+.consent input{width:22px;height:22px;accent-color:var(--ink)}
+.consent a{text-decoration:underline;text-underline-offset:4px}
+.form .btn{margin-top:32px;width:100%;height:68px;font-size:18px;justify-content:center}
+
+/* ---------- Footer ---------- */
+.ft{background:#fff;padding:72px var(--pad) 36px}
+.ft-grid{display:flex;justify-content:space-between;gap:64px}
+.ft-grid>div:first-child p{margin-top:20px}
+.ft-cols{display:flex;gap:72px}
+.ft h4{font-size:16px;font-weight:900;padding-bottom:12px;margin-bottom:16px;border-bottom:2px solid var(--ink)}
+.ft li+li{margin-top:10px}
+.ft a:hover{text-decoration:underline;text-underline-offset:4px}
+.ft dt{font-weight:700}.ft dd+dt{margin-top:10px}
+.ft small{display:block;margin-top:56px;padding-top:24px;border-top:1px solid var(--ink);font-size:14px;color:#333}
+
+/* SP追従CTA・案切り替え */
+.spbar{display:none}
+.sw{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;background:#fff;border:2px solid var(--ink);font-family:var(--sans);font-size:13px;font-weight:700}
+.sw span{padding:8px 10px;background:var(--ink);color:#fff}
+.sw button{font:inherit;border:0;background:#fff;padding:8px 14px;cursor:pointer;min-height:40px}
+.sw button.on{background:var(--yellow)}
+
+/* ===================== SP ===================== */
+@media (max-width:900px){
+  :root{--pad:20px}
+  .hd{height:64px}
+  .logo{width:157px;height:40px}.logo img{width:234px;left:-37px;top:-51px}
+  .hd nav,.hd .cta{display:none}
+  .burger{display:flex;flex-direction:column;justify-content:center;gap:6px;width:64px;height:64px;padding:0 20px;background:var(--ink);border:0}
+  .burger i{display:block;height:2px;background:#fff}
+  .sp-br{display:block}
+
+  .fv-main{min-height:0;padding:26px 20px 0;display:block}
+  .fv-en{font-size:11px}
+  .fv h1{margin-top:14px;font-size:clamp(50px,14.4vw,60px);line-height:1.16}
+  .fv-lead{margin-top:20px;font-size:16px;line-height:1.95}
+  .fv-cta{margin-top:22px;flex-direction:column;gap:10px}
+  .fv-cta .btn{width:100%;height:58px}
+  .fv-photo{position:relative;width:auto;height:300px;margin:28px -20px 0 20px}
+  .fv-photo img{object-position:70% 30%}
+  .fv-tate{top:20px;left:20px;right:auto;font-size:19px;line-height:1.8}
+  .fv-scroll{display:none}
+  .fv-index{grid-template-columns:1fr;padding:0 20px}
+  .fv-index a{padding:18px 0;font-size:17px;gap:16px}
+  .fv-index a+a{border-left:0;border-top:1px solid var(--ink);padding-left:0}
+  .fv-index b{font-size:24px;width:38px}
+  .fv-index a:hover{box-shadow:none;background:none}
+  body.fvb .fv-main{padding:0;color:var(--ink);display:flex;flex-direction:column;justify-content:flex-start}
+  body.fvb .fv-main>*:not(.fv-photo){margin-left:20px;margin-right:20px}
+  body.fvb .fv-en{padding-top:0;position:absolute;top:28px;left:0;color:#fff;z-index:4}
+  body.fvb .fv h1{position:absolute;top:196px;left:0;margin-top:0;color:#fff;font-size:clamp(46px,13.2vw,56px)}
+  body.fvb .fv-photo{order:-1;width:auto;height:430px;margin:0}
+  body.fvb .fv-photo::after{background:linear-gradient(0deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.45) 52%,rgba(10,10,10,.2) 100%)}
+  body.fvb .fv-tate{display:none}
+  body.fvb .fv-lead{margin-top:28px}
+  body.fvb .btn-o{border-color:var(--ink)}
+  body.fvb .fv-cta{padding-bottom:36px}
+
+  .ms{padding-top:72px}
+  .ms-in{grid-template-columns:1fr;gap:28px}
+  .ms h2{margin-top:22px;font-size:clamp(40px,11.4vw,48px);line-height:1.34;white-space:normal}
+  .ms-body{font-size:16px;line-height:2}
+  .ms-photo{margin:48px 0 0 20px;height:300px}
+  .ms-photo img{object-position:78% 20%}
+  .ms-hand{left:20px;bottom:22px;font-size:25px}
+  .ms-values{grid-template-columns:1fr;padding:8px 20px 28px}
+  .ms-values li{padding:18px 0;font-size:19px;gap:16px}
+  .ms-values li+li{border-left:0;border-top:1px solid #555;padding-left:0}
+
+  .sv{padding:76px 20px 72px}
+  .sv-top{grid-template-columns:1fr;gap:20px}
+  .sv h2{margin-top:20px;font-size:clamp(34px,9.6vw,40px);line-height:1.36}
+  .sv-lead{font-size:16px;line-height:1.95;padding:0}
+  .flow{margin-top:36px;display:block;border-left:2px solid var(--ink);margin-left:6px}
+  .flow li{position:relative;display:block;font-size:21px;padding:11px 0 11px 26px;white-space:normal}
+  .flow li+li::before{content:none}
+  .flow li::after{content:"";position:absolute;left:-8px;top:50%;width:14px;height:14px;background:var(--ink);transform:translateY(-50%)}
+  .flow li:last-child::after{background:var(--yellow);box-shadow:0 0 0 2px var(--ink)}
+  .sv-rows{margin-top:44px}
+  .sv-row{grid-template-columns:auto 1fr;gap:6px 18px;padding:30px 0 34px;align-items:start}
+  .sv-no{font-size:54px;grid-row:1}
+  .sv-no::after{width:30px;height:5px;margin-top:10px}
+  .sv-row>div{grid-column:2}
+  .sv-row h3{font-size:23px;margin-top:4px}
+  .sv-row p{grid-column:1/-1;margin-top:12px;line-height:1.95}
+  .sv-row img{grid-column:1/-1;width:calc(100% + 20px);max-width:none;height:190px;margin-top:14px}
+
+
+  .st{display:block;padding-bottom:68px}
+  .st-photo{min-height:0;height:290px;margin-right:28px}
+  .st-photo img{object-position:60% 22%}
+  .st-photo::after{right:-28px;bottom:0;width:28px;height:120px}
+  .st-body{padding:44px 20px 0}
+  .st-body h2{margin-top:16px;font-size:clamp(34px,9.6vw,40px)}
+  .st-list{margin-top:32px}
+  .st-list li{grid-template-columns:auto minmax(0,1fr);column-gap:16px;align-items:baseline;padding:26px 0 28px}
+  .st-list b{grid-row:auto;font-size:34px}
+  .st-list h3{font-size:21px}
+  .st-list p{grid-column:1/-1;line-height:1.95}
+  .pt{padding:72px 20px 72px}
+  .pt-grid{grid-template-columns:1fr;gap:44px}
+  .pt h2{margin-top:20px;font-size:clamp(36px,10.2vw,42px)}
+  .pt-sub{margin-top:22px;font-size:20px}
+  .pt-body{font-size:16px;line-height:1.95}
+  .pt-points{flex-direction:column;border-bottom:2px solid var(--ink)}
+  .pt-points li{text-align:left;padding:13px 4px;font-size:17px}
+  .pt-points li+li{border-left:0;border-top:1px solid var(--ink)}
+  .pt-fig{margin:0 -20px 0 24px}
+  .pt-fig img{height:260px}
+  .pt-fig::before{left:-12px;bottom:-12px}
+  .pt-close{margin-top:56px;padding-top:32px;flex-direction:column;align-items:stretch;gap:24px}
+  .pt-close p{font-size:23px}
+  .pt-close div{flex-direction:column;gap:12px}
+  .pt-close .btn{min-width:0;width:100%}
+
+  .ct{padding:72px 20px 80px;grid-template-columns:1fr;gap:36px}
+  .ct-head{position:static}
+  .ct-big{font-size:clamp(52px,15vw,62px)}
+  .ct h2{font-size:27px;margin-top:14px}
+  .ct-head p{font-size:16px;line-height:1.95;margin-top:16px}
+  .form{padding:32px 20px 36px;margin:0 -8px}
+
+  .ft{padding:52px 20px 100px}
+  .ft-grid,.ft-cols{flex-direction:column;gap:36px}
+  .ft a{display:block;padding:6px 0}
+  .ft li+li{margin-top:2px}
+
+  .spbar{display:flex;transition:transform .25s;transform:translateY(110%)}
+  .spbar.show{transform:none}
+  .spbar{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--ink);padding:8px 12px;gap:10px;align-items:center}
+  .spbar p{color:#fff;font-size:13px;font-weight:700;line-height:1.45;flex:none}
+  .spbar a{flex:1;height:50px;display:flex;align-items:center;justify-content:center;background:var(--yellow);font-weight:900;font-size:16px}
+  .sw{bottom:76px;right:8px}
+}
+@media (min-width:901px){.sp-br{display:none}}
+@media (prefers-reduced-motion:reduce){.fv-scroll i{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <a class="logo" href="#top" aria-label="親方ドットコム"><img src="../../src/assets/images/logos/logo-mark2.webp" alt="親方ドットコム" /></a>
+  <nav aria-label="メインメニュー">
+    <a href="#mission">私たちについて</a>
+    <a href="#service">事業内容</a>
+    <a href="#strength">選ばれる理由</a>
+  </nav>
+  <a class="cta" href="#contact">お問い合わせ</a>
+  <button class="burger" type="button" aria-label="メニューを開く"><i></i><i></i><i></i></button>
+</header>
+
+<main id="top">
+
+<!-- ================= FV ================= -->
+<section class="fv" aria-labelledby="fv-title">
+  <div class="fv-main">
+    <p class="fv-en en">BUILD A STRONGER<br />CONSTRUCTION INDUSTRY</p>
+    <h1 id="fv-title"><span>建設業の</span><span>可能性を、</span><span class="mark">次の世代へ。</span></h1>
+    <p class="fv-lead">親方ドットコムは、工事会社の集客と事業成長を支援するサービスです。Webサイト制作・広告運用を通じて、個人のお客様との出会いを増やし、安定した受注につながる仕組みづくりをサポートします。</p>
+    <div class="fv-cta">
+      <a class="btn btn-y" href="#service">事業内容を見る</a>
+      <a class="btn btn-o" href="#contact">お問い合わせ</a>
+    </div>
+    <div class="fv-photo">
+      <img src="../../src/assets/images/about/intro-sunset.webp" alt="" />
+      <p class="fv-tate">つくる人が、<br />もっと報われる社会を。</p>
+    </div>
+    <div class="fv-scroll en" aria-hidden="true">SCROLL<i></i></div>
+  </div>
+  <nav class="fv-index" aria-label="事業内容">
+    <a href="#sv1"><b>01</b>建設業特化型<br />マーケティング支援</a>
+    <a href="#sv2"><b>02</b>営業・事業成長支援</a>
+    <a href="#sv3"><b>03</b>親方ドットコム<br />パートナーズ</a>
+  </nav>
+</section>
+
+<!-- ================= MISSION ================= -->
+<section class="ms" id="mission" aria-labelledby="ms-title">
+  <div class="ms-in">
+    <div>
+      <p class="label"><span class="en">OUR MISSION</span>私たちの使命</p>
+      <h2 id="ms-title">建設業の<br class="sp-br" />可能性を、<em>もっと先へ。</em></h2>
+    </div>
+    <div class="ms-body">
+      <p>建設業には、優れた技術と経験を持ちながら、その価値を十分に届けられていない会社が数多くあります。</p>
+      <p>私たちは、マーケティングと営業支援の力で、技術と仕事が正しく出会う仕組みをつくります。</p>
+      <p>仕事を待つ経営から、選ばれる経営へ。</p>
+      <p><strong>建設業の事業成長を、仕組みから支えていきます。</strong></p>
+    </div>
+  </div>
+  <div class="ms-photo">
+    <img src="../../src/assets/images/hero/hero-new-background.webp" alt="" />
+    <p class="ms-hand">建設の<br />これからを、<br />もっと面白く。</p>
+  </div>
+  <ul class="ms-values">
+    <li><b>01</b><span>集客で<br />受注を増やす</span></li>
+    <li><b>02</b><span>営業支援で<br />成約につなげる</span></li>
+    <li><b>03</b><span>新たな受注機会で<br />事業を広げる</span></li>
+  </ul>
+</section>
+
+<!-- ================= SERVICE ================= -->
+<section class="sv" id="service" aria-labelledby="sv-title">
+  <div class="sv-top">
+    <div>
+      <p class="label"><span class="en">OUR SERVICE</span>事業紹介</p>
+      <h2 id="sv-title">集客から、その先の<br /><span class="mark">事業成長</span>まで。</h2>
+    </div>
+    <p class="sv-lead">建設業に特化したマーケティングと営業支援で、問い合わせの獲得から商談・成約、そして持続的な事業成長までを支援します。</p>
+  </div>
+  <ol class="flow" aria-label="支援の範囲">
+    <li><span>問い合わせの獲得</span></li>
+    <li><span>商談・成約</span></li>
+    <li><span>持続的な事業成長</span></li>
+  </ol>
+  <div class="sv-rows">
+    <article class="sv-row" id="sv1">
+      <span class="sv-no">01</span>
+      <div><p class="en">MARKETING</p><h3>建設業特化型<br />マーケティング支援</h3></div>
+      <p>Webサイト・LP制作から広告運用まで。建設業の商習慣と顧客ニーズを踏まえ、問い合わせ獲得につながる集客基盤を構築します。</p>
+      <img src="../../src/assets/images/OC05/hero-pc.webp" alt="" loading="lazy" />
+    </article>
+    <article class="sv-row" id="sv2">
+      <span class="sv-no">02</span>
+      <div><p class="en">BUSINESS SUPPORT</p><h3>営業・事業成長支援</h3></div>
+      <p>問い合わせを獲得して終わりではなく、商談・成約までを見据えた導線づくりと営業活動を支援します。</p>
+      <img src="../../src/assets/images/about/approach-meeting.webp" alt="" loading="lazy" />
+    </article>
+    <article class="sv-row" id="sv3">
+      <span class="sv-no">03</span>
+      <div><p class="en">PARTNERS</p><h3>親方ドットコム<br />パートナーズ</h3></div>
+      <p>工事を依頼したいお客様と、施工を担う事業者をつなぐサービス。工事会社の新たな受注機会を広げます。</p>
+      <img src="../../src/assets/images/contractors/fv-background.webp" alt="" loading="lazy" />
+    </article>
+  </div>
+</section>
+
+<!-- ================= STRENGTH ================= -->
+<section class="st" id="strength" aria-labelledby="st-title">
+  <div class="st-photo"><img src="../../src/assets/images/OC06/reason-industry-marketing.webp" alt="" loading="lazy" /></div>
+  <div class="st-body">
+    <p class="label"><span class="en">OUR STRENGTHS</span></p>
+    <h2 id="st-title">親方ドットコムの<br class="sp-br" />強み</h2>
+    <ol class="st-list">
+      <li><b>01</b><h3>建設業に特化した専門知識</h3><p>建設業の商習慣・顧客特性を理解し、成果につながる施策を提案します。</p></li>
+      <li><b>02</b><h3>集客から営業まで<br class="sp-br" />一気通貫で支援</h3><p>問い合わせ獲得だけでなく、商談・成約まで伴走します。</p></li>
+      <li><b>03</b><h3>現場目線での<br class="sp-br" />実践的なサポート</h3><p>机上の理論ではなく、現場で使える実践的なサポートを提供します。</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= PARTNERS ================= -->
+<section class="pt" id="partners" aria-labelledby="pt-title">
+  <div class="pt-grid">
+    <div>
+      <p class="label"><span class="en">PARTNERS</span></p>
+      <h2 id="pt-title">あなたの会社を、<br />次のお客様へ。</h2>
+      <p class="pt-sub">技術がある。経験もある。<br />あとは、知ってもらうだけ。</p>
+      <div class="pt-body">
+        <p>親方ドットコム パートナーズは、地域や工事内容から施工会社を探せるサービスです。</p>
+        <p>あなたの会社の得意分野や施工実績を掲載し、工事を検討しているお客様との新しい接点をつくります。</p>
+        <p>自社の魅力を伝える、もうひとつの集客窓口としてご活用いただけます。</p>
+      </div>
+      <ul class="pt-points"><li>地域から探せる</li><li>工事内容から探せる</li><li>会社の魅力を紹介</li></ul>
+    </div>
+    <div class="pt-fig"><img src="../../src/assets/images/contractors/fv-background.webp" alt="住宅が並ぶ街並み" loading="lazy" /></div>
+  </div>
+  <div class="pt-close">
+    <p>その技術を、<br class="sp-br" />もっと多くのお客様に<br class="sp-br" />届けませんか。</p>
+    <div>
+      <a class="btn btn-k" href="#contact-form">掲載について相談する</a>
+      <a class="btn btn-o" href="#partners">パートナーズサイトを見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="ct" id="contact" aria-labelledby="ct-title">
+  <div class="ct-head">
+    <p class="ct-big" aria-hidden="true">CONTACT</p>
+    <h2 id="ct-title">お問い合わせ</h2>
+    <p>法人・企業の皆さまからのご相談・お問い合わせを承っております。<br />お気軽にご連絡ください。</p>
+  </div>
+  <form class="form" id="contact-form" onsubmit="return false">
+    <div class="fld"><label for="f1">会社名・屋号<span class="req">必須</span></label><input id="f1" type="text" autocomplete="organization" /></div>
+    <div class="fld"><label for="f2">担当者名<span class="req">必須</span></label><input id="f2" type="text" autocomplete="name" /></div>
+    <div class="fld"><label for="f3">メールアドレス<span class="req">必須</span></label><input id="f3" type="email" autocomplete="email" inputmode="email" /></div>
+    <div class="fld"><label for="f4">電話番号<span class="opt">任意</span></label><input id="f4" type="tel" autocomplete="tel" inputmode="tel" /></div>
+    <div class="fld"><label for="f5">相談したい内容<span class="req">必須</span></label><textarea id="f5"></textarea></div>
+    <label class="consent"><input type="checkbox" /><span><a href="/privacy">プライバシーポリシー</a>に同意します</span><span class="req">必須</span></label>
+    <button class="btn btn-y" type="submit">この内容で送信する</button>
+  </form>
+</section>
+</main>
+
+<footer class="ft">
+  <div class="ft-grid">
+    <div>
+      <a class="logo" href="#top" aria-label="親方ドットコム"><img src="../../src/assets/images/logos/logo-mark2.webp" alt="親方ドットコム" /></a>
+      <p>工事会社の集客と事業成長を支援するサービスです。</p>
+    </div>
+    <div class="ft-cols">
+      <nav aria-label="サイトメニュー"><h4>サイトメニュー</h4><ul>
+        <li><a href="#mission">私たちについて</a></li><li><a href="#service">事業内容</a></li><li><a href="#strength">選ばれる理由</a></li><li><a href="#partners">親方ドットコム パートナーズ</a></li><li><a href="#contact">お問い合わせ</a></li>
+      </ul></nav>
+      <nav aria-label="関連リンク"><h4>関連リンク</h4><ul><li><a href="/privacy">プライバシーポリシー</a></li></ul></nav>
+      <div><h4>会社情報</h4><dl><dt>運営会社</dt><dd>アイブレ株式会社</dd><dt>所在地</dt><dd>愛知県名古屋市中村区松重町4-51</dd></dl></div>
+    </div>
+  </div>
+  <small>© 2026 アイブレ株式会社</small>
+</footer>
+
+<div class="spbar"><p>法人・企業の<br />ご相談はこちら</p><a href="#contact-form">お問い合わせ</a></div>
+
+<div class="sw" role="group" aria-label="FV案の切り替え(モック用)">
+  <span>FV案</span>
+  <button type="button" data-v="a" class="on">A 白地×写真</button>
+  <button type="button" data-v="b">B 全面写真</button>
+</div>
+<script>
+  // モック用: FV案の切り替え(?fv=b でも指定可)
+  var b = document.body, btns = document.querySelectorAll('.sw button');
+  function set(v){ b.classList.toggle('fvb', v === 'b'); btns.forEach(function(x){ x.classList.toggle('on', x.dataset.v === v); }); }
+  btns.forEach(function(x){ x.addEventListener('click', function(){ set(x.dataset.v); }); });
+  if (new URLSearchParams(location.search).get('fv') === 'b') set('b');
+  // SP追従CTA: FVを過ぎたら表示し、フォームが見えている間は隠す(送信ボタンや入力欄に重ねない)
+  var bar = document.querySelector('.spbar'), form = document.getElementById('contact-form'), formIn = false;
+  function upd(){ bar.classList.toggle('show', window.scrollY > 520 && !formIn); }
+  new IntersectionObserver(function(es){ formIn = es[0].isIntersecting; upd(); }).observe(form);
+  window.addEventListener('scroll', upd, { passive: true }); upd();
+  // 確認用: ?at=セレクタ でその位置を表示
+  var at = new URLSearchParams(location.search).get('at');
+  if (at) { document.documentElement.style.scrollBehavior = 'auto'; window.addEventListener('load', function(){ var el = document.querySelector(at); if (el) el.scrollIntoView(at !== '.ft'); upd(); }); }
+  if (new URLSearchParams(location.search).get('ui') === '0') document.querySelector('.sw').style.display = 'none';
+</script>
+</body>
+</html>

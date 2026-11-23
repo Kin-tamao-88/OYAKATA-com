@@ -1,61 +1,64 @@
 import { CONTRACTORS_PUBLIC } from "../../site";
 import { IMG } from "./assets";
-import { ArrowRight } from "./icons";
-import { SectionLabel } from "./Mission";
+import { Arrow, BTN, BTN_BLACK, Label } from "./icons";
 
 const POINTS = ["地域から探せる", "工事内容から探せる", "会社の魅力を紹介"];
 
 export default function Partners() {
   return (
-    <section id="partners" className="scroll-mt-[64px] lg:scroll-mt-[76px] bg-white" aria-labelledby="partners-title">
-      <div className="px-5 py-14 lg:py-[88px] lg:px-[max(40px,calc((100vw-1320px)/2))] lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14 lg:items-center">
+    <section id="partners" className="scroll-mt-[64px] lg:scroll-mt-[76px] relative overflow-hidden bg-[#ffd400] px-5 py-[72px] lg:pt-32 lg:pb-[120px] lg:px-[max(40px,calc((100vw-1280px)/2))]" aria-labelledby="partners-title">
+      <div className="grid gap-11 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-20 lg:items-center">
         <div>
-          <SectionLabel en="PARTNERS" ja="" />
-          <h2 id="partners-title" className="mt-4 font-['Noto_Serif_JP'] font-black text-[#111] text-[26px] lg:text-[clamp(30px,2.8vw,40px)] leading-[1.45]">
+          <Label en="PARTNERS" tone="ink" />
+          <h2 id="partners-title" className="mt-5 lg:mt-[26px] font-['Noto_Serif_JP'] font-black text-[#111] text-[clamp(36px,10.2vw,42px)] lg:text-[clamp(44px,4.9vw,72px)] leading-[1.32]">
             あなたの会社を、<br />次のお客様へ。
           </h2>
-          <p className="mt-6 text-[#111] font-black text-[19px] lg:text-[22px] leading-[1.7]">
+          <p className="mt-[22px] lg:mt-[30px] text-[#111] font-black text-[20px] lg:text-[24px] leading-[1.7]">
             技術がある。経験もある。<br />あとは、知ってもらうだけ。
           </p>
-          <div className="mt-5 space-y-5 text-[#222] text-[16px] leading-[1.95]">
+          <div className="mt-5 space-y-[14px] max-w-[600px] text-[#111] text-[16px] lg:text-[17px] leading-[1.95] lg:leading-[2.05]">
             <p>親方ドットコム パートナーズは、地域や工事内容から施工会社を探せるサービスです。</p>
             <p>あなたの会社の得意分野や施工実績を掲載し、工事を検討しているお客様との新しい接点をつくります。</p>
-            <p>自社の魅力を伝える、もうひとつの集客窓口としてご活用いただけます。</p>
+            <p>
+              <span className="inline-block">自社の魅力を伝える、</span>
+              <span className="inline-block">もうひとつの</span>
+              <span className="inline-block">集客窓口として</span>
+              <span className="inline-block">ご活用いただけます。</span>
+            </p>
           </div>
-          <ul className="mt-7 flex flex-col lg:flex-row gap-3 lg:gap-8">
-            {POINTS.map((p) => (
-              <li key={p} className="flex items-center gap-3 text-[#111] font-bold text-[16px]">
-                <span className="w-[5px] h-[22px] bg-[#f2b500]" aria-hidden="true" />
+          <ul className="mt-8 flex flex-col md:flex-row border-y-2 border-[#111]">
+            {POINTS.map((p, i) => (
+              <li
+                key={p}
+                className={`flex-1 py-[13px] px-1 md:py-4 md:text-center text-[#111] font-black text-[17px] lg:text-[16px] xl:text-[17px] border-[#111] ${i > 0 ? "border-t md:border-t-0 md:border-l-2" : ""}`}
+              >
                 {p}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="mt-10 lg:mt-0">
-          <img src={IMG.partners} alt="住宅が並ぶ街並み" className="w-full h-auto lg:h-[420px] object-cover block" width={900} height={600} loading="lazy" />
+        {/* 写真:右端まで裁ち落とし、左下に黒い面をずらして重ねる */}
+        <div className="relative ml-6 -mr-5 lg:ml-0 lg:-mr-[max(40px,calc((100vw-1280px)/2))] before:content-[''] before:absolute before:bg-[#111] before:w-[70%] before:h-[70%] before:-left-3 before:-bottom-3 lg:before:-left-6 lg:before:-bottom-6">
+          <img src={IMG.partners} alt="住宅が並ぶ街並み" loading="lazy" className="relative block w-full h-[260px] md:h-[380px] lg:h-[520px] object-cover" />
         </div>
+      </div>
 
-        <div className="mt-10 lg:mt-12 lg:col-span-2 lg:text-center">
-          <p className="text-[#111] font-black text-[19px] lg:text-[24px] leading-[1.6]">その技術を、<br className="lg:hidden" />もっと多くのお客様に届けませんか。</p>
-          <div className="mt-6 flex flex-col lg:flex-row lg:justify-center gap-4 lg:gap-6">
-            <a
-              href="#contact-form"
-              className="flex items-center justify-between gap-6 h-[56px] lg:h-[60px] px-8 rounded-full bg-[#f5b800] text-[#111] font-black text-[16px] hover:brightness-95 transition lg:min-w-[300px]"
-            >
-              掲載について相談する
-              <ArrowRight />
+      <div className="mt-14 pt-8 lg:mt-[88px] lg:pt-11 border-t-2 border-[#111] flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+        <p className="text-[#111] font-black text-[23px] lg:text-[26px] xl:text-[30px] leading-[1.6]">
+          その技術を、<br className="lg:hidden" />もっと多くのお客様に<br className="lg:hidden" />届けませんか。
+        </p>
+        <div className="flex flex-col gap-3 lg:flex-row lg:gap-4 lg:shrink-0">
+          <a href="#contact-form" className={`${BTN} ${BTN_BLACK} lg:min-w-[230px] xl:min-w-[280px]`}>
+            掲載について相談する
+            <Arrow />
+          </a>
+          {CONTRACTORS_PUBLIC && (
+            <a href="/contractors" className={`${BTN} border-[#111] bg-transparent text-[#111] hover:bg-white lg:min-w-[230px] xl:min-w-[280px]`}>
+              パートナーズサイトを見る
+              <Arrow />
             </a>
-            {CONTRACTORS_PUBLIC && (
-              <a
-                href="/contractors"
-                className="flex items-center justify-between gap-6 h-[56px] lg:h-[60px] px-8 rounded-full border-2 border-[#111] bg-white text-[#111] font-black text-[16px] hover:bg-[#f5f5f5] transition lg:min-w-[300px]"
-              >
-                パートナーズサイトを見る
-                <ArrowRight />
-              </a>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </section>

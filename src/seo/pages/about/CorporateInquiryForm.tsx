@@ -37,33 +37,77 @@ function validate(form: FormState): Errors {
   return errors;
 }
 
-const INPUT =
-  "block w-full bg-white text-[#111] text-[16px] leading-[1.6] px-4 py-3 rounded-none border border-transparent focus:outline-none focus:border-[#FFCC00] focus:ring-2 focus:ring-[#FFCC00]";
+/** 配色。dark=暗い背景用(既定・従来どおり)、light=白い面の上に置く用(/corporate) */
+export type FormTone = "dark" | "light";
+
+const THEME = {
+  dark: {
+    form: "space-y-6",
+    input:
+      "block w-full bg-white text-[#111] text-[16px] leading-[1.6] px-4 py-3 rounded-none border border-transparent focus:outline-none focus:border-[#FFCC00] focus:ring-2 focus:ring-[#FFCC00]",
+    label: "flex items-baseline gap-3 text-white font-bold text-[16px] mb-2",
+    required: "text-[#FFCC00] text-[16px]",
+    optional: "text-[#bdbdbd] text-[16px] font-normal",
+    error: "mt-2 text-[#ffb4a6] text-[16px] leading-[1.7]",
+    consent: "flex items-start gap-3 text-[#e2e2e2] text-[16px] leading-[1.8] cursor-pointer",
+    checkbox: "mt-[6px] h-[20px] w-[20px] shrink-0 accent-[#FFCC00]",
+    link: "text-[#FFCC00] font-bold underline underline-offset-4",
+    consentRequired: "ml-2 text-[#FFCC00]",
+    submitError: "border-l-[4px] border-[#ffb4a6] pl-4 text-[#ffb4a6] text-[16px] leading-[1.8]",
+    submit:
+      "flex items-center justify-center w-full h-[60px] lg:h-[64px] bg-[#FFCC00] text-[#111] font-black text-[17px] lg:text-[18px] hover:bg-[#ffd633] disabled:opacity-60 disabled:cursor-not-allowed transition-colors",
+    success: "border-t-[3px] border-[#FFCC00] pt-6",
+    successTitle: "text-white font-black text-[22px] leading-[1.5]",
+    successBody: "mt-3 text-[#e2e2e2] text-[16px] leading-[1.95] text-balance",
+  },
+  light: {
+    form: "space-y-7",
+    input:
+      "block w-full min-h-[56px] bg-[#f4f2ec] text-[#111] text-[16px] leading-[1.6] px-4 py-[14px] rounded-none border-0 border-b-2 border-[#111] focus:outline focus:outline-[3px] focus:outline-[#ffd400]",
+    label: "flex items-center gap-3 text-[#111] font-bold text-[16px] mb-[10px]",
+    required: "bg-[#111] text-white text-[13px] font-bold leading-[1.6] px-2 py-[1px]",
+    optional: "border border-[#111] text-[#111] text-[13px] font-bold leading-[1.6] px-2 py-[1px]",
+    error: "mt-2 text-[#b3261e] font-bold text-[16px] leading-[1.7]",
+    consent: "flex items-start gap-3 text-[#111] text-[16px] leading-[1.8] cursor-pointer",
+    checkbox: "mt-[3px] h-[22px] w-[22px] shrink-0 accent-[#111]",
+    link: "text-[#111] font-bold underline underline-offset-4",
+    consentRequired: "ml-2 inline-block align-middle bg-[#111] text-white text-[13px] font-bold leading-[1.6] px-2 py-[1px]",
+    submitError: "border-l-[4px] border-[#b3261e] pl-4 text-[#b3261e] font-bold text-[16px] leading-[1.8]",
+    submit:
+      "flex items-center justify-center w-full h-[64px] lg:h-[68px] border-2 border-[#111] bg-[#ffd400] text-[#111] font-black text-[17px] lg:text-[18px] hover:bg-[#111] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors",
+    success: "border-t-[3px] border-[#111] pt-6",
+    successTitle: "text-[#111] font-black text-[22px] leading-[1.5]",
+    successBody: "mt-3 text-[#111] text-[16px] leading-[1.95] text-balance",
+  },
+} as const;
 
 function Field({
   id,
   label,
   required,
   error,
+  tone,
   children,
 }: {
   id: string;
   label: string;
   required?: boolean;
   error?: string;
+  tone: FormTone;
   children: React.ReactNode;
 }) {
+  const theme = THEME[tone];
   return (
     <div>
-      <label htmlFor={id} className="flex items-baseline gap-3 text-white font-bold text-[16px] mb-2">
+      <label htmlFor={id} className={theme.label}>
         {label}
-        <span className={required ? "text-[#FFCC00] text-[16px]" : "text-[#bdbdbd] text-[16px] font-normal"}>
+        <span className={required ? theme.required : theme.optional}>
           {required ? "必須" : "任意"}
         </span>
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} role="alert" className="mt-2 text-[#ffb4a6] text-[16px] leading-[1.7]">
+        <p id={`${id}-error`} role="alert" className={theme.error}>
           {error}
         </p>
       )}
@@ -71,7 +115,9 @@ function Field({
   );
 }
 
-export default function CorporateInquiryForm() {
+export default function CorporateInquiryForm({ tone = "dark" }: { tone?: FormTone }) {
+  const theme = THEME[tone];
+  const INPUT = theme.input;
   const [form, setForm] = useState<FormState>(INITIAL);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -139,9 +185,9 @@ export default function CorporateInquiryForm() {
 
   if (status === "success") {
     return (
-      <div role="status" className="border-t-[3px] border-[#FFCC00] pt-6">
-        <p className="text-white font-black text-[22px] leading-[1.5]">送信が完了しました。</p>
-        <p className="mt-3 text-[#e2e2e2] text-[16px] leading-[1.95] text-balance">
+      <div role="status" className={theme.success}>
+        <p className={theme.successTitle}>送信が完了しました。</p>
+        <p className={theme.successBody}>
           お問い合わせありがとうございます。内容を確認のうえ、担当者よりメールでご連絡します。
         </p>
       </div>
@@ -151,8 +197,8 @@ export default function CorporateInquiryForm() {
   const describedBy = (key: FieldKey) => (errors[key] ? `corp-${key}-error` : undefined);
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-6">
-      <Field id="corp-company" label="会社名・屋号" required error={errors.company}>
+    <form onSubmit={onSubmit} noValidate className={theme.form}>
+      <Field id="corp-company" label="会社名・屋号" required error={errors.company} tone={tone}>
         <input
           id="corp-company"
           type="text"
@@ -165,7 +211,7 @@ export default function CorporateInquiryForm() {
           className={INPUT}
         />
       </Field>
-      <Field id="corp-name" label="担当者名" required error={errors.name}>
+      <Field id="corp-name" label="担当者名" required error={errors.name} tone={tone}>
         <input
           id="corp-name"
           type="text"
@@ -178,7 +224,7 @@ export default function CorporateInquiryForm() {
           className={INPUT}
         />
       </Field>
-      <Field id="corp-email" label="メールアドレス" required error={errors.email}>
+      <Field id="corp-email" label="メールアドレス" required error={errors.email} tone={tone}>
         <input
           id="corp-email"
           type="email"
@@ -192,7 +238,7 @@ export default function CorporateInquiryForm() {
           className={INPUT}
         />
       </Field>
-      <Field id="corp-phone" label="電話番号">
+      <Field id="corp-phone" label="電話番号" tone={tone}>
         <input
           id="corp-phone"
           type="tel"
@@ -204,7 +250,7 @@ export default function CorporateInquiryForm() {
           className={INPUT}
         />
       </Field>
-      <Field id="corp-message" label="相談したい内容" required error={errors.message}>
+      <Field id="corp-message" label="相談したい内容" required error={errors.message} tone={tone}>
         <textarea
           id="corp-message"
           rows={6}
@@ -224,7 +270,7 @@ export default function CorporateInquiryForm() {
       </div>
 
       <div>
-        <label htmlFor="corp-consent" className="flex items-start gap-3 text-[#e2e2e2] text-[16px] leading-[1.8] cursor-pointer">
+        <label htmlFor="corp-consent" className={theme.consent}>
           <input
             id="corp-consent"
             type="checkbox"
@@ -232,25 +278,25 @@ export default function CorporateInquiryForm() {
             onChange={update("consent")}
             aria-invalid={Boolean(errors.consent)}
             aria-describedby={describedBy("consent")}
-            className="mt-[6px] h-[20px] w-[20px] shrink-0 accent-[#FFCC00]"
+            className={theme.checkbox}
           />
           <span>
-            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-[#FFCC00] font-bold underline underline-offset-4">
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className={theme.link}>
               プライバシーポリシー
             </a>
             に同意します
-            <span className="ml-2 text-[#FFCC00]">必須</span>
+            <span className={theme.consentRequired}>必須</span>
           </span>
         </label>
         {errors.consent && (
-          <p id="corp-consent-error" role="alert" className="mt-2 text-[#ffb4a6] text-[16px] leading-[1.7]">
+          <p id="corp-consent-error" role="alert" className={theme.error}>
             {errors.consent}
           </p>
         )}
       </div>
 
       {status === "error" && (
-        <p role="alert" className="border-l-[4px] border-[#ffb4a6] pl-4 text-[#ffb4a6] text-[16px] leading-[1.8]">
+        <p role="alert" className={theme.submitError}>
           {errorMessage}
         </p>
       )}
@@ -258,7 +304,7 @@ export default function CorporateInquiryForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="flex items-center justify-center w-full h-[60px] lg:h-[64px] bg-[#FFCC00] text-[#111] font-black text-[17px] lg:text-[18px] hover:bg-[#ffd633] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        className={theme.submit}
       >
         {status === "submitting" ? "送信中..." : "この内容で送信する"}
       </button>

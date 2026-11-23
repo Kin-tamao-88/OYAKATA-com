@@ -32,7 +32,8 @@ export type CompanyTheme = {
   frameBlock: string;
 };
 
-export type ThemeKey = "brand" | "maruesu" | "takumi" | "kodensetsu" | "kiyomirai";
+/** 企業別の配色キー。掲載企業ごとの配色を足すときは、ここと THEMES に追加する */
+export type ThemeKey = "brand";
 
 export const THEMES: Record<ThemeKey, CompanyTheme> = {
   brand: {
@@ -49,69 +50,5 @@ export const THEMES: Record<ThemeKey, CompanyTheme> = {
     ctaPrimary: "bg-[#1a1a1a] text-white hover:bg-[#333]",
     ctaPrimaryNote: "text-[#FFD000]",
     frameBlock: "bg-[#FFD000]",
-  },
-  // マルエスリフォーム: 紺×イエロー
-  maruesu: {
-    accentBg: "bg-[#f5a800]",
-    accentText: "text-[#1d4f9f]",
-    accentTextOnDark: "text-[#f7b500]",
-    accentBorder: "border-[#f5a800]",
-    softBg: "bg-[#eef3fb]",
-    warmBg: "bg-[#f4f8fd]",
-    darkBg: "bg-[#12315f]",
-    ctaBg: "bg-[#f7b500]",
-    ctaText: "text-[#12315f]",
-    heroButton: "bg-[#f7b500] text-[#12315f]",
-    ctaPrimary: "bg-[#12315f] text-white hover:bg-[#1d4f9f]",
-    ctaPrimaryNote: "text-[#f7b500]",
-    frameBlock: "bg-[#1d4f9f]",
-  },
-  // 匠内装: ゴールド×ブラック
-  takumi: {
-    accentBg: "bg-[#b08d3f]",
-    accentText: "text-[#8d6d24]",
-    accentTextOnDark: "text-[#c9a456]",
-    accentBorder: "border-[#b08d3f]",
-    softBg: "bg-[#f3eee3]",
-    warmBg: "bg-[#faf6ee]",
-    darkBg: "bg-[#1e1c19]",
-    ctaBg: "bg-[#c9a456]",
-    ctaText: "text-[#1e1c19]",
-    heroButton: "bg-[#c9a456] text-[#1e1c19]",
-    ctaPrimary: "bg-[#1e1c19] text-white hover:bg-[#3a362f]",
-    ctaPrimaryNote: "text-[#e2c27a]",
-    frameBlock: "bg-[#b08d3f]",
-  },
-  // 光電設: ネイビー×ブルー×イエロー
-  kodensetsu: {
-    accentBg: "bg-[#f3c200]",
-    accentText: "text-[#1c5fb8]",
-    accentTextOnDark: "text-[#f3c200]",
-    accentBorder: "border-[#f3c200]",
-    softBg: "bg-[#edf3fb]",
-    warmBg: "bg-[#f3f7fc]",
-    darkBg: "bg-[#0f2347]",
-    ctaBg: "bg-[#f3c200]",
-    ctaText: "text-[#0f2347]",
-    heroButton: "bg-[#f3c200] text-[#0f2347]",
-    ctaPrimary: "bg-[#0f2347] text-white hover:bg-[#1c3a70]",
-    ctaPrimaryNote: "text-[#f3c200]",
-    frameBlock: "bg-[#1c5fb8]",
-  },
-  // きよみらい: グリーン×ブルー
-  kiyomirai: {
-    accentBg: "bg-[#2aa04f]",
-    accentText: "text-[#1b7f3e]",
-    accentTextOnDark: "text-[#6fd38d]",
-    accentBorder: "border-[#2aa04f]",
-    softBg: "bg-[#eef7f0]",
-    warmBg: "bg-[#f5faf6]",
-    darkBg: "bg-[#14402a]",
-    ctaBg: "bg-[#2aa04f]",
-    ctaText: "text-white",
-    heroButton: "bg-[#2aa04f] text-white",
-    ctaPrimary: "bg-white text-[#14402a] hover:bg-[#eef7f0]",
-    ctaPrimaryNote: "text-[#1b7f3e]",
-    frameBlock: "bg-[#1b73b8]",
   },
 };

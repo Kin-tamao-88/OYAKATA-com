@@ -1,1 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Noto+Serif+JP:wght@700;900&family=Zen+Kurenaido&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Serif+JP:wght@700;900&family=Zen+Kurenaido&display=swap');
+
+/* /corporate のみ: ページ内アンカーをなめらかに移動する */
+html:has(.corp-root) { scroll-behavior: smooth; }
+
+/* FVのスクロール表示(線が上から下へ流れる) */
+@keyframes corp-scroll {
+  0% { background-position: 0 100%; }
+  100% { background-position: 0 -100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.corp-root) { scroll-behavior: auto; }
+}

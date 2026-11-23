@@ -229,7 +229,7 @@ export default function Privacy() {
                 </p>
                 <p className="mt-4">
                   運営会社：アイブレ株式会社<br />
-                  所在地：愛知県名古屋市中村区松重町4-51 KAKOビル4C
+                  所在地：愛知県名古屋市中村区松重町4-51
                 </p>
               </section>
 
