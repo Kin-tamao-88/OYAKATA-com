@@ -6,8 +6,8 @@ export const corporate: SeoPageDef = {
   title: "親方ドットコム 法人公式サイト｜建設業の集客と事業成長を支援",
   description:
     "親方ドットコムは、工事会社の集客と事業成長を支援するサービスです。Webサイト制作・広告運用を通じて、個人のお客様との出会いを増やし、安定した受注につながる仕組みづくりをサポートします。",
-  // 本番公開の承認まで noindex を維持する。公開時は false にする(sitemap にも自動で載る)
-  noindex: true,
+  // 公開済み。noindex を外しているため sitemap にも自動で載る
+  noindex: false,
   // 既存素材(職人3人の写真 1200x630)を流用。専用画像ができたら差し替える
   ogImage: "https://oyakata-com.jp/og/about.jpg",
   article: false,
