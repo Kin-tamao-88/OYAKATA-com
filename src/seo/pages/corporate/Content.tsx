@@ -14,24 +14,41 @@ import Strength from "./Strength";
  * FVを通過したら表示し、問い合わせフォームが画面内にある間と、SPメニューを開いている間は隠す。
  */
 function StickyCta({ menuOpen }: { menuOpen: boolean }) {
-  const [pastFv, setPastFv] = useState(false);
-  const [formInView, setFormInView] = useState(false);
+  // 表示条件(FV通過後・フォームが画面外)は、スクロール位置から毎回直接計算する。
+  // IntersectionObserver は通知の遅れで表示が揺れることがあったため使わない。
+  const [inRange, setInRange] = useState(false);
 
   useEffect(() => {
     const fv = document.getElementById("fv");
     const form = document.getElementById("contact-form");
-    if (!fv || !form || typeof IntersectionObserver === "undefined") return;
-    const fvObserver = new IntersectionObserver(([entry]) => setPastFv(!entry.isIntersecting));
-    const formObserver = new IntersectionObserver(([entry]) => setFormInView(entry.isIntersecting));
-    fvObserver.observe(fv);
-    formObserver.observe(form);
+    if (!fv || !form) return;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const pastFv = fv.getBoundingClientRect().bottom <= 0;
+      const formRect = form.getBoundingClientRect();
+      const formInView = formRect.top < window.innerHeight && formRect.bottom > 0;
+      setInRange(pastFv && !formInView);
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    // 画像の読み込みでレイアウトが動いた場合も判定し直す
+    window.addEventListener("load", schedule);
     return () => {
-      fvObserver.disconnect();
-      formObserver.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("load", schedule);
     };
   }, []);
 
-  const visible = pastFv && !formInView && !menuOpen;
+  const visible = inRange && !menuOpen;
 
   return (
     <div
