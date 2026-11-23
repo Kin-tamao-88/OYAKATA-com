@@ -1,4 +1,4 @@
-import { COMPANIES, EMPTY_FILTER, filterCompanies, getCategoryLabel } from "../data";
+import { COMPANIES, EMPTY_FILTER, HAS_COMPANIES, filterCompanies, getCategoryLabel } from "../data";
 import type { CompanyFilter } from "../data";
 import CompanyCard from "./CompanyCard";
 import FilterSelects from "./FilterSelects";
@@ -8,7 +8,31 @@ type Props = {
   onFilterChange: (next: CompanyFilter) => void;
 };
 
+/** 掲載企業が0件の間の案内。企業数・絞り込み・空カードは出さない。 */
+function ComingNotice() {
+  return (
+    <section id="companies" className="scroll-mt-[72px] lg:scroll-mt-[90px] bg-[#f4f1ea] py-16 lg:py-28">
+      <div className="max-w-[1240px] mx-auto px-5 lg:px-10">
+        <p className="flex items-center gap-3 mb-3 text-[#1a1a1a] font-bold text-[15px]">
+          <span className="block w-8 h-[3px] bg-[#FFD000]" />
+          Contractors
+        </p>
+        <div className="bg-white border border-[#d8d4ca] border-t-[4px] border-t-[#1a1a1a] px-6 py-12 lg:px-16 lg:py-20">
+          <h2 className="text-[#1a1a1a] font-black leading-[1.45] text-[26px] lg:text-[40px] text-balance [word-break:auto-phrase]">
+            提携パートナーを順次ご紹介します。
+          </h2>
+          <p className="mt-5 text-[#333] text-[16px] lg:text-[18px] font-medium leading-[1.9] text-pretty [word-break:auto-phrase]">
+            現在、掲載情報を準備しています。公開準備が整った企業から順次ご紹介いたします。
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function CompanyList({ filter, onFilterChange }: Props) {
+  if (!HAS_COMPANIES) return <ComingNotice />;
+
   const results = filterCompanies(COMPANIES, filter);
   const isFiltered = Boolean(filter.area || filter.category);
   const conditionText = [filter.area, filter.category ? getCategoryLabel(filter.category) : ""]
